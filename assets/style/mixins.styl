@@ -1,0 +1,20 @@
+clearfix()
+  &:before
+  &:after
+    content: ""
+    display: table
+  &:after
+    clear: both
+  zoom: 1 if support-for-ie
+
+ir()
+  text-indent -999px
+  overflow hidden
+
+clear-list()
+  list-style none
+  padding 0
+  margin 0
+
+.hidden
+  display none !important
