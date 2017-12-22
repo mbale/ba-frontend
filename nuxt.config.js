@@ -1,7 +1,19 @@
 const webpack = require('webpack')
 const rupture = require('rupture')
+const dotenv = require('dotenv')
+
+dotenv.config()
+
+const BACKEND_URL = process.env.BACKEND_URL
 
 module.exports = {
+  modules: [
+    '@nuxtjs/axios'
+  ],
+  axios: {
+    baseURL: BACKEND_URL,
+    credentials: false
+  },
   /*
   ** Headers of the page
   */

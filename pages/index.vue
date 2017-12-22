@@ -1,5 +1,5 @@
 <template>
-  <main className='page-header'>
+  <main>
     
   </main>
 </template>

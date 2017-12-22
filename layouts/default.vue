@@ -1,7 +1,9 @@
 <template>
   <div class="layout">
     <header-bar></header-bar>
-    <nuxt class="page-body"/>
+    <main class="page-body">
+      <nuxt />
+    </main>
     <footer-bar></footer-bar>
   </div>
 </template>
@@ -76,6 +78,39 @@ figure img
 .page-body__main
   flex 1
   position relative
+
+.main-container
+  display flex
+  flex-direction: column
+
+.main-body
+  flex-grow 1
+  height 100%
+
+.main-sidebar
+  width 340px
+  flex 0 0 340px
+  padding 20px
+  background #fff
+  +below(4)
+    display none
+
+.sidebar-wrapper
+  display: flex
+  flex-direction row
+  +below(3)
+    flex-direction: column
+  .content
+    flex 0 1 100%
+
+
+.content-aside
+  flex 0 1 300px
+  padding 30px 0 30px 30px
+  +below(3)
+    flex 0 0 100%
+    padding 20px 20px 0 20px
+
 
 
 </style>
