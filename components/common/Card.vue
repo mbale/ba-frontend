@@ -1,13 +1,13 @@
 <template>
   <div class="card">
     <div class="card__head">
-      <img class='card__img' v-bind:src="imageURL" alt=title />
+      <img class='image' v-bind:src="imageURL" alt=title />
     </div>
     <div class="card__body">
-      <h2 class='card__title'>
+      <h2 class='title'>
         {{ title }}
       </h2>
-      <p class="card__text">
+      <p class="text" v-if="text">
         {{ text }}
       </p>
     </div>
@@ -50,6 +50,8 @@ export default Vue.extend({
 
   .card__head
     display flex
+    flex-direction column
+    justify-content center
     background-color $purple
     background-size cover
     background-repeat no-repeat
@@ -57,7 +59,8 @@ export default Vue.extend({
     max-height 150px
     flex 1
     overflow hidden
-    img
+  
+    .image
       user-select none
       width 100%
       display block
@@ -69,10 +72,11 @@ export default Vue.extend({
     display flex
     align-items center
     flex-wrap wrap
-    p
+
+    .text
       color $mgray
 
-    .card__title
+    .title
       font-size 17px
       line-height 1.3
       font-weight bold
