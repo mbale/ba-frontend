@@ -12,7 +12,7 @@
       <glossary-box :words="getWords(term)" v-bind:key="term.$index" v-for="term in terms"></glossary-box>
     </section>
     <section class="betting-terms__list">
-      <glossary-row></glossary-row>
+      <glossary-row :term="term" v-bind:key="term.$index" v-for="term in terms"></glossary-row>
     </section>
   </section>
 </template>
@@ -126,7 +126,7 @@ export default Vue.extend({
   .betting-terms__intro
     color $purplegray
     background-color: #fff
-    padding 20px
+    padding 30px
     margin-top 20px
 
     .text
@@ -142,7 +142,10 @@ export default Vue.extend({
     padding 20px
 
   .betting-terms__list
-    margin 10px
+    margin 0px
+
+    .glossary-row
+      margin-bottom: 20px
   
 
 </style>
