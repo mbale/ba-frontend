@@ -6,8 +6,7 @@
       </h1>
       <img class='image' v-bind:alt=guide.title v-bind:src=guide.headerImage />
     </div>
-    <div class='article__body'>
-      <p class='content' v-html='parsedHTMLText'></p>
+    <div class='article__body' v-html='parsedHTMLText'>
     </div>
   </article>
 </template>
@@ -18,9 +17,6 @@ import marked from 'marked'
 
 export default Vue.extend({
   name: 'GuideDetailPage',
-  metaInfo: {
-    title: 'y'
-  },
   head () {
     return {
       title: this.guide.title
@@ -69,19 +65,18 @@ export default Vue.extend({
     padding 10px
     margin 0 auto
 
-    .content 
-      p
-        line-height 1.75
-        margin-bottom 20px
+    p
+      line-height 1.75
+      margin-bottom 20px
 
-      h2
-        margin-bottom 15px
-        font-size 23px
-        color #4d4d4d
+    h2
+      margin-bottom 15px
+      font-size 23px
+      color #4d4d4d
 
-      ul
-        margin 0 0 20px 20px
+    ul
+      margin 0 0 20px 20px
 
-        li
-          margin-bottom 5px
+      li
+        margin-bottom 5px
 </style>
