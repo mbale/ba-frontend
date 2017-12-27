@@ -7,6 +7,11 @@ dotenv.config()
 const BACKEND_URL = process.env.BACKEND_URL
 
 module.exports = {
+  // Vue
+  plugins: [{
+    src: '~/plugins/vue-social-share',
+    ssr: true
+  }],
   modules: [
     '@nuxtjs/axios'
   ],
@@ -49,9 +54,9 @@ module.exports = {
         })
       }
     },
-    // loaders: [
-    //   { test: /\.styl$/, loader: 'style-loader!css-loader!stylus-loader' }
-    // ],
+    vendor: [
+      'vue-social-sharing'
+    ],
     /*
     ** Webpack plugins
     */
