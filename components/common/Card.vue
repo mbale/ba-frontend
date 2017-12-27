@@ -36,7 +36,7 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 
 .card
   background $white
@@ -59,7 +59,7 @@ export default Vue.extend({
     max-height 150px
     flex 1
     overflow hidden
-  
+
     .image
       user-select none
       width 100%

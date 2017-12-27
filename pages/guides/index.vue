@@ -118,9 +118,12 @@ $one-fifth =
     +below(2)
       {$full-width}
 
-.betting-glossary
+.card .betting-glossary
   .card__head
+    background-color #1d1d1e
     min-height 150px
-  img
-    max-height 75px
+
+    .image
+      max-height 75px
+  
 </style>
