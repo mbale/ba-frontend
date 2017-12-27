@@ -56,6 +56,7 @@ export default Vue.extend({
     background-size cover
     background-repeat no-repeat
     background-position center center
+    min-height 150px
     max-height 150px
     flex 1
     overflow hidden

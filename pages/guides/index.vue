@@ -1,26 +1,27 @@
 <template>
   <section class="guides">
-    <!-- GAME GUIDES -->
-    <ul class='guide-list'>
-      <li class='guide-list__item' v-bind:key="guide.title" v-for="guide in guides">
-        <nuxt-link :to="'guides/' + guide.slug">
-          <card :title="guide.title" :imageURL="guide.cardImage"></card>
-        </nuxt-link>
-      </li>
-    </ul>
-    <!-- BETTING GUIDES -->
-    <ul class='guides-betting'>
-      <h3>Betting tools</h3>
-      <ul class='guide-list'>
-        <li class='guide-list__item'>
-          <nuxt-link to="guides/betting-glossary" class="card card--guide">
-            <card class='betting-glossary' :title="bettingGuides.terms.title" :imageURL="bettingGuides.terms.imageURL" :text="bettingGuides.terms.text"></card>
+    <!-- GUIDES -->
+    <section class="guides__item guides__item--game">
+      <ul class='list'>
+        <li class='list__item' v-bind:key="guide.title" v-for="guide in guides">
+          <nuxt-link :to="'guides/' + guide.slug">
+            <card :title="guide.title" :imageURL="guide.cardImage"></card>
           </nuxt-link>
         </li>
-        <!-- <OddsConverterCard />
-        <MarginCalculatorCard /> -->
       </ul>
-    </ul>
+    </section>
+    <!-- BETTING TOOLS -->
+    <section class="guides__item guides__item--tools">
+      <h3 class="header">Betting tools</h3>
+      <ul class='list'>
+        <li class='list__item' v-bind:key='bettingTool.title' v-for='bettingTool in bettingTools'>
+          <nuxt-link :to="'guides/' + bettingTool.routeTo" class="card">
+            <card v-bind:class='bettingTool.class' :title="bettingTool.title" :imageURL="bettingTool.imageURL" :text="bettingTool.text"></card>
+          </nuxt-link>
+        </li>
+      </ul>
+    </section>
+    
   </section>
 </template>
 
@@ -28,18 +29,35 @@
 import Vue from 'vue'
 import Card from '~/components/common/Card'
 import BettingTermsImageURL from '~/assets/images/guides/betting-terms.svg'
+import BettingOddsImageURL from '~/assets/images/guides/odds-converter.svg'
+import BettingCalculatorImageURL from '~/assets/images/guides/margin-calculator.svg'
 
 export default Vue.extend({
   name: 'Guides',
   data () {
     return {
-      bettingGuides: {
-        terms: {
+      bettingTools: [
+        {
           title: 'Betting Terms',
           imageURL: BettingTermsImageURL,
+          class: 'tools-glossary',
+          routeTo: 'betting-glossary',
           text: 'A dictionary covering the most important definitions in esports betting.'
-        }
-      }
+        },
+        {
+          title: 'Odds Converter',
+          imageURL: BettingOddsImageURL,
+          class: 'tools-converter',
+          routeTo: 'odds-converter',
+          text: 'Convert different betting odds into the odds format of your choice.'
+        },
+        {
+          title: 'Margin Calculator',
+          imageURL: BettingCalculatorImageURL,
+          class: 'tools-calculator',
+          routeTo: 'margin-calculator',
+          text: 'Calculate betting margins to find out how much bookmakers charge you.'
+        }]
     }
   },
   head () {
@@ -63,20 +81,6 @@ export default Vue.extend({
 
 <style lang="stylus">
 
-.guides
-  margin 10px 40px
-
-.guides-betting
-  background-color #e4e6eb
-  margin-bottom 40px
-  h3
-    padding 30px 30px 0 30px
-    font-size 20px
-    color #4d4d4d
-  .card-list
-    padding-top 10px
-
-
 $full-width =
   max-width 100%
   flex-basis 100%
@@ -97,31 +101,57 @@ $one-fifth =
   max-width 20%
   flex-basis 20%
 
-.guide-list
-  clear-list()
-  display flex
-  flex-direction row
-  flex-flow row wrap
-  padding 20px
-  width 100%
+.guides
+  margin 10px 40px
 
-  .guide-list__item
-    padding 10px
-    {$one-quarter}
-    +below(4)
-      {$one-half}
-    +below(2)
-      {$full-width}
+  .guides__item--tools
+    background-color #e4e6eb
+    margin-bottom 40px
 
-  .guide-list__item--large
-    {$one-third}
-    +below(2)
-      {$full-width}
+    .header
+      padding 30px 30px 0px 30px
+      font-size 20px
+      color #4d4d4d
 
-.card .betting-glossary
+  .list
+    clear-list()
+    display flex
+    flex-direction row
+    flex-flow row wrap
+    padding 20px
+    width 100%
+
+    .list__item
+      padding 10px
+      {$one-quarter}
+      +below(4)
+        {$one-half}
+      +below(2)
+        {$full-width}
+
+    .guide-list__item--large
+      {$one-third}
+      +below(2)
+        {$full-width}
+
+
+.card .tools-glossary
   .card__head
     background-color #1d1d1e
-    min-height 150px
+
+    .image
+      max-height 75px
+
+.card .tools-converter
+  .card__head
+    background-color #2d8849
+
+    .image
+      max-height 75px
+
+.card .tools-calculator
+  .card__head
+    background-color #c41c38
 
     .image
       max-height 75px
