@@ -73,7 +73,11 @@ figure img
 
 .page-body
   display flex
+  justify-content center
   flex 1
+
+  > *
+    max-width 1180px
 
 .page-body__main
   flex 1

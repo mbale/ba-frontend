@@ -49,6 +49,7 @@ export default Vue.extend({
     transform scale(1.03, 1.03)
 
   .card__head
+    display flex
     background-color $purple
     background-size cover
     background-repeat no-repeat

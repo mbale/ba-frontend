@@ -12,9 +12,11 @@
     <ul class='guides-betting'>
       <h3>Betting tools</h3>
       <ul class='guide-list'>
-        <nuxt-link to="guides/betting-glossary" class="card card--guide">
-          <card :title="bettingGuides.terms.title" :imageURL="bettingGuides.terms.imageURL" :text="bettingGuides.terms.text"></card>
-        </nuxt-link>
+        <li class='guide-list__item'>
+          <nuxt-link to="guides/betting-glossary" class="card card--guide">
+            <card class='betting-glossary' :title="bettingGuides.terms.title" :imageURL="bettingGuides.terms.imageURL" :text="bettingGuides.terms.text"></card>
+          </nuxt-link>
+        </li>
         <!-- <OddsConverterCard />
         <MarginCalculatorCard /> -->
       </ul>
@@ -116,4 +118,9 @@ $one-fifth =
     +below(2)
       {$full-width}
 
+.betting-glossary
+  .card__head
+    min-height 150px
+  img
+    max-height 75px
 </style>
