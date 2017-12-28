@@ -55,7 +55,8 @@ module.exports = {
       }
     },
     vendor: [
-      'vue-social-sharing'
+      'vue-social-sharing',
+      'oddslib'
     ],
     /*
     ** Webpack plugins
