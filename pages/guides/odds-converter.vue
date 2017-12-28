@@ -151,7 +151,6 @@ export default Vue.extend({
 <style lang="stylus">
 
 .odds-converter
-  margin 10px 40px
   padding 30px
   margin 0 auto
 

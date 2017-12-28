@@ -119,15 +119,10 @@ export default Vue.extend({
 
     .input
       flex-grow 1
-      margin 10px
-      margin-right 10px
+      margin 5px
       padding 12px
       text-align center
       font-size 100%
       line-height 1.15
-
-  .odds-calculator__implied
-    .input
-      margin-right 10px
 
 </style>
