@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="card__head">
+    <div class="card__head" v-bind:style="{ 'background-color': headerBgColor }">
       <img class='image' v-bind:src="imageURL" alt=title />
     </div>
     <div class="card__body">
@@ -25,6 +25,10 @@ export default Vue.extend({
       required: false
     },
     text: {
+      type: String,
+      required: false
+    },
+    headerBgColor: {
       type: String,
       required: false
     },
