@@ -8,12 +8,18 @@
         <img v-bind:class="`image ${depositMethod.type}`" v-bind:src="depositMethod.imageURL">
       </nuxt-link>
     </div>
-    <div class="bookmakers__list"></div>
+    <div class="bookmakers__list">
+      <div class="list__top"></div>
+      <card class="list__item" v-bind:key="bookmaker.slug" v-for="bookmaker of bookmakers" :title="bookmaker.name" :imageURL="bookmaker.logo">
+        lol
+      </card>
+    </div>
   </section>
 </template>
 
 <script>
 import Vue from 'vue'
+import Card from '~/components/common/card'
 import BitcoinImage from '~/assets/images/depositmethods/bitcoin.svg'
 import CreditCardImage from '~/assets/images/depositmethods/credit-card.svg'
 import PaypalImage from '~/assets/images/depositmethods/paypal.svg'
@@ -21,6 +27,9 @@ import SkinImage from '~/assets/images/depositmethods/skins.svg'
 
 export default Vue.extend({
   name: 'Bookmakers',
+  components: {
+    Card
+  },
   head () {
     return {
       title: 'Betacle - Bookmakers'
@@ -77,6 +86,7 @@ export default Vue.extend({
     justify-content flex-start
     min-width 100%
     background-color white
+    margin-bottom 25px
 
     .text
       display flex
@@ -87,6 +97,22 @@ export default Vue.extend({
       margin 15px
       min-width 20px
       min-height 20px
+
+  .bookmakers__list
+    margin 0 auto
+    display flex
+    flex-wrap wrap
+    flex-direction row
+    max-width 1180px
+
+    .list__item
+      margin 15px
+      min-width 265px
+      max-width 265px
+      // flex-basis 45%
+
+      img
+        min-height 100%
 
 
 </style>
