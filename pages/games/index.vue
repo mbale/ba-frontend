@@ -3,7 +3,7 @@
     <ul class='list'>
       <li class='list__item' v-bind:key="game.slug" v-for="game in games">
         <nuxt-link :to="'games/' + game.slug">
-          <card v-bind:key="game.color" :headerBgColor="game.color" :title="game.name" :imageURL="game.logo"></card>
+          <card class="game-card" v-bind:key="game.color" :headerBgColor="game.color" :title="game.name" :imageURL="game.logo"></card>
         </nuxt-link>
       </li>
     </ul>
@@ -81,7 +81,7 @@ $one-fifth =
       +below(2)
         {$full-width}
 
-.card
+.game-card
     .image
       max-height 75px
 

@@ -16,7 +16,7 @@ import Vue from 'vue'
 import marked from 'marked'
 
 export default Vue.extend({
-  name: 'GuideDetailPage',
+  name: 'Guide',
   head () {
     return {
       title: this.guide.title
