@@ -67,6 +67,7 @@ export default Vue.extend({
 <style lang="stylus">
 
 .margin-converter
+  max-width 1180px
   padding 30px
   margin 0 auto
 

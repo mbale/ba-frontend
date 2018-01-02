@@ -60,6 +60,7 @@ $one-fifth =
 
 .games
   margin 10px 40px
+  max-width 1180px
 
   .list
     clear-list()

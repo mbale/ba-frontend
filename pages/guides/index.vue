@@ -103,6 +103,7 @@ $one-fifth =
 
 .guides
   margin 10px 40px
+  max-width 1180px
 
   .guides__item--tools
     background-color #e4e6eb

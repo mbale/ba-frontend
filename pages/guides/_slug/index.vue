@@ -45,6 +45,7 @@ export default Vue.extend({
   margin 30px
   background-color #fff
   padding 35px
+  max-width 1180px
 
   .article__header
     overflow hidden

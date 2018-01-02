@@ -109,9 +109,8 @@ export default Vue.extend({
 <style lang="stylus">
 
 .betting-terms
-  margin 10px 40px
+  max-width 1180px
   padding 30px
-  margin 0 auto
 
   > *
     margin 0px 0px 20px 0px

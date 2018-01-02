@@ -54,6 +54,7 @@ export default Vue.extend({
 
 .game
   width 100%
+  max-width 1180px
 
   .game__header
     display block
