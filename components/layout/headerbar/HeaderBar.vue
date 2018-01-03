@@ -4,6 +4,7 @@
       <logo class="page-header__logo"></logo>
     </nuxt-link>
     <navigation></navigation>
+    <auth-block></auth-block>
   </header>  
 </template>
 
@@ -11,12 +12,14 @@
 import Vue from 'vue'
 import Navigation from '~/components/layout/headerbar/Navigation.vue'
 import Logo from '~/components/common/Logo.vue'
+import AuthBlock from '~/components/layout/headerbar/auth-block'
 
 export default Vue.extend({
   name: 'Header',
   components: {
     Navigation,
-    Logo
+    Logo,
+    AuthBlock
   }
 })
 </script>
