@@ -13,6 +13,12 @@ export const mutations = {
   }
 }
 
+export const getters = {
+  rankByVotes: (state) => {
+    return Object.assign([], state.list).sort((a, b) => b.reviews.avg - a.reviews.avg)
+  }
+}
+
 export const state = () => ({
   list: [],
   bookmaker: null

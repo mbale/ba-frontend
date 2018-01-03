@@ -56,6 +56,7 @@ module.exports = {
     },
     vendor: [
       'vue-social-sharing',
+      'vue-star-rating',
       'oddslib'
     ],
     /*
