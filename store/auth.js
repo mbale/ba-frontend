@@ -1,15 +1,25 @@
 const MUTATIONS = {
-  AUTHENTICATION: 'authentication'
+  BASIC: 'basic',
+  FAIL: 'fail',
+  IN_PROCESS: 'in_process'
 }
 
 export const mutations = {
-  [MUTATIONS.AUTHENTICATION] (state, payload) {
-    state.user = payload
+  [MUTATIONS.BASIC] (state, payload) {
+    state.accessToken = payload.accessToken
+  },
+  [MUTATIONS.IN_PROCESS] (state) {
+    state.loginInProcess = true
+  },
+  [MUTATIONS.FAIL] (state, payload) {
+    state.authenticationFail = payload.reason
   }
 }
 
 export const state = () => ({
-  user: null
+  user: null,
+  loginInProcess: false,
+  accessToken: null
 })
 
 export const actions = {
@@ -17,15 +27,21 @@ export const actions = {
     username,
     password
   }) {
-    // const {
-    //   data
-    // } = await this.$axios.$post('v1/auth/basic', {
-    //   username,
-    //   password
-    // })
-    context.commit(MUTATIONS.AUTHENTICATION, {
-      username,
-      password
-    })
+    try {
+      const {
+        accessToken
+      } = await this.$axios.$post('v1/auth/basic', {
+        username,
+        password
+      })
+
+      context.commit(MUTATIONS.BASIC, {
+        accessToken
+      })
+    } catch (error) {
+      context.commit(MUTATIONS.FAIL, {
+        reason: error
+      })
+    }
   }
 }

@@ -16,7 +16,7 @@
       <label class="label" for="username" slot="body">Username</label>
       <div class="input-container" slot="body">
         <input class="input" type="text" slot="body" placeholder="Your username" name="username" 
-          v-validate="{ required: true, min: 4, regex: /^[a-zA-Z0-9_]+$/ }" ref="input--username">
+          v-model="form.username" v-validate="{ required: true, min: 4, regex: /^[a-zA-Z0-9_]+$/ }" ref="input--username">
         <span class="error" v-show="errors.has('username')" slot="body">
           {{ errors.first('username') }}
         </span>
@@ -24,15 +24,18 @@
       <label class="label" for="password" slot="body">Password</label>
       <div class="input-container" slot="body">
         <input class="input input--password" type="password" placeholder="Minimum 6 characters" name="password" 
-          v-validate="{ required: true, min: 4, regex: /^[a-zA-Z0-9_]+$/ }" ref="input--password">
+          v-model="form.password" v-validate="{ required: true, min: 4, regex: /^[a-zA-Z0-9_]+$/ }" ref="input--password">
         <icon class="icon" :name="iconState" scale="1" v-on:click.native="togglePasswordInputType"></icon>
         <span class="error" v-show="errors.has('password')" slot="body">
           {{ errors.first('password') }}
         </span>
       </div>
       <!-- BUTTON -->
-      <div class="button" v-bind:class="{ 'button--disabled': errors.any() }" slot="body" @click="submitLogin">
+      <div class="button" slot="body" v-show="!isLoginInProcess" v-bind:class="{ 'button--disabled': isLoginDisabled }" @click="submitLogin">
         Log in
+      </div>
+      <div class="button button--disabled" slot="body" v-show="isLoginInProcess">
+        <icon name="spinner" pulse></icon>
       </div>
       <div class="separator" slot="body"></div>
       <span class="text text--footer" slot="footer">
@@ -51,6 +54,7 @@ import Vue from 'vue'
 import 'vue-awesome/icons/eye'
 import 'vue-awesome/icons/eye-slash'
 import 'vue-awesome/icons/steam-square'
+import 'vue-awesome/icons/spinner'
 import ModalBox from '~/components/common/modal-box'
 import steamLogoURL from '~/assets/images/social/icon_steam.svg'
 import Icon from 'vue-awesome/components/Icon'
@@ -61,8 +65,16 @@ export default Vue.extend({
     Icon,
     ModalBox
   },
-  created () {
-
+  computed: {
+    isLoginInProcess () {
+      return this.$store.state.auth.loginInProcess
+    },
+    isLoginDisabled () {
+      if (this.errors.any() || this.form.username === '' || this.form.password === '') {
+        return true
+      }
+      return false
+    }
   },
   data () {
     return {
@@ -70,24 +82,23 @@ export default Vue.extend({
         login: true,
         signup: false
       },
+      form: {
+        username: '',
+        password: ''
+      },
       steamLogoURL,
       iconState: 'eye'
     }
   },
   methods: {
     async submitLogin () {
-      const password = this.$refs['input--password'].value
-      const username = this.$refs['input--username'].value
-
       if (!this.errors.any()) {
+        this.$store.commit('auth/in_process')
         await this.$store.dispatch('auth/basic', {
-          username,
-          password
+          username: this.form.username,
+          password: this.form.password
         })
       }
-    },
-    showErrors () {
-      console.log('errors')
     },
     togglePasswordInputType () {
       const passwordInput = window.document.querySelector('.input--password')
