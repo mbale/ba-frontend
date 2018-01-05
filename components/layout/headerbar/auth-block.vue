@@ -93,7 +93,9 @@ export default Vue.extend({
   methods: {
     async submitLogin () {
       if (!this.errors.any()) {
-        this.$store.commit('auth/in_process')
+        this.$store.commit('auth/in_process', {
+          state: true
+        })
         await this.$store.dispatch('auth/basic', {
           username: this.form.username,
           password: this.form.password

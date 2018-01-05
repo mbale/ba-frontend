@@ -8,8 +8,8 @@ export const mutations = {
   [MUTATIONS.BASIC] (state, payload) {
     state.accessToken = payload.accessToken
   },
-  [MUTATIONS.IN_PROCESS] (state) {
-    state.loginInProcess = true
+  [MUTATIONS.IN_PROCESS] (state, payload) {
+    state.loginInProcess = payload.state
   },
   [MUTATIONS.FAIL] (state, payload) {
     state.authenticationFail = payload.reason
@@ -37,6 +37,10 @@ export const actions = {
 
       context.commit(MUTATIONS.BASIC, {
         accessToken
+      })
+
+      context.commit(MUTATIONS.IN_PROCESS, {
+        state: false
       })
     } catch (error) {
       context.commit(MUTATIONS.FAIL, {
