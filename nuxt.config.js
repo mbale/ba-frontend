@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const rupture = require('rupture')
 const dotenv = require('dotenv')
+const nodeExternals = require('webpack-node-externals')
 
 dotenv.config()
 
@@ -10,6 +11,15 @@ module.exports = {
   // Vue
   plugins: [{
     src: '~/plugins/vue-social-share',
+    ssr: true
+  }, {
+    src: '~/plugins/vee-validate',
+    ssr: true
+  }, {
+    src: '~/plugins/vue-star-rating',
+    ssr: true
+  }, {
+    src: '~/plugins/vue-awesome',
     ssr: true
   }],
   modules: [
@@ -53,10 +63,25 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+
+      /*
+      ** ServerSide bundling
+      */
+      if (ctx.isServer) {
+        config.externals = [
+          nodeExternals({
+            // default value for `whitelist` is
+            // [/es6-promise|\.(?!(?:js|json)$).{1,5}$/i]
+            whitelist: [/es6-promise|\.(?!(?:js|json)$).{1,5}$/i, /^vue-awesome/]
+          })
+        ]
+      }
     },
     vendor: [
       'vue-social-sharing',
       'vue-star-rating',
+      'vee-validate',
+      'vue-awesome',
       'oddslib'
     ],
     /*

@@ -3,7 +3,7 @@
     <header class="card-box__header">
       <slot name="header"></slot>
     </header>
-    <main class="card-box__body" name="body">
+    <main class="card-box__body">
       <slot name="body"></slot>
     </main>
   </div>
