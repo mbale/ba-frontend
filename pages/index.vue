@@ -7,10 +7,7 @@
 <script>
 
 export default {
-  name: 'Container',
-  components: {
-
-  }
+  name: 'Container'
 }
 </script>
 

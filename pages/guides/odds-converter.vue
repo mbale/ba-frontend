@@ -128,7 +128,7 @@ For example 2.0 Decimal odds are expected to be won once in every 2 attempts, he
 
 <script>
 import Vue from 'vue'
-import OddsCalculator from '~/components/guides/OddsCalculator'
+import OddsCalculator from '~/components/guides/odds-calculator'
 
 export default Vue.extend({
   name: 'OddsConverter',

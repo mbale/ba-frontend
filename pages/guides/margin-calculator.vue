@@ -44,7 +44,7 @@
 
 <script>
 import Vue from 'vue'
-import MarginCalculator from '~/components/guides/MarginCalculator'
+import MarginCalculator from '~/components/guides/margin-calculator'
 
 export default Vue.extend({
   name: 'MarginConverter',

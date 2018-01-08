@@ -10,8 +10,8 @@
 
 <script>
 import Vue from 'vue'
-import Navigation from '~/components/layout/headerbar/Navigation.vue'
-import Logo from '~/components/common/Logo.vue'
+import Navigation from '~/components/layout/headerbar/navigation.vue'
+import Logo from '~/components/common/logo.vue'
 import AuthBlock from '~/components/layout/headerbar/auth-block'
 
 export default Vue.extend({

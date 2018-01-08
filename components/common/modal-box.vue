@@ -43,7 +43,7 @@ export default Vue.extend({
   flex-direction column
   justify-content space-around
   background-color white
-  padding 15px 30px
+  padding 10px 25px
   width 380px
 
   .modal-box__body
@@ -52,6 +52,7 @@ export default Vue.extend({
 
   .modal-box__footer
     display flex
+    padding 15px 0px
     justify-content space-between
 
 </style>

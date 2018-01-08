@@ -37,7 +37,18 @@
       <div class="button button--disabled" slot="body" v-show="isLoginInProcess">
         <icon name="spinner" pulse></icon>
       </div>
+      <!-- LOGIN ERRORS -->
+      <span class="error error--login" v-if="loginError.response" slot="body">
+        Sorry, that password or username isn't right. We can help you recover your account.
+      </span>
+      <span class="error error--login" v-else-if="loginError.request">
+        We're experiencing technical difficulties.
+      </span>
+      <span class="error error--login" v-else-if="loginError.message">
+        You're not connected to the network
+      </span>
       <div class="separator" slot="body"></div>
+      <!-- BUTTONS -->
       <span class="text text--footer" slot="footer">
         Don't have an account yet?
       </span>
@@ -74,6 +85,12 @@ export default Vue.extend({
         return true
       }
       return false
+    },
+    isLoggedIn () {
+      return this.$store.state.auth.user
+    },
+    loginError () {
+      return this.$store.state.auth.loginError || {}
     }
   },
   data () {
@@ -96,10 +113,15 @@ export default Vue.extend({
         this.$store.commit('auth/in_process', {
           state: true
         })
+
         await this.$store.dispatch('auth/basic', {
           username: this.form.username,
           password: this.form.password
         })
+
+        if (this.$store.state.auth.user) {
+
+        }
       }
     },
     togglePasswordInputType () {
@@ -129,7 +151,7 @@ export default Vue.extend({
   justify-content flex-end
   margin-left auto
 
-  .auth-block__button
+  &__button
     background transparent
     border 0
     padding 0 15px
@@ -161,7 +183,7 @@ export default Vue.extend({
     align-items center
 
   .separator
-    margin 2px 0px
+    margin 10px 0px
     align-items center
     display flex
 
@@ -215,6 +237,9 @@ export default Vue.extend({
     padding-top 8px
     font-size 13px
 
+    &--login
+      margin-bottom 10px
+
   .text
     margin-right 5px
 
@@ -232,27 +257,28 @@ export default Vue.extend({
     border 1px solid transparent
     padding 10px 30px
     margin-top 20px
-    margin-bottom 20px
+    margin-bottom 5px
 
-  .button--disabled
-    cursor default
-    background-color #D2D7D3
+    &--disabled
+      cursor default
+      background-color #D2D7D3
 
-  .button--signup
-    border-radius 2px
-    font-size 15px
-    user-select none
-    font-weight 700
-    cursor pointer
-    background-color transparent
-    border 1px solid #2d3088
-    color #2d3088
-    padding 8px 12px
+    &--signup
+      border-radius 2px
+      font-size 15px
+      user-select none
+      font-weight 700
+      cursor pointer
+      background-color transparent
+      border 1px solid #2d3088
+      color #2d3088
+      padding 8px 12px
+      margin 0
 
   .steam-auth-container
     display flex
     padding 5px
-    margin 10px 0px
+    margin-top 10px
     color black
     justify-content center
 

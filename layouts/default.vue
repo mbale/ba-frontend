@@ -10,8 +10,8 @@
 
 <script>
 import Vue from 'vue'
-import HeaderBar from '~/components/layout/headerbar/HeaderBar.vue'
-import FooterBar from '~/components/layout/FooterBar.vue'
+import HeaderBar from '~/components/layout/headerbar/header-bar'
+import FooterBar from '~/components/layout/footer-bar'
 
 export default Vue.extend({
   name: 'MainLayout',

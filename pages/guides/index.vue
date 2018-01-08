@@ -27,7 +27,7 @@
 
 <script>
 import Vue from 'vue'
-import Card from '~/components/common/Card'
+import Card from '~/components/common/card'
 import BettingTermsImageURL from '~/assets/images/guides/betting-terms.svg'
 import BettingOddsImageURL from '~/assets/images/guides/odds-converter.svg'
 import BettingCalculatorImageURL from '~/assets/images/guides/margin-calculator.svg'

@@ -19,8 +19,8 @@
 
 <script>
 import Vue from 'vue'
-import GlossaryBox from '~/components/guides/GlossaryBox'
-import GlossaryRow from '~/components/guides/GlossaryRow'
+import GlossaryBox from '~/components/guides/glossary-box'
+import GlossaryRow from '~/components/guides/glossary-row'
 
 export default Vue.extend({
   name: 'BettingTerms',

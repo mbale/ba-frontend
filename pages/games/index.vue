@@ -12,7 +12,7 @@
 
 <script>
 import Vue from 'vue'
-import Card from '~/components/common/Card'
+import Card from '~/components/common/card'
 
 export default Vue.extend({
   name: 'Games',
