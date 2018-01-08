@@ -96,7 +96,7 @@ export default Vue.extend({
   data () {
     return {
       modalStates: {
-        login: true,
+        login: false,
         signup: false
       },
       form: {

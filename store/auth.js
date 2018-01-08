@@ -3,7 +3,8 @@ const MUTATIONS = {
   FAIL: 'fail',
   IN_PROCESS: 'in_process',
   SUCCESS: 'success',
-  GET_PROFILE: 'get_profile'
+  GET_PROFILE: 'get_profile',
+  INVALID_TOKEN: 'invalid_token'
 }
 
 export const mutations = {
@@ -19,6 +20,9 @@ export const mutations = {
   },
   [MUTATIONS.GET_PROFILE] (state, payload) {
     state.user = payload.user
+  },
+  [MUTATIONS.INVALID_TOKEN] (state, payload) {
+    state.accessToken = null
   }
 }
 
@@ -59,10 +63,15 @@ export const actions = {
     }
   },
   async getProfile (context) {
-    // try {
-    //   const user = await this.$axios.$post('v1/user/me')
-    // } catch (error) {
+    try {
+      this.$axios.setToken(context.state.accessToken, 'Bearer')
+      const user = await this.$axios.$get('v1/users/me')
 
-    // }
+      context.commit(MUTATIONS.GET_PROFILE, {
+        user
+      })
+    } catch (error) {
+      context.commit(MUTATIONS.INVALID_TOKEN)
+    }
   }
 }

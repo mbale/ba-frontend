@@ -12,5 +12,7 @@ export default ({store, isHMR, isServer}) => {
       key: 'accessToken',
       paths: ['auth.accessToken']
     })(store) // vuex plugins can be connected to store, even after creation
+
+    // store.dispatch('auth/getProfile')
   })
 }

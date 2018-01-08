@@ -5,21 +5,29 @@
     </nuxt-link>
     <navigation class="page-header__nav"></navigation>
     <auth-block class="page-header__auth"></auth-block>
+    <account-block v-if="loggedUser" class="page-header__account"></account-block>
   </header>
 </template>
 
 <script>
 import Vue from 'vue'
-import Navigation from '~/components/layout/headerbar/navigation.vue'
-import Logo from '~/components/common/logo.vue'
+import Navigation from '~/components/layout/headerbar/navigation'
+import Logo from '~/components/common/logo'
 import AuthBlock from '~/components/layout/headerbar/auth-block'
+import AccountBlock from '~/components/layout/headerbar/account-block'
 
 export default Vue.extend({
   name: 'Header',
   components: {
     Navigation,
     Logo,
-    AuthBlock
+    AuthBlock,
+    AccountBlock
+  },
+  computed: {
+    loggedUser () {
+      return this.$store.state.auth.user
+    }
   }
 })
 </script>
