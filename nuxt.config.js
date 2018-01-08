@@ -21,6 +21,9 @@ module.exports = {
   }, {
     src: '~/plugins/vue-awesome',
     ssr: true
+  }, {
+    src: '~/plugins/vuex-persistedstate',
+    ssr: false
   }],
   modules: [
     '@nuxtjs/axios'
@@ -82,6 +85,7 @@ module.exports = {
       'vue-star-rating',
       'vee-validate',
       'vue-awesome',
+      'vuex-persistedstate',
       'oddslib'
     ],
     /*
