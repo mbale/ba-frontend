@@ -9,8 +9,8 @@ export default ({store, isHMR, isServer}) => {
 
   window.onNuxtReady((nuxt) => {
     PersistedState({
-      key: 'authentication',
-      paths: ['auth']
+      key: 'accessToken',
+      paths: ['auth.accessToken']
     })(store) // vuex plugins can be connected to store, even after creation
   })
 }
