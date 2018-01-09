@@ -4,8 +4,8 @@
       <logo class="page-header__logo"></logo>
     </nuxt-link>
     <navigation class="page-header__nav"></navigation>
-    <auth-block class="page-header__auth"></auth-block>
-    <account-block v-if="loggedUser" class="page-header__account"></account-block>
+    <auth-block v-if="!user" class="page-header__auth"></auth-block>
+    <account-block v-if="user" class="page-header__account"></account-block>
   </header>
 </template>
 
@@ -25,7 +25,7 @@ export default Vue.extend({
     AccountBlock
   },
   computed: {
-    loggedUser () {
+    user () {
       return this.$store.state.auth.user
     }
   }
@@ -51,5 +51,8 @@ $link-color--active = #fff
       margin-left 0
       position: relative
       z-index: 999
+
+  .page-header__account
+    margin-left auto
 
 </style>
