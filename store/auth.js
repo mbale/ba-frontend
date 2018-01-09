@@ -7,7 +7,6 @@ const MUTATIONS = {
   IN_PROCESS: 'in_process',
   SUCCESS: 'success',
   GET_PROFILE: 'get_profile',
-  DELETE_TOKEN: 'delete_token',
   SET_TOKEN: 'set_token'
 }
 
@@ -27,9 +26,6 @@ export const mutations = {
   },
   [MUTATIONS.GET_PROFILE] (state, payload) {
     state.user = payload.user
-  },
-  [MUTATIONS.DELETE_TOKEN] (state) {
-    state.accessToken = null
   }
 }
 
@@ -148,7 +144,7 @@ export const actions = {
         user
       })
     } catch (error) {
-      context.commit(MUTATIONS.DELETE_TOKEN)
+      await context.dispatch('updateToken', {})
     }
   }
 }
