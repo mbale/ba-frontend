@@ -22,8 +22,8 @@ module.exports = {
     src: '~/plugins/vue-awesome',
     ssr: true
   }, {
-    src: '~/plugins/vuex-persistedstate',
-    ssr: false
+    src: '~/plugins/sync-auth-ssr-client',
+    ssr: true
   }],
   modules: [
     '@nuxtjs/axios'
@@ -36,7 +36,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'ba-frontend-vue',
+    title: 'Betacle',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -58,7 +58,7 @@ module.exports = {
       /*
       ** Eslint on save
       */
-      if (ctx.dev && ctx.isClient) {
+      if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
