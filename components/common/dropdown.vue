@@ -12,21 +12,30 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 
 .dropdown
   display flex
   flex-direction column
+  width 128px
   position absolute
   background #1F3A93
   border 1px solid #446CB3
   top 65px
   right 0px
-  padding 10px
 
   &__item
     display flex
     justify-content row
-    justify-content space-between
+    justify-content center
+    padding 12px
+
+    &:first-child
+      padding-bottom 0px
+      padding-top 12px
+
+    &:last-child
+      padding-top 0px
+      padding-bottom 12px
 
 </style>

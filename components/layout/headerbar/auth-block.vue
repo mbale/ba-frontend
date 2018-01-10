@@ -119,8 +119,13 @@ export default Vue.extend({
           password: this.form.password
         })
 
-        if (this.$store.state.auth.user) {
+        await this.$store.dispatch('auth/getProfile')
 
+        if (this.$store.state.auth.user) {
+          this.modalStates.login = false
+          this.$router.push({
+            path: '/matches'
+          })
         }
       }
     },

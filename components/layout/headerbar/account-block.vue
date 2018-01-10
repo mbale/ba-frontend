@@ -1,31 +1,31 @@
 <template>
   <div class="account-block" @click="toggleMenu">
-    <div class="account-block__avatar">
-      <img class="image" v-bind:src="user.profile.avatar">
+    <nuxt-link tag="div" class="account-block__avatar" :to="{ path: '/profile' }">
+      <span class="text">{{ user.profile.username }}</span>
+      <icon name="user" scale="1.4"></icon>
+      <!-- <img class="image" v-bind:src="avatar"> -->
+    </nuxt-link>
+    <!-- <span class="account-block__username">
+      {{ user.profile.username }}
+    </span> -->
+    <nuxt-link tag="div" class="account-block__settings" :to="{ path: '/profile/settings' }">
+      <icon name="cog" scale="1.4"></icon>
+    </nuxt-link>
+    <div class="account-block__logout" @click="signout">
+      <icon name="sign-out" scale="1.4"></icon>
     </div>
-    <span class="account-block__username">{{ user.profile.username }}</span>
-    <div class="account-block__icon">
-      <icon name="chevron-down" scale="0.8"></icon>
-    </div>
-    <dropdown v-show="dropdown">
-      <div slot="item">
-        <span class="text">Profile</span>
-      </div>
-      <div slot="item">
-        <span class="text">Settings</span>
-      </div>
-      <div slot="item">
-        <span class="text">Sign out</span>
-      </div>
-    </dropdown>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
+import avatarPlaceholderImage from '~/assets/images/no_avatar.png'
 import Dropdown from '~/components/common/dropdown'
 import Icon from 'vue-awesome/components/Icon'
 import 'vue-awesome/icons/chevron-down'
+import 'vue-awesome/icons/cog'
+import 'vue-awesome/icons/sign-out'
+import 'vue-awesome/icons/user'
 
 export default Vue.extend({
   name: 'AccountBlock',
@@ -35,17 +35,23 @@ export default Vue.extend({
   },
   data () {
     return {
-      dropdown: false
+      dropdownState: true
     }
   },
   computed: {
     user () {
       return this.$store.state.auth.user
+    },
+    avatar () {
+      return this.$store.state.auth.user.profile.avatar || avatarPlaceholderImage
     }
   },
   methods: {
     toggleMenu () {
-      this.dropdown = !this.dropdown
+      this.dropdownState = !this.dropdownState
+    },
+    async signout () {
+      await this.$store.dispatch('auth/logout', {})
     }
   }
 })
@@ -63,28 +69,48 @@ export default Vue.extend({
   font-size 16px
 
   &__avatar
+    color rgba(255, 255, 255, .66)
     display flex
-    max-height 42px
-    max-width 42px
-    margin-right 5px
-    border-radius 50%
+    margin-right 10px
     overflow hidden
+
+    .text
+      letter-spacing 1px
+      font-weight 500
+      margin-right 10px
+
+    &:hover
+      color white
 
     .image 
       max-width 100%
       height auto
 
   &__username
-    display inline-flex
+    color rgba(255, 255, 255, .66)
+    display flex
     flex-direction column
     justify-content center
     margin 6px 6px 6px 8px
+    line-height 30px
+    font-weight 500
 
-  &__icon
-    display inline-flex
-    flex-direction column
-    justify-content center
-    margin 8px 10px 6px 5px
+  &__settings
+    display flex
+    color rgba(255, 255, 255, .66)
+    padding-right 20px
+    margin-right 20px
+    border-right 1px solid rgba(237, 237, 237, .5)
+
+    &:hover
+      color white
+
+  &__logout
+    display flex
+    color rgba(255, 255, 255, .66)
+
+    &:hover
+      color white
 
 
 </style>

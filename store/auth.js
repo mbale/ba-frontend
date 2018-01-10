@@ -7,7 +7,8 @@ const MUTATIONS = {
   IN_PROCESS: 'in_process',
   SUCCESS: 'success',
   GET_PROFILE: 'get_profile',
-  SET_TOKEN: 'set_token'
+  SET_TOKEN: 'set_token',
+  LOG_OUT: 'log_out'
 }
 
 export const mutations = {
@@ -26,6 +27,9 @@ export const mutations = {
   },
   [MUTATIONS.GET_PROFILE] (state, payload) {
     state.user = payload.user
+  },
+  [MUTATIONS.LOG_OUT] (state, payload) {
+    state.user = null
   }
 }
 
@@ -146,5 +150,9 @@ export const actions = {
     } catch (error) {
       await context.dispatch('updateToken', {})
     }
+  },
+  async logout (context) {
+    await context.dispatch('updateToken', {})
+    context.commit(MUTATIONS.LOG_OUT)
   }
 }
