@@ -39,14 +39,16 @@ $link-color--hover =  #fff
 $link-color--active = #fff
 
 .page-header
-  background $purple linear-gradient(to right, $purple, #3D86E0)
+  // background $purple linear-gradient(to right, $purple, #3D86E0)
+  background #1F3A93
   display flex
   align-items center
   height 60px
-  padding 5px 10px 5px 10px
+  padding 32px 5px
 
   .page-header__logo
     margin-left 15px
+    margin-right 5px
     +below(3)
       margin-left 0
       position: relative

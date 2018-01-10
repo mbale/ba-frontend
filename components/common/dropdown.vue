@@ -16,9 +16,17 @@ export default Vue.extend({
 
 .dropdown
   display flex
-  position relative
+  flex-direction column
+  position absolute
+  background #1F3A93
+  border 1px solid #446CB3
+  top 65px
+  right 0px
+  padding 10px
 
   &__item
     display flex
+    justify-content row
+    justify-content space-between
 
 </style>
