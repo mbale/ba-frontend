@@ -4,8 +4,8 @@
       <logo class="page-header__logo"></logo>
     </nuxt-link>
     <navigation class="page-header__nav"></navigation>
-    <div class="page-header__button page-header__button--login" v-if="!user">Login</div>
-    <account-block class="page-header__account" v-if="user"></account-block>
+    <div class="page-header__button page-header__button--login" v-if="!loggedIn" @click="redirectToAuth">Login</div>
+    <account-block class="page-header__account" v-if="loggedIn"></account-block>
   </header>
 </template>
 
@@ -23,8 +23,13 @@ export default Vue.extend({
     AccountBlock
   },
   computed: {
-    user () {
+    loggedIn () {
       return this.$store.state.auth.user
+    }
+  },
+  methods: {
+    redirectToAuth () {
+      this.$router.push('/auth')
     }
   }
 })
