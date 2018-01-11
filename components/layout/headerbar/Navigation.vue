@@ -1,17 +1,17 @@
 <template>
-  <nav class='site-nav' role='navigation'>
-    <ul class='site-nav__list'>
+  <nav class="site-nav" role="navigation">
+    <ul class="site-nav__list">
       <li class="site-nav__item">
         <nuxt-link class="site-nav__link" active-class="site-nav__link--active" to="/matches">Matches</nuxt-link>
       </li>
       <li class="site-nav__item">
-        <nuxt-link class="site-nav__link" active-class="site-nav__link--active" to='/bookmakers'>Bookmakers</nuxt-link>
+        <nuxt-link class="site-nav__link" active-class="site-nav__link--active" to="/bookmakers">Bookmakers</nuxt-link>
       </li>
       <li class="site-nav__item">
-        <nuxt-link class="site-nav__link" active-class="site-nav__link--active" to='/games'>Games</nuxt-link>
+        <nuxt-link class="site-nav__link" active-class="site-nav__link--active" to="/games">Games</nuxt-link>
       </li>
       <li class="site-nav__item">
-        <nuxt-link class="site-nav__link" active-class="site-nav__link--active" to='/guides'>Guides</nuxt-link>
+        <nuxt-link class="site-nav__link" active-class="site-nav__link--active" to="/guides">Guides</nuxt-link>
       </li>
     </ul>
   </nav>
@@ -31,13 +31,14 @@ $link-color--hover = $link-color
 $link-color--active = #fff
 
 .site-nav
-  float left
+  display flex
   height 30px
   margin 15px 0
   +below(3)
     display none
 
 .site-nav__list
+  display flex
   clear-list()
   overflow visible
 
