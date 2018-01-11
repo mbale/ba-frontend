@@ -115,7 +115,6 @@ figure img
 
 .content-panel
   background-color white
-  padding 30px
   border 1px solid #D2D7D3
 
 

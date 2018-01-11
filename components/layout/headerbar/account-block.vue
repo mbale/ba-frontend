@@ -74,13 +74,13 @@ export default Vue.extend({
     margin-right 10px
     overflow hidden
 
+    &:hover
+      color white
+
     .text
       letter-spacing 1px
       font-weight 500
       margin-right 10px
-
-    &:hover
-      color white
 
     .image 
       max-width 100%
