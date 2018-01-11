@@ -145,6 +145,7 @@ export default Vue.extend({
   justify-content flex-end
   padding 10px 10px 40px 10px
   min-width 420px // needed due to potential showing error messages
+  user-select none
 
   &__group
     padding 0px 30px

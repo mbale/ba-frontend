@@ -1,62 +1,6 @@
 <template>
   <div class="auth-block">
     <div class="auth-block__button auth-block__button--login" @click="openModal('login')">Log in</div>
-    <div class="auth-block__button auth-block__button--signup" @click="openModal('signup')">Sign up</div>
-    <!-- MODALS -->
-    <modal-box v-show="modalStates.login">
-      <!-- STEAM -->
-      <nuxt-link class="steam-auth-container" :to="{ path: 'auth/steam' }" slot="body">
-        <icon class="icon" name="steam-square" scale="3"></icon>
-        <span class="text text--steam-auth">Connect with Steam</span>
-      </nuxt-link>
-      <div class="separator" slot="body">
-        <span class="text">OR</span>
-      </div>
-      <!-- BASIC -->
-      <label class="label" for="username" slot="body">Username</label>
-      <div class="input-container" slot="body">
-        <input class="input" type="text" slot="body" placeholder="Your username" name="username" 
-          v-model="form.username" v-validate="{ required: true, min: 4, regex: /^[a-zA-Z0-9_]+$/ }" ref="input--username">
-        <span class="error" v-show="errors.has('username')" slot="body">
-          {{ errors.first('username') }}
-        </span>
-      </div>
-      <label class="label" for="password" slot="body">Password</label>
-      <div class="input-container" slot="body">
-        <input class="input input--password" type="password" placeholder="Minimum 6 characters" name="password" 
-          v-model="form.password" v-validate="{ required: true, min: 4, regex: /^[a-zA-Z0-9_]+$/ }" ref="input--password">
-        <icon class="icon" :name="iconState" scale="1" v-on:click.native="togglePasswordInputType"></icon>
-        <span class="error" v-show="errors.has('password')" slot="body">
-          {{ errors.first('password') }}
-        </span>
-      </div>
-      <!-- BUTTON -->
-      <div class="button" slot="body" v-show="!isLoginInProcess" v-bind:class="{ 'button--disabled': isLoginDisabled }" @click="submitLogin">
-        Log in
-      </div>
-      <div class="button button--disabled" slot="body" v-show="isLoginInProcess">
-        <icon name="spinner" pulse></icon>
-      </div>
-      <!-- LOGIN ERRORS -->
-      <span class="error error--login" v-if="loginError.response" slot="body">
-        Sorry, that password or username isn't right. We can help you recover your account.
-      </span>
-      <span class="error error--login" v-else-if="loginError.request">
-        We're experiencing technical difficulties.
-      </span>
-      <span class="error error--login" v-else-if="loginError.message">
-        You're not connected to the network
-      </span>
-      <div class="separator" slot="body"></div>
-      <!-- BUTTONS -->
-      <span class="text text--footer" slot="footer">
-        Don't have an account yet?
-      </span>
-      <div class="button button--signup" slot="footer">
-        Sign up
-      </div>
-    </modal-box>
-    <modal-box v-show="modalStates.signup"></modal-box>
   </div>
 </template>
 
@@ -66,26 +10,12 @@ import 'vue-awesome/icons/eye'
 import 'vue-awesome/icons/eye-slash'
 import 'vue-awesome/icons/steam-square'
 import 'vue-awesome/icons/spinner'
-import ModalBox from '~/components/common/modal-box'
-import steamLogoURL from '~/assets/images/social/icon_steam.svg'
+
 import Icon from 'vue-awesome/components/Icon'
 
 export default Vue.extend({
   name: 'AuthBlock',
-  components: {
-    Icon,
-    ModalBox
-  },
   computed: {
-    isLoginInProcess () {
-      return this.$store.state.auth.loginInProcess
-    },
-    isLoginDisabled () {
-      if (this.errors.any() || this.form.username === '' || this.form.password === '') {
-        return true
-      }
-      return false
-    },
     isLoggedIn () {
       return this.$store.state.auth.user
     },

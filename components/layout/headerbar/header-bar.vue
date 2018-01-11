@@ -4,8 +4,8 @@
       <logo class="page-header__logo"></logo>
     </nuxt-link>
     <navigation class="page-header__nav"></navigation>
-    <auth-block v-if="!user" class="page-header__auth"></auth-block>
-    <account-block v-if="user" class="page-header__account"></account-block>
+    <div class="page-header__button page-header__button--login" v-if="!user">Login</div>
+    <account-block class="page-header__account" v-if="user"></account-block>
   </header>
 </template>
 
@@ -13,7 +13,6 @@
 import Vue from 'vue'
 import Navigation from '~/components/layout/headerbar/navigation'
 import Logo from '~/components/common/logo'
-import AuthBlock from '~/components/layout/headerbar/auth-block'
 import AccountBlock from '~/components/layout/headerbar/account-block'
 
 export default Vue.extend({
@@ -21,7 +20,6 @@ export default Vue.extend({
   components: {
     Navigation,
     Logo,
-    AuthBlock,
     AccountBlock
   },
   computed: {
@@ -40,17 +38,38 @@ $link-color--active = #fff
 
 .page-header
   // background $purple linear-gradient(to right, $purple, #3D86E0)
-  background #282a70
+  background #3A539B
   display flex
   align-items center
   height 60px
   padding 32px 15px
 
-  .page-header__logo
+  &__logo
     +below(3)
       margin-left 0
       position: relative
       z-index: 999
+
+  &__button
+    display flex
+    background transparent
+    border 0
+    padding 0 15px
+    line-height 30px
+    font-family DINPro,Helvetica,sans-serif
+    font-weight 500
+    font-size 14px
+    text-transform uppercase
+    color hsla(0,0%,100%,.66)
+    cursor pointer
+    user-select none
+    margin-left auto
+
+    &--login
+      background #fff
+      color #408fec
+      border-radius 2px
+      box-shadow 0 2px 6px 2px rgba(19,98,191,.5)
 
   .page-header__account
     margin-left auto
