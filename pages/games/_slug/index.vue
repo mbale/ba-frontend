@@ -1,5 +1,5 @@
 <template>
-  <section class="game">
+  <section class="game content-panel">
     <div class="game__header">
       <div class="top">
         <div class="logo" v-bind:style="{ 'background-color': game.color }">

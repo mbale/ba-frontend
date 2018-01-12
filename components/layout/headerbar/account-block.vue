@@ -8,9 +8,6 @@
     <!-- <span class="account-block__username">
       {{ user.profile.username }}
     </span> -->
-    <nuxt-link tag="div" class="account-block__settings" :to="{ path: '/profile/settings' }">
-      <icon name="cog" scale="1.4"></icon>
-    </nuxt-link>
     <div class="account-block__logout" @click="signout">
       <icon name="sign-out" scale="1.4"></icon>
     </div>
@@ -73,6 +70,7 @@ export default Vue.extend({
     display flex
     margin-right 10px
     overflow hidden
+    border-right 1px solid rgba(237, 237, 237, .5)
 
     &:hover
       color white

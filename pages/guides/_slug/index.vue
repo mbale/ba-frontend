@@ -1,5 +1,5 @@
 <template>
-  <article class='article'>
+  <article class='article content-panel'>
     <div class='article__header'>
       <h1 class='title'>
         {{ guide.title }}
