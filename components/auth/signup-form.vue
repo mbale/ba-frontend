@@ -1,88 +1,79 @@
 <template>
-  <div class="login-form">
+  <div class="signup-form">
     <!-- HEADER -->
-    <h1 class="login-form__text login-form__text--header">Sign in</h1>
-    <span class="login-form__text login-form__text--sub">to your betacle account</span>
+    <h1 class="signup-form__text signup-form__text--header">Sign up</h1>
+    <span class="signup-form__text signup-form__text--sub">to get a new account</span>
     <!-- INPUTS -->
-    <label class="login-form__label" for="username">Username</label>
-    <div class="login-form__input-group">
-      <input class="login-form__input login-form__input--username" type="text" placeholder="Your username" name="username" 
+    <label class="signup-form__label" for="email">Email</label>
+    <div class="signup-form__input-group">
+      <input class="signup-form__input signup-form__input--email" type="text" placeholder="Your email" name="email" 
+        v-model="email" v-validate="{ required: true, email: true }" ref="input--email">
+      <span class="signup-form__error signup-form__error--input" v-show="errors.has('email')">
+        {{ errors.first('email') }}
+      </span>
+    </div>
+    <label class="signup-form__label" for="username">Username</label>
+    <div class="signup-form__input-group">
+      <input class="signup-form__input signup-form__input--username" type="text" placeholder="Your username" name="username" 
         v-model="username" v-validate="{ required: true, min: 4, regex: /^[a-zA-Z0-9_]+$/ }" ref="input--username">
-      <span class="login-form__error login-form__error--input" v-show="errors.has('username')">
+      <span class="signup-form__error signup-form__error--input" v-show="errors.has('username')">
         {{ errors.first('username') }}
       </span>
     </div>
-    <label class="login-form__label" for="password">Password</label>
-    <div class="login-form__input-group">
-      <input class="login-form__input login-form__input--password" type="password" placeholder="Minimum 6 characters" name="password" 
+    <label class="signup-form__label" for="password">Password</label>
+    <div class="signup-form__input-group">
+      <input class="signup-form__input signup-form__input--password" type="password" placeholder="Minimum 6 characters" name="password" 
         v-model="password" v-validate="{ required: true, min: 4, regex: /^[a-zA-Z0-9_]+$/ }" ref="input--password">
-      <div class="login-form__icon-group">
-        <icon class="login-form__icon login-form__icon--password" :name="iconType" scale="1.2" v-on:click.native="togglePasswordInputType"></icon>
-      </div>
-      <span class="login-form__error login-form__error--input" v-show="errors.has('password')">
+      <span class="signup-form__error signup-form__error--input" v-show="errors.has('password')">
         {{ errors.first('password') }}
       </span>
     </div>
-    <!-- LOGIN -->
-    <div class="login-form__button" v-show="!isLoginInProgress" v-bind:class="{
-      'login-form__button--login': !isLoginDisabled,
-      'login-form__button--disabled': isLoginDisabled 
-      }" @click="submitLogin">
-      Log in
+    <!-- SIGNUP -->
+    <div class="signup-form__button" v-show="!isSignupInProgress" v-bind:class="{ 
+      'signup-form__button--signup': !isSignupDisabled,
+      'signup-form__button--disabled': isSignupDisabled 
+      }" @click="submitSignup">
+      Sign up
     </div>
-    <div class="login-form__button login-form__button--disabled" v-show="isLoginInProgress">
+    <div class="signup-form__button signup-form__button--disabled" v-show="isSignupInProgress">
       <icon name="spinner" pulse></icon>
     </div>
     <!-- ERRORS -->
-    <span class="login-form__error login-form__error--credentials" v-if="loginError.response">
-      Sorry, that password or username isn't right. We can help you recover your account.
+    <span class="signup-form__error signup-form__error--credentials" v-if="signupError.response">
+      Sorry, your email or username is already taken.
     </span>
-    <span class="login-form__error login-form__error--site" v-else-if="loginError.request">
+    <span class="signup-form__error signup-form__error--site" v-else-if="signupError.request">
       We're experiencing technical difficulties.
     </span>
-    <span class="login-form__error login-form__error--network" v-else-if="loginError.message">
+    <span class="signup-form__error signup-form__error--network" v-else-if="signupError.message">
       You're not connected to the network
     </span>
-    <!-- STEAM -->
-    <div class="login-form__separator">
-      <span class="login-form__separator-text">OR</span>
-    </div>
-    <nuxt-link class="login-form__button login-form__button--steam" :to="{ path: 'auth/steam' }">
-      <icon class="login-form__button--steam-icon" name="steam-square" scale="2"></icon>
-      <span class="login-form__button--steam-text">Log in with Steam</span>
-    </nuxt-link>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import 'vue-awesome/icons/eye'
-import 'vue-awesome/icons/eye-slash'
-import 'vue-awesome/icons/steam-square'
 import 'vue-awesome/icons/spinner'
-import 'vue-awesome/icons/sign-in'
-import steamLogoURL from '~/assets/images/social/icon_steam.svg'
 import Icon from 'vue-awesome/components/Icon'
 
 export default Vue.extend({
-  name: 'LoginForm',
+  name: 'SignupForm',
   components: {
     Icon
   },
   data () {
     return {
+      email: '',
       username: '',
-      password: '',
-      steamLogoURL,
-      iconType: 'eye'
+      password: ''
     }
   },
   computed: {
-    isLoginInProgress () {
-      return this.$store.state.auth.loginInProgress
+    isSignupInProgress () {
+      return this.$store.state.auth.signupInProgress
     },
-    isLoginDisabled () {
-      if (this.errors.any() || this.username === '' || this.password === '') {
+    isSignupDisabled () {
+      if (this.errors.any() || this.email === '' || this.username === '' || this.password === '') {
         return true
       }
       return false
@@ -90,14 +81,15 @@ export default Vue.extend({
     isLoggedIn () {
       return this.$store.state.auth.user
     },
-    loginError () {
-      return this.$store.state.auth.loginError || {}
+    signupError () {
+      return this.$store.state.auth.signupError || {}
     }
   },
   methods: {
-    async submitLogin () {
-      if (!this.errors.any() && !this.isLoginDisabled) {
-        await this.$store.dispatch('auth/basic', {
+    async submitSignup () {
+      if (!this.errors.any() && !this.isSignupDisabled) {
+        await this.$store.dispatch('auth/signup', {
+          email: this.email,
           username: this.username,
           password: this.password
         })
@@ -106,20 +98,14 @@ export default Vue.extend({
           this.$router.push('/matches')
         }
       }
-    },
-    togglePasswordInputType () {
-      const passwordInput = window.document.querySelector('.login-form__input--password')
-
-      this.iconType = passwordInput.type === 'text' ? 'eye' : 'eye-slash'
-      passwordInput.type = passwordInput.type === 'text' ? 'password' : 'text'
     }
   }
 })
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 
-.login-form
+.signup-form
   display flex
   flex-direction column
   justify-content flex-end
@@ -215,17 +201,11 @@ export default Vue.extend({
       background-color #BDC3C7
       margin-top 35px
 
-    &--login
-      background-color #408fec
-      color #fff
-      margin-top 35px
-
     &--signup
-      font-size 15px
-      background-color transparent
+      background-color #408fec
+      color white
       border 1px solid #2d3088
-      color #2d3088
-      padding 8px 12px
+      margin-top 35px
 
     &--steam
       background-color #22313F
@@ -257,5 +237,6 @@ export default Vue.extend({
       letter-spacing .05em
       text-transform uppercase
       font-weight 700
+
 
 </style>

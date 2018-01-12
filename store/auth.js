@@ -3,77 +3,121 @@ import Cookie from 'cookie'
 
 const MUTATIONS = {
   BASIC: 'basic',
-  FAIL: 'fail',
-  IN_PROCESS: 'in_process',
-  SUCCESS: 'success',
+  //
+  LOGIN_FAIL: 'login_fail',
+  LOGIN_IN_PROGRESS: 'login_in_progress',
+  LOGIN_SUCCESS: 'login_success',
+  //
+  SIGNUP_FAIL: 'signup_fail',
+  SIGNUP_IN_PROGRESS: 'signup_in_progress',
+  SIGNUP_SUCCESS: 'signup_success',
+  //
   GET_PROFILE: 'get_profile',
   SET_TOKEN: 'set_token',
   LOG_OUT: 'log_out'
 }
 
 export const mutations = {
-  [MUTATIONS.SUCCESS] (state, payload) {
-    state.accessToken = payload.accessToken
+  //
+  [MUTATIONS.LOGIN_IN_PROGRESS] (state) {
+    state.loginInProgress = true
+  },
+  [MUTATIONS.LOGIN_FAIL] (state, payload) {
+    state.loginError = payload.error
+    state.loginInProgress = false
+  },
+  [MUTATIONS.LOGIN_SUCCESS] (state) {
     state.loginError = false
+    state.loginInProgress = false
   },
-  [MUTATIONS.IN_PROCESS] (state, payload) {
-    state.loginInProcess = payload.state
+  //
+  [MUTATIONS.SIGNUP_IN_PROGRESS] (state) {
+    state.signupInProgress = true
   },
+  [MUTATIONS.SIGNUP_FAIL] (state, payload) {
+    state.signupError = payload.error
+    state.signupInProgress = false
+  },
+  [MUTATIONS.SIGNUP_SUCCESS] (state) {
+    state.signupError = false
+    state.signupInProgress = false
+  },
+  //
   [MUTATIONS.SET_TOKEN] (state, payload) {
     state.accessToken = payload.accessToken
-  },
-  [MUTATIONS.FAIL] (state, payload) {
-    state.loginError = payload.reason
   },
   [MUTATIONS.GET_PROFILE] (state, payload) {
     state.user = payload.user
   },
-  [MUTATIONS.LOG_OUT] (state, payload) {
+  [MUTATIONS.LOG_OUT] (state) {
     state.user = null
   }
 }
 
 export const state = () => ({
   user: null,
-  loginInProcess: false,
+  accessToken: null,
+  //
+  loginInProgress: false,
   loginError: null,
-  accessToken: null
+  //
+  signupInProgress: false,
+  signupError: null
 })
 
 export const actions = {
-  async basic (context, {
-    username,
-    password
-  }) {
+  /*
+  **  Signup
+  */
+  async signup ({ commit, dispatch }, payload) {
     try {
+      console.log(payload)
+      commit(MUTATIONS.SIGNUP_IN_PROGRESS)
+
       const {
         accessToken
-      } = await this.$axios.$post('v1/auth/basic', {
-        username,
-        password
-      })
+      } = await this.$axios.$post('v1/users', payload)
 
-      context.commit(MUTATIONS.SUCCESS, {
+      await dispatch('updateToken', {
         accessToken
       })
 
-      context.commit(MUTATIONS.IN_PROCESS, {
-        state: false
-      })
+      commit(MUTATIONS.SIGNUP_SUCCESS)
 
-      await context.dispatch('updateToken', {
-        accessToken
-      })
+      await dispatch('getProfile')
     } catch (error) {
-      context.commit(MUTATIONS.FAIL, {
-        reason: error
-      })
-      context.commit(MUTATIONS.IN_PROCESS, {
-        state: false
+      commit(MUTATIONS.SIGNUP_FAIL, {
+        error
       })
     }
   },
-  // Get token from localstorage or cookie
+  /*
+  ** Login
+  */
+  async basic ({ commit, dispatch }, payload) {
+    try {
+      commit(MUTATIONS.LOGIN_IN_PROGRESS)
+
+      const {
+        accessToken
+      } = await this.$axios.$post('v1/auth/basic', payload)
+
+      await dispatch('updateToken', {
+        accessToken
+      })
+
+      commit(MUTATIONS.LOGIN_SUCCESS)
+
+      await dispatch('getProfile')
+    } catch (error) {
+      commit(MUTATIONS.LOGIN_FAIL, {
+        error
+      })
+    }
+  },
+  /*
+  ** Tokens
+  */
   async getToken (context) {
     let accessToken
 
@@ -96,12 +140,11 @@ export const actions = {
       })
     }
   },
-  // Updates token both in store and in localstorage or cookies
-  async updateToken (context, payload) {
+  async updateToken ({ commit }, payload) {
     const accessToken = payload.accessToken
 
     // commit to store
-    context.commit(MUTATIONS.SET_TOKEN, {
+    commit(MUTATIONS.SET_TOKEN, {
       accessToken
     })
     // register for axios
@@ -140,6 +183,9 @@ export const actions = {
       this.app.context.res.setHeader('Set-Cookie', Cookie.serialize('accessToken', accessToken, params))
     }
   },
+  /*
+  **  Authenticated calls behalf of user
+  */
   async getProfile (context) {
     try {
       const user = await this.$axios.$get('v1/users/me')
@@ -151,8 +197,8 @@ export const actions = {
       await context.dispatch('updateToken', {})
     }
   },
-  async logout (context) {
-    await context.dispatch('updateToken', {})
-    context.commit(MUTATIONS.LOG_OUT)
+  async logout ({ commit, dispatch }) {
+    await dispatch('updateToken', {})
+    commit(MUTATIONS.LOG_OUT)
   }
 }
