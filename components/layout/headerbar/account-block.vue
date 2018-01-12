@@ -1,13 +1,9 @@
 <template>
   <div class="account-block" @click="toggleMenu">
     <nuxt-link tag="div" class="account-block__avatar" :to="{ path: '/profile' }">
-      <span class="text">{{ user.profile.username }}</span>
+      <span class="text">{{ username }}</span>
       <icon name="user" scale="1.4"></icon>
-      <!-- <img class="image" v-bind:src="avatar"> -->
     </nuxt-link>
-    <!-- <span class="account-block__username">
-      {{ user.profile.username }}
-    </span> -->
     <div class="account-block__logout" @click="signout">
       <icon name="sign-out" scale="1.4"></icon>
     </div>
@@ -16,7 +12,6 @@
 
 <script>
 import Vue from 'vue'
-import avatarPlaceholderImage from '~/assets/images/no_avatar.png'
 import Dropdown from '~/components/common/dropdown'
 import Icon from 'vue-awesome/components/Icon'
 import 'vue-awesome/icons/chevron-down'
@@ -36,11 +31,8 @@ export default Vue.extend({
     }
   },
   computed: {
-    user () {
-      return this.$store.state.auth.user
-    },
-    avatar () {
-      return this.$store.state.auth.user.profile.avatar || avatarPlaceholderImage
+    username () {
+      return this.$store.state.auth.user.profile.username
     }
   },
   methods: {
@@ -71,6 +63,7 @@ export default Vue.extend({
     margin-right 10px
     overflow hidden
     border-right 1px solid rgba(237, 237, 237, .5)
+    padding-right 10px
 
     &:hover
       color white
