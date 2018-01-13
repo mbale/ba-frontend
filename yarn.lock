@@ -6310,6 +6310,10 @@ vue@^2.5.13:
   version "2.5.13"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.13.tgz#95bd31e20efcf7a7f39239c9aa6787ce8cf578e1"
 
+vuejs-paginate@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/vuejs-paginate/-/vuejs-paginate-1.6.0.tgz#2abfcd9e601627bba0f1338b04bde9664c345fd5"
+
 vuex-persistedstate@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/vuex-persistedstate/-/vuex-persistedstate-2.4.2.tgz#a8caf63b07ce4bdff6d82b29634c051ead382bf3"
