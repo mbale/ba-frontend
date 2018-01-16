@@ -6,34 +6,40 @@
         :click-handler="changePage"
         :prev-text="'Prev'"
         :next-text="'Next'"
-        :container-class="'list'">
+        :container-class="'list content-panel'"
+        :page-class="'item'"
+        :page-link-class="'item-link'"
+        :active-class="'item item--active'"
+        :disabled-class="'item item--disabled'"	>
       </paginate>
     </div>
     <div class="matches__list">
-      <div class="match content-panel" v-bind:key="match.id" v-for="match in matches">
-        <div class="game-icon" v-bind:class="`game-icon--${match.gameSlug}`">
-          <img class="game-image" v-bind:src="getIconURL(match.gameSlug)" alt="">
-        </div>
-        <div class="match-date">
-          {{ transformDate(match.date) }}
-        </div>
-        <div class="match-main">
-          <div class="match-versus">
-            <span class="home-team">
-              {{ match.homeTeam}}
-            </span>
-            <span class="versus"> vs </span>
-            <span class="away-team">
-              {{ match.awayTeam}}
-            </span>
+      <nuxt-link :to="getMatchURLPath(match)" v-bind:key="match.id" v-for="match in matches" append>
+        <div class="match content-panel">
+          <div class="match-game" v-bind:style="getGameBGColor(match.gameSlug)">
+            <img class="game-image" v-bind:src="getIconURL(match.gameSlug)" alt="">
           </div>
-          <div class="match-league">
-            <span class="league">
-              {{ match.league }}
-            </span>
+          <div class="match-date">
+            {{ transformDate(match.date) }}
+          </div>
+          <div class="match-main">
+            <div class="match-versus">
+              <span class="home-team">
+                {{ match.homeTeam}}
+              </span>
+              <span class="versus"> vs </span>
+              <span class="away-team">
+                {{ match.awayTeam}}
+              </span>
+            </div>
+            <div class="match-league">
+              <span class="league">
+                {{ match.league }}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      </nuxt-link>
     </div>
   </div>
 </template>
@@ -49,9 +55,11 @@ import lolIconURL from '~/assets/images/games/icons/lol.svg'
 import owIconURL from '~/assets/images/games/icons/ow.svg'
 import rlIconURL from '~/assets/images/games/icons/rocket-league.svg'
 import sc2IconURL from '~/assets/images/games/icons/starcraft-2.svg'
+import mixins from '~/mixins/util'
 
 export default Vue.extend({
   name: 'Matches',
+  mixins: [mixins],
   data () {
     return {
       iconURLs: {
@@ -86,6 +94,21 @@ export default Vue.extend({
     }
   },
   methods: {
+    getMatchURLPath ({homeTeam, awayTeam, date, id}) {
+      return {
+        path: `${id}/${this.buildMatchURLSegment(homeTeam, awayTeam)}`
+      }
+    },
+    getGameBGColor (gameSlug) {
+      const game = this.$store.state.games.list.find((game) => game.slug === gameSlug)
+      const prop = 'background-color: '
+
+      if (game) {
+        return `${prop}${game.color}`
+      }
+
+      return `${prop}#1E824C`
+    },
     transformDate (date) {
       return new Date(date)
     },
@@ -100,6 +123,7 @@ export default Vue.extend({
   },
   async asyncData ({ store }) {
     await store.dispatch('matches/fetch')
+    await store.dispatch('games/fetchAll')
   }
 })
 </script>
@@ -110,15 +134,23 @@ export default Vue.extend({
 
   &__paginate
     display flex
+    margin-bottom 50px
 
     .list
       display flex
       flex-direction row
       flex-wrap wrap
+      border 1px solid #D1D2D7
+      padding 5px
+      list-style none
+      color #000000
 
-      li
+      .item
         display inline-flex
-        margin 5px
+        justify-content center
+        align-items center
+        padding 5px
+        color #000000
 
   &__list
     display flex
@@ -136,26 +168,15 @@ export default Vue.extend({
           margin 20px
 
 
-.game-icon
+.match-game
   display flex
   flex-direction column
   justify-content center
-  min-width 64px
-  padding 20px
-
-  &--lol
-    background-color rgb(57, 66, 157)
-  &--starcraft-2
-    background-color rgb(14, 54, 95)
-  &--csgo
-    background-color rgb(246, 137, 52)
-  &--dota-2
-    background-color rgb(180, 67, 53)
-  &--ow
-    background-color rgb(250, 194, 61)
+  min-width 52px
+  padding 10px
 
   .game-image
-    max-width 32px
+    max-width 44px
 
 
 </style>

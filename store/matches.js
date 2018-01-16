@@ -1,6 +1,7 @@
 const MUTATIONS = {
   UPDATE_LIST: 'update_list',
-  UPDATE_COUNT: 'update_count'
+  UPDATE_COUNT: 'update_count',
+  SET_MATCH: 'set_match'
 }
 
 export const mutations = {
@@ -9,17 +10,22 @@ export const mutations = {
   },
   [MUTATIONS.UPDATE_COUNT] (state, payload) {
     state.count = payload.count
+  },
+  [MUTATIONS.SET_MATCH] (state, payload) {
+    state.match = payload.match
   }
 }
 
 export const state = () => ({
   list: [],
-  count: null
+  count: null,
+  match: null
 })
 
 export const actions = {
   async fetch ({ commit }) {
     const { data: matches, headers } = await this.$axios.get('v1/matches')
+
     commit(MUTATIONS.UPDATE_COUNT, {
       count: headers.count
     })
@@ -37,5 +43,10 @@ export const actions = {
     commit(MUTATIONS.UPDATE_LIST, {
       matches
     })
+  },
+  async getById ({ commit }, { matchId }) {
+    const match = await this.$axios.$get(`v1/matches/${matchId}`)
+
+    commit(MUTATIONS.SET_MATCH, { match })
   }
 }
