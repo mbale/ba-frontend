@@ -188,7 +188,7 @@ export default Vue.extend({
         justify-content center
         padding 6px 16px
         border-right 1px solid #DADEE2
-        margin-right 5px
+        margin-right 3px
 
         a
           color #E8444A
@@ -198,7 +198,7 @@ export default Vue.extend({
         justify-content center
         padding 6px 16px
         border-left 1px solid #DADEE2
-        margin-left 5px
+        margin-left 3px
 
         a
           color #E8444A
