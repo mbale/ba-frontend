@@ -7,10 +7,18 @@
         :prev-text="'Prev'"
         :next-text="'Next'"
         :container-class="'list content-panel'"
+        :prev-class="'previous'"
+        :next-class="'next'"
         :page-class="'item'"
         :page-link-class="'item-link'"
-        :active-class="'item item--active'"
-        :disabled-class="'item item--disabled'"	>
+        :active-class="'active'"
+        :disabled-class="'disabled'">
+          <span slot="prevContent">
+            <icon name="angle-left" scale="1.5"></icon>
+          </span>
+          <span slot="nextContent">
+            <icon name="angle-right" scale="1.5"></icon>
+          </span>
       </paginate>
     </div>
     <div class="matches__list">
@@ -56,6 +64,9 @@ import owIconURL from '~/assets/images/games/icons/ow.svg'
 import rlIconURL from '~/assets/images/games/icons/rocket-league.svg'
 import sc2IconURL from '~/assets/images/games/icons/starcraft-2.svg'
 import mixins from '~/mixins/util'
+import Icon from 'vue-awesome/components/Icon'
+import 'vue-awesome/icons/angle-left'
+import 'vue-awesome/icons/angle-right'
 
 export default Vue.extend({
   name: 'Matches',
@@ -75,7 +86,8 @@ export default Vue.extend({
     }
   },
   components: {
-    Paginate
+    Paginate,
+    Icon
   },
   head () {
     return {
@@ -141,16 +153,62 @@ export default Vue.extend({
       flex-direction row
       flex-wrap wrap
       border 1px solid #D1D2D7
-      padding 5px
+      padding 2px
       list-style none
-      color #000000
+      user-select none
 
       .item
         display inline-flex
         justify-content center
         align-items center
-        padding 5px
-        color #000000
+        margin 2px 6px
+        padding 6px
+
+        a
+          color black
+
+      .item.active
+        background-color #E8444A
+        color white
+        font-weight 600
+        border-radius 4px
+        padding 0px 12px
+
+        a
+          color white
+
+      // all item as links
+      a
+        display inline-flex
+        justify-content center
+        align-items center
+
+      .previous
+        display inline-flex
+        justify-content center
+        padding 6px 16px
+        border-right 1px solid #DADEE2
+        margin-right 5px
+
+        a
+          color #E8444A
+
+      .next
+        display inline-flex
+        justify-content center
+        padding 6px 16px
+        border-left 1px solid #DADEE2
+        margin-left 5px
+
+        a
+          color #E8444A
+
+      // .item
+      //   padding 5px
+      //   color black
+
+      //   a
+      //     color black
 
   &__list
     display flex

@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    {{ match.homeTeam}}
+    {{ match.homeTeam }}
   </div>
 </template>
 
