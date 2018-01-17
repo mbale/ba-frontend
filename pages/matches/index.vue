@@ -102,7 +102,7 @@ export default Vue.extend({
       return this.$store.state.matches.count
     },
     pageCount () {
-      return Math.round(this.matchCount / 20)
+      return Math.round(this.matchCount / 10)
     }
   },
   methods: {
@@ -134,8 +134,8 @@ export default Vue.extend({
     }
   },
   async asyncData ({ store }) {
-    await store.dispatch('matches/fetch')
-    await store.dispatch('games/fetchAll')
+    await store.dispatch('matches/fetch', {})
+    await store.dispatch('games/fetchAll', {})
   }
 })
 </script>
@@ -164,7 +164,7 @@ export default Vue.extend({
         margin 2px 6px
         padding 6px
 
-        a
+        .item-link
           color black
 
       .item.active

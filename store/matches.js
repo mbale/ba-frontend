@@ -23,8 +23,13 @@ export const state = () => ({
 })
 
 export const actions = {
-  async fetch ({ commit }) {
-    const { data: matches, headers } = await this.$axios.get('v1/matches')
+  async fetch ({ commit }, { limit = 20 }) {
+    const { data: matches, headers } = await this.$axios.get('v1/matches', {
+      params: {
+        limit,
+        statusType: 'upcoming'
+      }
+    })
 
     commit(MUTATIONS.UPDATE_COUNT, {
       count: headers.count
@@ -33,10 +38,11 @@ export const actions = {
       matches
     })
   },
-  async fetchByPage ({ commit }, { pageNumber }) {
+  async fetchByPage ({ commit }, { pageNumber, limit = 20 }) {
     const matches = await this.$axios.$get('v1/matches', {
       params: {
-        page: pageNumber
+        page: pageNumber,
+        limit
       }
     })
 
