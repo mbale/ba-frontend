@@ -1,6 +1,7 @@
 <template>
   <div class="matches">
     <div class="matches__paginate">
+      <!-- PAGINATION -->
       <paginate
         :page-count="pageCount"
         :click-handler="changePage"
@@ -21,9 +22,12 @@
           </span>
       </paginate>
     </div>
+    <!-- LIST -->
     <div class="matches__list" v-bind:key="date" v-for="[date, matches] in Object.entries(matchesGrouped)">
-      <span class="date">{{ formatDate(date) }}</span>
-      <nuxt-link :to="'home'" v-bind:key="match.id" v-for="match of matches" append>
+      <!-- TIMESTAMP -->
+      <span class="timestamp">{{ formatDate(date) }}</span>
+      <!-- ROW -->
+      <nuxt-link class="list__row" :to="getMatchURLPath(match)" v-bind:key="match.id" v-for="match of matches" append>
         <div class="match content-panel">
           <div class="match-game" v-bind:style="getGameBGColor(match.gameSlug)">
             <img class="game-image" v-bind:src="getIconURL(match.gameSlug)" alt="">
@@ -46,6 +50,12 @@
                 {{ match.league }}
               </span>
             </div>
+          </div>
+          <div class="match-odds">
+            <span class="text" v-if="getLatestOdds(match.odds)">
+              {{ getLatestOdds(match.odds).home }}
+              {{ getLatestOdds(match.odds).away }}
+            </span>
           </div>
         </div>
       </nuxt-link>
@@ -115,6 +125,15 @@ export default Vue.extend({
       return {
         path: `${id}/${this.buildMatchURLSegment(homeTeam, awayTeam)}`
       }
+    },
+    getLatestOdds (odds) {
+      const oddsRanked = Object.assign([], odds).sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
+
+      if (oddsRanked.length === 0) {
+        return false
+      }
+
+      return oddsRanked[0]
     },
     getGameBGColor (gameSlug) {
       const game = this.$store.state.games.list.find((game) => game.slug === gameSlug)
@@ -221,13 +240,24 @@ export default Vue.extend({
     display flex
     flex-direction column
 
+    .timestamp
+      font-size 1.2em
+      font-weight 700
+      margin 15px 0px
+
+    .list__row
+      margin 2px 0px
+
     .match
       display flex
+      align-items center
+
+      &-date
+        padding 20px
 
       &-main
         display flex
-        flex-direction column
-        padding 20px
+        flex-direction row
 
         .versus
           margin 20px
