@@ -21,15 +21,15 @@
           </span>
       </paginate>
     </div>
-    <div class="matches__list">
-      <span class="today">Today, {{ `${new Date()}` }}</span>
-      <nuxt-link :to="getMatchURLPath(match)" v-bind:key="match.id" v-for="match in matches" append>
+    <div class="matches__list" v-bind:key="date" v-for="[date, matches] in Object.entries(matchesGrouped)">
+      <span class="date">{{ formatDate(date) }}</span>
+      <nuxt-link :to="'home'" v-bind:key="match.id" v-for="match of matches" append>
         <div class="match content-panel">
           <div class="match-game" v-bind:style="getGameBGColor(match.gameSlug)">
             <img class="game-image" v-bind:src="getIconURL(match.gameSlug)" alt="">
           </div>
           <div class="match-date">
-            {{ transformDate(match.date) }}
+            {{ formatMatchDate(match.date) }}
           </div>
           <div class="match-main">
             <div class="match-versus">
@@ -68,8 +68,7 @@ import mixins from '~/mixins/util'
 import Icon from 'vue-awesome/components/Icon'
 import 'vue-awesome/icons/angle-left'
 import 'vue-awesome/icons/angle-right'
-
-// const d = new Date().getDay()
+import format from 'date-fns/format'
 
 export default Vue.extend({
   name: 'Matches',
@@ -98,8 +97,8 @@ export default Vue.extend({
     }
   },
   computed: {
-    matches () {
-      return this.$store.state.matches.list
+    matchesGrouped () {
+      return this.$store.getters['matches/groupByDay']
     },
     matchCount () {
       return this.$store.state.matches.count
@@ -109,6 +108,9 @@ export default Vue.extend({
     }
   },
   methods: {
+    formatDate (date) {
+      return format(new Date(date), 'dddd, MMMM D')
+    },
     getMatchURLPath ({homeTeam, awayTeam, date, id}) {
       return {
         path: `${id}/${this.buildMatchURLSegment(homeTeam, awayTeam)}`
@@ -124,8 +126,8 @@ export default Vue.extend({
 
       return `${prop}#1E824C`
     },
-    transformDate (date) {
-      return new Date(date)
+    formatMatchDate (date) {
+      return format(new Date(date), 'HH:mm')
     },
     getIconURL (gameSlug) {
       return this.iconURLs[gameSlug]

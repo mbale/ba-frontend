@@ -1,3 +1,5 @@
+import groupBy from 'lodash/groupby'
+
 const MUTATIONS = {
   UPDATE_LIST: 'update_list',
   UPDATE_COUNT: 'update_count',
@@ -23,8 +25,10 @@ export const state = () => ({
 })
 
 export const getters = {
-  getByTimeInterval (state) {
-
+  groupByDay (state) {
+    return groupBy(state.list, (match) => {
+      return new Date(match.date).toDateString()
+    })
   }
 }
 
