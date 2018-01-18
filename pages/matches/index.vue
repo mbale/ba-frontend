@@ -22,6 +22,7 @@
       </paginate>
     </div>
     <div class="matches__list">
+      <span class="today">Today, {{ `${new Date()}` }}</span>
       <nuxt-link :to="getMatchURLPath(match)" v-bind:key="match.id" v-for="match in matches" append>
         <div class="match content-panel">
           <div class="match-game" v-bind:style="getGameBGColor(match.gameSlug)">
@@ -67,6 +68,8 @@ import mixins from '~/mixins/util'
 import Icon from 'vue-awesome/components/Icon'
 import 'vue-awesome/icons/angle-left'
 import 'vue-awesome/icons/angle-right'
+
+// const d = new Date().getDay()
 
 export default Vue.extend({
   name: 'Matches',
@@ -127,15 +130,17 @@ export default Vue.extend({
     getIconURL (gameSlug) {
       return this.iconURLs[gameSlug]
     },
-    async changePage (pageNumber) {
-      await this.$store.dispatch('matches/fetchByPage', {
-        pageNumber
+    async changePage (page) {
+      await this.$store.dispatch('matches/fetch', {
+        page
       })
     }
   },
   async asyncData ({ store }) {
-    await store.dispatch('matches/fetch', {})
-    await store.dispatch('games/fetchAll', {})
+    await Promise.all([
+      store.dispatch('matches/fetch', {}),
+      store.dispatch('games/fetchAll', {})
+    ])
   }
 })
 </script>
