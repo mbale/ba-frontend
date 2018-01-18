@@ -37,24 +37,27 @@
           </div>
           <div class="match-main">
             <div class="match-versus">
-              <span class="home-team">
+              <span class="team">
                 {{ match.homeTeam}}
               </span>
-              <span class="versus"> vs </span>
-              <span class="away-team">
+              <span class="separator"> vs </span>
+              <span class="team">
                 {{ match.awayTeam}}
               </span>
             </div>
-            <div class="match-league">
+          </div>
+          <div class="match-league">
               <span class="league">
                 {{ match.league }}
               </span>
             </div>
-          </div>
           <div class="match-odds">
             <span class="text" v-if="getLatestOdds(match.odds)">
               {{ getLatestOdds(match.odds).home }}
               {{ getLatestOdds(match.odds).away }}
+            </span>
+            <span class="no-odds" v-if="!getLatestOdds(match.odds)">
+              
             </span>
           </div>
         </div>
@@ -247,20 +250,40 @@ export default Vue.extend({
 
     .list__row
       margin 2px 0px
+      color #446CB3
 
     .match
       display flex
       align-items center
+      justify-content space-between
+      max-height 62px
+      min-height 62px
 
       &-date
+        padding 20px
+        flex-grow 0
+
+      &-league
+        padding 20px
+        flex-grow 1
+        display flex
+        justify-content flex-start
+
+      &-odds
         padding 20px
 
       &-main
         display flex
         flex-direction row
+        padding 20px
+        flex-grow 1
+        min-width 30%
+        max-width 30%
 
-        .versus
-          margin 20px
+        .match-versus
+          .team
+            font-weight 500
+
 
 
 .match-game
