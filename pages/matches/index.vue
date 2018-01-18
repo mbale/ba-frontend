@@ -104,7 +104,7 @@ export default Vue.extend({
       return this.$store.state.matches.count
     },
     pageCount () {
-      return Math.round(this.matchCount / 10)
+      return Math.round(this.matchCount / 20)
     }
   },
   methods: {
