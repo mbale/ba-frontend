@@ -3,10 +3,10 @@
     <!-- FILTER -->
     <div class="bookmakers__filter">
       <span class="text">Deposit methods</span>
-      <nuxt-link @click="filterByDepositMethod" :to="{ query: {
-        'deposit-method': depositMethod.type
-      }}" v-bind:key="depositMethod.type" v-for="depositMethod of depositMethods" append>
-        <img v-bind:class="`image ${depositMethod.type}`" v-bind:src="depositMethod.imageURL">
+      <nuxt-link v-bind:key="depositMethod.type"  v-for="depositMethod of depositMethods"
+        :to="{ query: { 'deposit-method': depositMethod.type } }"
+        v-on:click.native="filterByDepositMethod(depositMethod.type)">
+        <img v-bind:class="`image`" v-bind:src="depositMethod.imageURL">
       </nuxt-link>
     </div>
     <!-- LIST -->
@@ -31,7 +31,7 @@
               </nuxt-link>
             </div>
           </div>
-        </card-box>  
+        </card-box>
       </div>
       <div class="rest">
         <card-box class="card-box" v-bind:key="bookmaker.slug" v-for="bookmaker of getBookmakersByInterval(4)">
@@ -85,8 +85,8 @@ export default Vue.extend({
       return this.bookmakers.slice(from, to)
     },
     filterByDepositMethod (method) {
-      this.$store.state.bookmakers.commit('filter_by_deposit_method', {
-        method
+      this.$store.commit('bookmakers/set_filter', {
+        filter: method
       })
     }
   },
@@ -107,20 +107,26 @@ export default Vue.extend({
       }]
     }
   },
+  beforeRouteUpdate (from, to, next) {
+    if (to.name === 'bookmakers') {
+      this.$store.commit('bookmakers/set_filter', {})
+    }
+    next()
+  },
   computed: {
     firstBookmaker () {
       return this.getBookmakersByInterval(0, 1)[0]
     },
     bookmakers () {
-      return this.$store.getters['bookmakers/rankByVotes']
+      return this.$store.getters['bookmakers/getByFilter']
     }
   },
-  async fetch ({ store, query }) {
+  async asyncData ({ store, query }) {
     await store.dispatch('bookmakers/fetchAll')
 
     if (query['deposit-method']) {
-      store.commit('bookmakers/filterByMethod', {
-        method: query['deposit-method']
+      store.commit('bookmakers/set_filter', {
+        filter: query['deposit-method']
       })
     }
   }
@@ -234,5 +240,5 @@ export default Vue.extend({
 
       .card-box
         max-width 275px
-      
+
 </style>

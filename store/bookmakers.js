@@ -1,26 +1,35 @@
 const MUTATIONS = {
-  INIT: 'init',
-  FILTER_BY_DEPOSIT_METHOD: 'filterByMethod'
+  UPDATE_LIST: 'update_list',
+  SET_FILTER: 'set_filter',
+  FILTER_BY_DEPOSIT_METHOD: 'filter_by_method'
 }
 
 export const mutations = {
-  [MUTATIONS.INIT] (state, payload) {
-    state.list = payload
+  [MUTATIONS.UPDATE_LIST] (state, payload) {
+    state.list = payload.bookmakers
   },
-  [MUTATIONS.FILTER_BY_DEPOSIT_METHOD] (state, payload) {
-    const method = payload.method
-    state.list = state.list.filter(bookmaker => bookmaker.depositMethods.find(m => m.slug === method))
+  [MUTATIONS.SET_FILTER] (state, payload) {
+    state.filter = payload.filter ? payload.filter : null
   }
 }
 
 export const getters = {
   rankByVotes: (state) => {
     return Object.assign([], state.list).sort((a, b) => b.reviews.avg - a.reviews.avg)
+  },
+  getByFilter: (state, { rankByVotes }) => {
+    const filter = state.filter
+
+    if (filter) {
+      return Object.assign([], rankByVotes).filter(bookmaker => bookmaker.depositMethods.find(m => m.slug === filter))
+    }
+    return rankByVotes
   }
 }
 
 export const state = () => ({
   list: [],
+  filter: null,
   bookmaker: null
 })
 
@@ -31,6 +40,6 @@ export const actions = {
         limit: 100
       }
     })
-    context.commit(MUTATIONS.INIT, bookmakers)
+    context.commit(MUTATIONS.UPDATE_LIST, { bookmakers })
   }
 }
