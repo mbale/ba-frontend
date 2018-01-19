@@ -27,36 +27,34 @@
       <!-- TIMESTAMP -->
       <span class="timestamp">{{ formatDate(date) }}</span>
       <!-- ROW -->
-      <nuxt-link class="list__row" :to="getMatchURLPath(match)" v-bind:key="match.id" v-for="match of matches" append>
+      <nuxt-link class="row" :to="getMatchURLPath(match)" v-bind:key="match.id" v-for="match of matches" append>
         <div class="match content-panel">
-          <div class="match-game" v-bind:style="getGameBGColor(match.gameSlug)">
-            <img class="game-image" v-bind:src="getIconURL(match.gameSlug)" alt="">
+          <div class="game" v-bind:style="getGameBGColor(match.gameSlug)">
+            <img class="image" v-bind:src="getIconURL(match.gameSlug)" alt="">
           </div>
-          <div class="match-date">
+          <div class="date">
             {{ formatMatchDate(match.date) }}
           </div>
-          <div class="match-main">
-            <div class="match-versus">
-              <span class="team">
-                {{ match.homeTeam}}
-              </span>
-              <span class="separator"> vs </span>
-              <span class="team">
-                {{ match.awayTeam}}
-              </span>
-            </div>
+          <div class="teams">
+            <span class="team">
+              {{ match.homeTeam}}
+            </span>
+            <span class="separator"> vs </span>
+            <span class="team">
+              {{ match.awayTeam}}
+            </span>
           </div>
-          <div class="match-league">
-              <span class="league">
+          <div class="league">
+              <span class="text">
                 {{ match.league }}
               </span>
             </div>
-          <div class="match-odds">
-            <span class="text" v-if="getLatestOdds(match.odds)">
+          <div class="odds">
+            <span class="odds--available" v-if="getLatestOdds(match.odds)">
               {{ getLatestOdds(match.odds).home }}
               {{ getLatestOdds(match.odds).away }}
             </span>
-            <span class="no-odds" v-if="!getLatestOdds(match.odds)">
+            <span class="odds--unavailable" v-if="!getLatestOdds(match.odds)">
               
             </span>
           </div>
@@ -248,7 +246,7 @@ export default Vue.extend({
       font-weight 700
       margin 15px 0px
 
-    .list__row
+    .row
       margin 2px 0px
       color #446CB3
 
@@ -259,20 +257,30 @@ export default Vue.extend({
       max-height 62px
       min-height 62px
 
-      &-date
+      .game
+        display flex
+        flex-direction column
+        justify-content center
+        min-width 52px
+        padding 10px
+
+        .image
+          max-width 44px
+
+      .date
         padding 20px
         flex-grow 0
 
-      &-league
+      .league
         padding 20px
         flex-grow 1
         display flex
         justify-content flex-start
 
-      &-odds
+      .odds
         padding 20px
 
-      &-main
+      .teams
         display flex
         flex-direction row
         padding 20px
@@ -280,21 +288,10 @@ export default Vue.extend({
         min-width 30%
         max-width 30%
 
-        .match-versus
-          .team
-            font-weight 500
+        .team
+          font-weight 500
+          margin 0px 8px
 
-
-
-.match-game
-  display flex
-  flex-direction column
-  justify-content center
-  min-width 52px
-  padding 10px
-
-  .game-image
-    max-width 44px
 
 
 </style>
