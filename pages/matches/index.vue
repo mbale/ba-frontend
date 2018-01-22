@@ -1,34 +1,22 @@
 <template>
-  <div class="matches">
-    <div class="matches__paginate">
-      <!-- PAGINATION -->
-      <paginate
-        :page-count="pageCount"
-        :click-handler="changePage"
-        :prev-text="'Prev'"
-        :next-text="'Next'"
-        :container-class="'list content-panel'"
-        :prev-class="'previous'"
-        :next-class="'next'"
-        :page-class="'item'"
-        :page-link-class="'item-link'"
-        :active-class="'active'"
-        :disabled-class="'disabled'">
-          <span slot="prevContent">
-            <icon name="angle-left" scale="1.5"></icon>
-          </span>
-          <span slot="nextContent">
-            <icon name="angle-right" scale="1.5"></icon>
-          </span>
-      </paginate>
-    </div>
-    <!-- LIST -->
-    <div class="matches__list" v-bind:key="date" v-for="[date, matches] in Object.entries(matchesGrouped)">
+  <div class="matches content-panel">
+    <ul class="matches__tabs">
+      <li class="tab tab--active" ref="upcoming" @click="changeTab('upcoming')">
+        <span class="text">upcoming</span>
+        <span class="counter">{{ matchCount.upcoming }}</span>
+      </li>
+      <li class="tab" ref="completed" @click="changeTab('completed')">
+        <span class="text">completed</span>
+        <span class="counter">{{ matchCount.completed }}</span>
+      </li>
+    </ul>
+    <div class="matches__separator"></div>
+    <div class="matches__list" v-if="activeTab === 'upcoming'" v-bind:key="date" v-for="[date, matches] in Object.entries(matchesGrouped)">
       <!-- TIMESTAMP -->
       <span class="timestamp">{{ formatDate(date) }}</span>
       <!-- ROW -->
       <nuxt-link class="row" :to="getMatchURLPath(match)" v-bind:key="match.id" v-for="match of matches" append>
-        <div class="match content-panel">
+        <div class="match">
           <div class="game" v-bind:style="getGameBGColor(match.gameSlug)">
             <img class="image" v-bind:src="getIconURL(match.gameSlug)" alt="">
           </div>
@@ -60,6 +48,66 @@
           </div>
         </div>
       </nuxt-link>
+    </div>
+    <div class="matches__list" v-else v-bind:key="date" v-for="[date, matches] in Object.entries(matchesGrouped)">
+      <!-- TIMESTAMP -->
+      <span class="timestamp">{{ formatDate(date) }}</span>
+      <!-- ROW -->
+      <nuxt-link class="row" :to="getMatchURLPath(match)" v-bind:key="match.id" v-for="match of matches" append>
+        <div class="match">
+          <div class="game" v-bind:style="getGameBGColor(match.gameSlug)">
+            <img class="image" v-bind:src="getIconURL(match.gameSlug)" alt="">
+          </div>
+          <div class="date">
+            {{ formatMatchDate(match.date) }}
+          </div>
+          <div class="teams">
+            <span class="team">
+              {{ match.homeTeam}}
+            </span>
+            <span class="separator"> vs </span>
+            <span class="team">
+              {{ match.awayTeam}}
+            </span>
+          </div>
+          <div class="league">
+              <span class="text">
+                {{ match.league }}
+              </span>
+            </div>
+          <div class="odds">
+            <span class="odds--available" v-if="getLatestOdds(match.odds)">
+              {{ getLatestOdds(match.odds).home }}
+              {{ getLatestOdds(match.odds).away }}
+            </span>
+            <span class="odds--unavailable" v-if="!getLatestOdds(match.odds)">
+              
+            </span>
+          </div>
+        </div>
+      </nuxt-link>
+    </div>
+    <div class="matches__pagination">
+      <!-- PAGINATION -->
+      <paginate
+        :page-count="pageCount"
+        :click-handler="changePage"
+        :prev-text="'Prev'"
+        :next-text="'Next'"
+        :container-class="'list'"
+        :prev-class="'previous'"
+        :next-class="'next'"
+        :page-class="'item'"
+        :page-link-class="'item-link'"
+        :active-class="'active'"
+        :disabled-class="'disabled'">
+          <span slot="prevContent">
+            <icon name="angle-left" scale="1.5"></icon>
+          </span>
+          <span slot="nextContent">
+            <icon name="angle-right" scale="1.5"></icon>
+          </span>
+      </paginate>
     </div>
   </div>
 </template>
@@ -111,14 +159,35 @@ export default Vue.extend({
     matchesGrouped () {
       return this.$store.getters['matches/groupByDay']
     },
+    activeTab () {
+      return this.$store.state.matches.active
+    },
     matchCount () {
-      return this.$store.state.matches.count
+      return {
+        upcoming: this.$store.state.matches.upcoming.count,
+        completed: this.$store.state.matches.completed.count
+      }
     },
     pageCount () {
-      return Math.round(this.matchCount / 20)
+      return Math.round(this.matchCount[this.activeTab] / 20)
     }
   },
   methods: {
+    async changeTab (tab) {
+      const activeTabNode = this.$refs[tab]
+      let inactiveTabNode = this.$refs.upcoming
+
+      if (tab === 'upcoming') {
+        inactiveTabNode = this.$refs.completed
+      }
+
+      activeTabNode.classList.toggle('tab--active')
+      inactiveTabNode.classList.toggle('tab--active')
+
+      await this.$store.commit('matches/set_active_list', {
+        active: tab
+      })
+    },
     formatDate (date) {
       return format(new Date(date), 'dddd, MMMM D')
     },
@@ -154,13 +223,17 @@ export default Vue.extend({
     },
     async changePage (page) {
       await this.$store.dispatch('matches/fetch', {
-        page
+        page,
+        statusType: this.activeTab
       })
     }
   },
   async asyncData ({ store }) {
     await Promise.all([
       store.dispatch('matches/fetch', {}),
+      store.dispatch('matches/fetch', {
+        statusType: 'completed'
+      }),
       store.dispatch('games/fetchAll', {})
     ])
   }
@@ -169,13 +242,55 @@ export default Vue.extend({
 
 <style lang="stylus">
 .matches
+  display flex
+  flex-direction column
   width 100%
+  padding 40px
 
-  &__paginate
+  &__separator
+    width 65%
+    height 2px
+    background #D2D7D3
+
+  &__tabs
     display flex
-    margin-bottom 50px
+    margin-right auto
+    list-style none
+    user-select none
+    text-transform uppercase
+    margin-bottom 20px
+
+    .tab
+      font-size 1em
+      font-weight 700
+      // padding 12px 0px
+      margin-right 20px
+
+      .text
+        margin-right 5px
+        padding 5px
+
+      .counter
+        padding 5px
+        background-color #F3F4F3
+        border 1px solid #F3F4F3
+        color #95A0AD
+
+      &--active
+        .text
+          color #E84449
+
+        .counter
+          background-color #E84449
+          border 1px solid #E84449
+          color white
+
+
+  &__pagination
+    display flex
 
     .list
+      display flex
       display flex
       flex-direction row
       flex-wrap wrap
@@ -242,13 +357,14 @@ export default Vue.extend({
     flex-direction column
 
     .timestamp
-      font-size 1.2em
+      font-size 1em
       font-weight 700
-      margin 15px 0px
+      margin 20px 0px
 
     .row
-      margin 2px 0px
       color #446CB3
+      padding 8px 0px
+      // border-bottom 2px solid #EDF0F1
 
     .match
       display flex

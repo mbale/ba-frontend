@@ -2,16 +2,17 @@ import groupBy from 'lodash/groupby'
 
 const MUTATIONS = {
   UPDATE_LIST: 'update_list',
-  UPDATE_COUNT: 'update_count',
+  SET_ACTIVE_LIST: 'set_active_list',
   SET_MATCH: 'set_match'
 }
 
 export const mutations = {
   [MUTATIONS.UPDATE_LIST] (state, payload) {
-    state.list = payload.matches
+    state[payload.type].list = payload.list
+    state[payload.type].count = payload.count
   },
-  [MUTATIONS.UPDATE_COUNT] (state, payload) {
-    state.count = payload.count
+  [MUTATIONS.SET_ACTIVE_LIST] (state, payload) {
+    state.active = payload.active
   },
   [MUTATIONS.SET_MATCH] (state, payload) {
     state.match = payload.match
@@ -19,34 +20,46 @@ export const mutations = {
 }
 
 export const state = () => ({
-  list: [],
-  count: null,
+  upcoming: {
+    list: [],
+    count: null
+  },
+  completed: {
+    list: [],
+    count: null
+  },
+  active: 'upcoming',
   match: null
 })
 
 export const getters = {
   groupByDay (state) {
-    return groupBy(state.list, (match) => {
+    return groupBy(state[state.active].list, (match) => {
       return new Date(match.date).toDateString()
     })
+  },
+  count (state) {
+    return state[state.active].count
+  },
+  filterByUpdate (state) {
+    return Object.assign([], state.list).filter
   }
 }
 
 export const actions = {
-  async fetch ({ commit }, { page = 0, limit = 20 }) {
+  async fetch ({ commit }, { page = 0, limit = 20, statusType = 'upcoming' }) {
     const { data: matches, headers } = await this.$axios.get('v1/matches', {
       params: {
         limit,
         page,
-        statusType: 'upcoming'
+        statusType
       }
     })
 
-    commit(MUTATIONS.UPDATE_COUNT, {
-      count: headers.count
-    })
     commit(MUTATIONS.UPDATE_LIST, {
-      matches
+      type: statusType,
+      list: matches,
+      count: headers.count
     })
   },
   async getById ({ commit }, { matchId }) {

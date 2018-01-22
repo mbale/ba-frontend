@@ -76,6 +76,7 @@ figure img
   justify-content center
   flex 1
   padding 50px
+  background-color #F4F7FA
 
 .main-container
   display flex
