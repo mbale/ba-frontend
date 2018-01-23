@@ -1,11 +1,11 @@
 <template>
   <div class="matches content-panel">
     <ul class="matches__tabs">
-      <li class="tab tab--active" ref="upcoming" @click="changeTab('upcoming')">
+      <li class="tab tab--active" ref="upcoming" @click="changeTab('upcoming', $event)">
         <span class="text">upcoming</span>
         <span class="counter">{{ matchCount.upcoming }}</span>
       </li>
-      <li class="tab" ref="completed" @click="changeTab('completed')">
+      <li class="tab" ref="completed" @click="changeTab('completed', $event)">
         <span class="text">completed</span>
         <span class="counter">{{ matchCount.completed }}</span>
       </li>
@@ -90,6 +90,7 @@
     <div class="matches__pagination">
       <!-- PAGINATION -->
       <paginate
+        ref="pagination"
         :page-count="pageCount"
         :click-handler="changePage"
         :prev-text="'Prev'"
@@ -173,20 +174,37 @@ export default Vue.extend({
     }
   },
   methods: {
-    async changeTab (tab) {
-      const activeTabNode = this.$refs[tab]
-      let inactiveTabNode = this.$refs.upcoming
+    async changeTab (id) {
+      const {
+        upcoming,
+        completed
+      } = this.$refs
 
-      if (tab === 'upcoming') {
-        inactiveTabNode = this.$refs.completed
+      if (!this.$refs[id].classList.contains('tab--active')) {
+        upcoming.classList.toggle('tab--active')
+        completed.classList.toggle('tab--active')
+
+        await this.$store.commit('matches/set_active_list', {
+          active: id
+        })
       }
 
-      activeTabNode.classList.toggle('tab--active')
-      inactiveTabNode.classList.toggle('tab--active')
+      // completed.classList.toggle('tab--active')
+      // upcoming.classList.toggle('tab--active')
 
-      await this.$store.commit('matches/set_active_list', {
-        active: tab
-      })
+      // const activeTabNode = this.$refs[tab]
+      // let inactiveTabNode = this.$refs.upcoming
+
+      // if (tab === 'upcoming') {
+      //   inactiveTabNode = this.$refs.completed
+      // }
+
+      // activeTabNode.classList.toggle('tab--active')
+      // inactiveTabNode.classList.toggle('tab--active')
+
+      // await this.$store.commit('matches/set_active_list', {
+      //   active: tab
+      // })
     },
     formatDate (date) {
       return format(new Date(date), 'dddd, MMMM D')
