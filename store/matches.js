@@ -33,16 +33,18 @@ export const state = () => ({
 })
 
 export const getters = {
-  groupByDay (state) {
-    return groupBy(state[state.active].list, (match) => {
+  groupUMatchesByDay (state) {
+    return groupBy(state.upcoming.list, (match) => {
+      return new Date(match.date).toDateString()
+    })
+  },
+  groupCMatchesByDay (state) {
+    return groupBy(state.completed.list, (match) => {
       return new Date(match.date).toDateString()
     })
   },
   count (state) {
     return state[state.active].count
-  },
-  filterByUpdate (state) {
-    return Object.assign([], state.list).filter
   }
 }
 

@@ -11,7 +11,7 @@
       </li>
     </ul>
     <div class="matches__separator"></div>
-    <div class="matches__list" v-if="activeTab === 'upcoming'" v-bind:key="date" v-for="[date, matches] in Object.entries(matchesGrouped)">
+    <div class="matches__list" v-if="activeTab === 'upcoming'" v-bind:key="date" v-for="[date, matches] in Object.entries(uMatchesGroupedByDay)">
       <!-- TIMESTAMP -->
       <span class="timestamp">{{ formatDate(date) }}</span>
       <!-- ROW -->
@@ -49,10 +49,8 @@
         </div>
       </nuxt-link>
     </div>
-    <div class="matches__list" v-else v-bind:key="date" v-for="[date, matches] in Object.entries(matchesGrouped)">
-      <!-- TIMESTAMP -->
+    <div class="matches__list" v-else v-bind:key="date" v-for="[date, matches] in Object.entries(cMatchesGroupedByDay)">
       <span class="timestamp">{{ formatDate(date) }}</span>
-      <!-- ROW -->
       <nuxt-link class="row" :to="getMatchURLPath(match)" v-bind:key="match.id" v-for="match of matches" append>
         <div class="match">
           <div class="game" v-bind:style="getGameBGColor(match.gameSlug)">
@@ -157,8 +155,11 @@ export default Vue.extend({
     }
   },
   computed: {
-    matchesGrouped () {
-      return this.$store.getters['matches/groupByDay']
+    uMatchesGroupedByDay () {
+      return this.$store.getters['matches/groupUMatchesByDay']
+    },
+    cMatchesGroupedByDay () {
+      return this.$store.getters['matches/groupCMatchesByDay']
     },
     activeTab () {
       return this.$store.state.matches.active
@@ -248,7 +249,9 @@ export default Vue.extend({
   },
   async asyncData ({ store }) {
     await Promise.all([
-      store.dispatch('matches/fetch', {}),
+      store.dispatch('matches/fetch', {
+        statusType: 'upcoming'
+      }),
       store.dispatch('matches/fetch', {
         statusType: 'completed'
       }),
