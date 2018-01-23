@@ -1,8 +1,13 @@
 FROM node:8.9-alpine
 ENV NODE_ENV production
-WORKDIR /usr/src/app
-COPY ["package.json", "npm-shrinkwrap.json*", "./"]
-RUN npm install --production --silent && mv node_modules ../
-COPY . .
+
+COPY . /app
+
+WORKDIR /app
+
+RUN npm install yarn -g
+RUN yarn install
+
+CMD yarn start
+
 EXPOSE 5000
-CMD npm start
