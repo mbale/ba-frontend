@@ -27,13 +27,17 @@
               </span>
             </div>
           <div class="odds">
-            <span class="odds--available" v-if="getLatestOdds(match.odds)">
-              {{ getLatestOdds(match.odds).home }}
-              {{ getLatestOdds(match.odds).away }}
-            </span>
-            <span class="odds--unavailable" v-if="!getLatestOdds(match.odds)">
-              
-            </span>
+            <div class="available" v-if="getLatestOdds(match.odds)">
+              <span class="team">
+                {{ getLatestOdds(match.odds).home }}
+              </span>
+              <span class="team">
+                {{ getLatestOdds(match.odds).away }}
+              </span>
+            </div>
+            <div class="unavailable" v-if="!getLatestOdds(match.odds)">
+              <span class="placeholder"></span>
+            </div>
           </div>
         </div>
       </nuxt-link>
@@ -58,6 +62,17 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
+
+.odds
+  .available
+    display flex
+    flex-direction row
+
+    +below(650px)
+      flex-direction column
+
+    .team
+      margin 5px
 
 </style>

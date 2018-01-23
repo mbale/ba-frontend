@@ -160,7 +160,7 @@ export default Vue.extend({
   display flex
   flex-direction column
   width 100%
-  padding 40px
+  padding 30px
 
   &__separator
     width 65%
@@ -277,9 +277,10 @@ export default Vue.extend({
       margin 20px 0px
 
     .row
-      color #446CB3
-      padding 8px 0px
+      color #6C7A89
       // border-bottom 2px solid #EDF0F1
+      +below(800px)
+        margin 6px 0px
 
     .match
       display flex
@@ -287,6 +288,7 @@ export default Vue.extend({
       justify-content space-between
       max-height 62px
       min-height 62px
+      margin 5px
 
       .game
         display flex
@@ -299,29 +301,34 @@ export default Vue.extend({
           max-width 44px
 
       .date
-        padding 20px
+        padding 10px
         flex-grow 0
 
       .league
-        padding 20px
+        // padding 20px
         flex-grow 1
         display flex
         justify-content flex-start
 
-      .odds
-        padding 20px
-
       .teams
         display flex
         flex-direction row
-        padding 20px
         flex-grow 1
         min-width 30%
         max-width 30%
 
+        +below(1100px)
+          flex-direction column
+          justify-content center
+          align-items center
+
         .team
+          display flex
+          flex-direction row
+          flex-wrap wrap
+          justify-content center
+          align-items center
           font-weight 500
-          margin 0px 8px
 
 
 
