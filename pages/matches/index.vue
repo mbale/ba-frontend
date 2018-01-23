@@ -329,6 +329,7 @@ export default Vue.extend({
           flex-wrap wrap
           justify-content center
           align-items center
+          margin 0px 5px
           font-weight 500
 
 

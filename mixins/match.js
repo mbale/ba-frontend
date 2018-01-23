@@ -17,7 +17,7 @@ export default {
         'hearthstone': hearthStoneIconURL,
         'heroes-of-the-storm': hotsIConURL,
         lol: lolIconURL,
-        ow: owIconURL,
+        overwatch: owIconURL,
         'rocket-league': rlIconURL,
         'starcraft-2': sc2IconURL
       }
