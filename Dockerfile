@@ -1,13 +1,12 @@
 FROM node:8.9-alpine
-ENV NODE_ENV production
 
 COPY . /app
-
 WORKDIR /app
 
-RUN npm install yarn -g
-RUN yarn install
+RUN npm cache verify
+RUN npm install
 
-CMD yarn start
+ENV NODE_ENV production
+CMD npm start
 
 EXPOSE 5000
