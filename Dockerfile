@@ -5,6 +5,7 @@ WORKDIR /app
 
 RUN npm cache verify
 RUN npm install
+RUN npm build
 
 ENV NODE_ENV production
 CMD npm start
