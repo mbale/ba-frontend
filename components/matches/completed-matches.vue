@@ -24,13 +24,12 @@
                 {{ match.league }}
               </span>
             </div>
-          <div class="odds">
-            <span class="odds--available" v-if="getLatestOdds(match.odds)">
-              {{ getLatestOdds(match.odds).home }}
-              {{ getLatestOdds(match.odds).away }}
+          <div class="scores">
+            <span class="home-team">
+              {{ getMatchScore(match).home }}
             </span>
-            <span class="odds--unavailable" v-if="!getLatestOdds(match.odds)">
-              
+            <span class="away-team">
+              {{ getMatchScore(match).away }}
             </span>
           </div>
         </div>
@@ -49,6 +48,21 @@ export default Vue.extend({
   computed: {
     groupedMatches () {
       return this.$store.getters['matches/groupCMatchesByDay']
+    }
+  },
+  methods: {
+    getMatchScore (match) {
+      if (match.state.scores) {
+        return {
+          home: match.state.scores.homeTeam,
+          away: match.state.scores.awayTeam
+        }
+      }
+
+      return {
+        home: null,
+        away: null
+      }
     }
   }
 })
