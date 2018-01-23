@@ -128,9 +128,11 @@ export default Vue.extend({
       }
     },
     async changePage (page) {
+      const activeTab = this.$store.state.matches.active
+
       await this.$store.dispatch('matches/fetch', {
         page,
-        statusType: this.activeTab
+        statusType: activeTab
       })
     }
   },
