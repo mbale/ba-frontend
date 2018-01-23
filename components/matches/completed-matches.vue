@@ -1,9 +1,7 @@
 <template>
-  <div class="upcoming-matches">
+  <div class="completed-matches">
     <div class="matches__list" v-bind:key="date" v-for="[date, matches] in Object.entries(groupedMatches)">
-      <!-- TIMESTAMP -->
       <span class="timestamp">{{ formatGroupTimeStamp(date) }}</span>
-      <!-- ROW -->
       <nuxt-link class="row" :to="getMatchURLPath(match)" v-bind:key="match.id" v-for="match of matches" append>
         <div class="match">
           <div class="game" v-bind:style="getGameBGColor(match.gameSlug)">
@@ -46,14 +44,12 @@ import Vue from 'vue'
 import matchMixins from '~/mixins/match'
 
 export default Vue.extend({
-  name: 'UpcomingMatches',
+  name: 'CompletedMatches',
   mixins: [matchMixins],
   computed: {
     groupedMatches () {
-      return this.$store.getters['matches/groupUMatchesByDay']
+      return this.$store.getters['matches/groupCMatchesByDay']
     }
-  },
-  methods: {
   }
 })
 </script>

@@ -24,6 +24,11 @@ export default {
     }
   },
   methods: {
+    getMatchURLPath ({homeTeam, awayTeam, date, id}) {
+      return {
+        path: `${id}/${this.buildMatchURLSegment(homeTeam, awayTeam)}`
+      }
+    },
     buildMatchURLSegment (homeTeam, awayTeam) {
       return `${homeTeam.split(' ').join('_')}-${awayTeam.split(' ').join('_')}`
     },
@@ -45,6 +50,9 @@ export default {
       }
 
       return `${prop}#1E824C`
+    },
+    formatGroupTimeStamp (date) {
+      return format(new Date(date), 'dddd, MMMM D')
     },
     formatMatchDate (date) {
       return format(new Date(date), 'HH:mm')
