@@ -1,11 +1,11 @@
 <template>
   <div class="matches content-panel">
     <ul class="matches__tabs">
-      <li class="tab tab--active" ref="upcoming" @click="changeTab('upcoming', $event)">
+      <li class="tab" v-bind:class="{'tab--active': upcomingTabActive }" ref="upcoming" @click="changeTab('upcoming', $event)">
         <span class="text">upcoming</span>
         <span class="counter">{{ matchCount.upcoming }}</span>
       </li>
-      <li class="tab" ref="completed" @click="changeTab('completed', $event)">
+      <li class="tab" v-bind:class="{'tab--active': !upcomingTabActive }" ref="completed" @click="changeTab('completed', $event)">
         <span class="text">completed</span>
         <span class="counter">{{ matchCount.completed }}</span>
       </li>
@@ -141,7 +141,7 @@ export default Vue.extend({
       this.$refs.pagination.selected = 0
     }
   },
-  async asyncData ({ store }) {
+  async asyncData ({ store, route }) {
     await Promise.all([
       store.dispatch('matches/fetch', {
         statusType: 'upcoming'

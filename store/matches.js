@@ -28,7 +28,7 @@ export const state = () => ({
     list: [],
     count: null
   },
-  active: 'upcoming',
+  active: 'completed',
   match: null
 })
 
