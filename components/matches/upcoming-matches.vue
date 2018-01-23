@@ -28,10 +28,10 @@
             </div>
           <div class="odds">
             <div class="available" v-if="getLatestOdds(match.odds)">
-              <span class="team">
+              <span class="team" v-bind:class="{'odds-higher': oddsHigher(match.odds) === 'home'}">
                 {{ getLatestOdds(match.odds).home }}
               </span>
-              <span class="team">
+              <span class="team" v-bind:class="{'odds-higher': oddsHigher(match.odds) === 'away'}">
                 {{ getLatestOdds(match.odds).away }}
               </span>
             </div>
@@ -58,6 +58,15 @@ export default Vue.extend({
     }
   },
   methods: {
+    oddsHigher (odds) {
+      const homeHigher = parseInt(odds.home) >= parseInt(odds.away)
+
+      if (homeHigher) {
+        return 'home'
+      }
+
+      return 'away'
+    }
   }
 })
 </script>
@@ -74,5 +83,8 @@ export default Vue.extend({
 
     .team
       margin 5px
+
+    .odds-higher
+      font-weight 800
 
 </style>

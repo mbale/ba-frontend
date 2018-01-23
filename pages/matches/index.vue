@@ -203,6 +203,7 @@ export default Vue.extend({
 
   &__pagination
     display flex
+    margin-top 20px
 
     .list
       display flex
@@ -210,7 +211,6 @@ export default Vue.extend({
       flex-direction row
       flex-wrap wrap
       border 1px solid #D1D2D7
-      padding 2px
       list-style none
       user-select none
 
@@ -314,6 +314,7 @@ export default Vue.extend({
         display flex
         flex-direction row
         flex-grow 1
+        justify-content center
         min-width 30%
         max-width 30%
 
