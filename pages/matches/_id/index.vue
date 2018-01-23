@@ -4,7 +4,7 @@
 
 <script>
 import Vue from 'vue'
-import mixins from '~/mixins/util'
+import matchMixins from '~/mixins/match'
 
 export default Vue.extend({
   name: 'MatchIdRedirect',
@@ -22,7 +22,7 @@ export default Vue.extend({
         params: {
           id: params.id,
           // we do not have access to vue instance now (ssr)
-          slug: mixins.methods.buildMatchURLSegment(homeTeam, awayTeam)
+          slug: matchMixins.methods.buildMatchURLSegment(homeTeam, awayTeam)
         }
       })
     }

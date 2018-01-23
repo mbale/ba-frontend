@@ -11,45 +11,8 @@
       </li>
     </ul>
     <div class="matches__separator"></div>
-    <div class="matches__list" v-if="activeTab === 'upcoming'" v-bind:key="date" v-for="[date, matches] in Object.entries(uMatchesGroupedByDay)">
-      <!-- TIMESTAMP -->
-      <span class="timestamp">{{ formatDate(date) }}</span>
-      <!-- ROW -->
-      <nuxt-link class="row" :to="getMatchURLPath(match)" v-bind:key="match.id" v-for="match of matches" append>
-        <div class="match">
-          <div class="game" v-bind:style="getGameBGColor(match.gameSlug)">
-            <img class="image" v-bind:src="getIconURL(match.gameSlug)" alt="">
-          </div>
-          <div class="date">
-            {{ formatMatchDate(match.date) }}
-          </div>
-          <div class="teams">
-            <span class="team">
-              {{ match.homeTeam}}
-            </span>
-            <span class="separator"> vs </span>
-            <span class="team">
-              {{ match.awayTeam}}
-            </span>
-          </div>
-          <div class="league">
-              <span class="text">
-                {{ match.league }}
-              </span>
-            </div>
-          <div class="odds">
-            <span class="odds--available" v-if="getLatestOdds(match.odds)">
-              {{ getLatestOdds(match.odds).home }}
-              {{ getLatestOdds(match.odds).away }}
-            </span>
-            <span class="odds--unavailable" v-if="!getLatestOdds(match.odds)">
-              
-            </span>
-          </div>
-        </div>
-      </nuxt-link>
-    </div>
-    <div class="matches__list" v-else v-bind:key="date" v-for="[date, matches] in Object.entries(cMatchesGroupedByDay)">
+    <upcoming-matches v-if="upcomingTabActive"></upcoming-matches>
+    <!-- <div class="matches__list" v-else v-bind:key="date" v-for="[date, matches] in Object.entries(cMatchesGroupedByDay)">
       <span class="timestamp">{{ formatDate(date) }}</span>
       <nuxt-link class="row" :to="getMatchURLPath(match)" v-bind:key="match.id" v-for="match of matches" append>
         <div class="match">
@@ -84,7 +47,7 @@
           </div>
         </div>
       </nuxt-link>
-    </div>
+    </div> -->
     <div class="matches__pagination">
       <!-- PAGINATION -->
       <paginate
@@ -122,15 +85,16 @@ import lolIconURL from '~/assets/images/games/icons/lol.svg'
 import owIconURL from '~/assets/images/games/icons/ow.svg'
 import rlIconURL from '~/assets/images/games/icons/rocket-league.svg'
 import sc2IconURL from '~/assets/images/games/icons/starcraft-2.svg'
-import mixins from '~/mixins/util'
+import matchMixins from '~/mixins/match'
 import Icon from 'vue-awesome/components/Icon'
 import 'vue-awesome/icons/angle-left'
 import 'vue-awesome/icons/angle-right'
 import format from 'date-fns/format'
+import UpcomingMatches from '~/components/matches/upcoming-matches'
 
 export default Vue.extend({
   name: 'Matches',
-  mixins: [mixins],
+  mixins: [matchMixins],
   data () {
     return {
       iconURLs: {
@@ -147,7 +111,8 @@ export default Vue.extend({
   },
   components: {
     Paginate,
-    Icon
+    Icon,
+    UpcomingMatches
   },
   head () {
     return {
@@ -155,14 +120,11 @@ export default Vue.extend({
     }
   },
   computed: {
-    uMatchesGroupedByDay () {
-      return this.$store.getters['matches/groupUMatchesByDay']
+    upcomingTabActive () {
+      return this.$store.state.matches.active === 'upcoming'
     },
     cMatchesGroupedByDay () {
       return this.$store.getters['matches/groupCMatchesByDay']
-    },
-    activeTab () {
-      return this.$store.state.matches.active
     },
     matchCount () {
       return {
@@ -171,7 +133,7 @@ export default Vue.extend({
       }
     },
     pageCount () {
-      return Math.round(this.matchCount[this.activeTab] / 20)
+      return Math.round(this.matchCount[this.$store.state.matches.active] / 20)
     }
   },
   methods: {
@@ -189,23 +151,6 @@ export default Vue.extend({
           active: id
         })
       }
-
-      // completed.classList.toggle('tab--active')
-      // upcoming.classList.toggle('tab--active')
-
-      // const activeTabNode = this.$refs[tab]
-      // let inactiveTabNode = this.$refs.upcoming
-
-      // if (tab === 'upcoming') {
-      //   inactiveTabNode = this.$refs.completed
-      // }
-
-      // activeTabNode.classList.toggle('tab--active')
-      // inactiveTabNode.classList.toggle('tab--active')
-
-      // await this.$store.commit('matches/set_active_list', {
-      //   active: tab
-      // })
     },
     formatDate (date) {
       return format(new Date(date), 'dddd, MMMM D')
@@ -214,31 +159,6 @@ export default Vue.extend({
       return {
         path: `${id}/${this.buildMatchURLSegment(homeTeam, awayTeam)}`
       }
-    },
-    getLatestOdds (odds) {
-      const oddsRanked = Object.assign([], odds).sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
-
-      if (oddsRanked.length === 0) {
-        return false
-      }
-
-      return oddsRanked[0]
-    },
-    getGameBGColor (gameSlug) {
-      const game = this.$store.state.games.list.find((game) => game.slug === gameSlug)
-      const prop = 'background-color: '
-
-      if (game) {
-        return `${prop}${game.color}`
-      }
-
-      return `${prop}#1E824C`
-    },
-    formatMatchDate (date) {
-      return format(new Date(date), 'HH:mm')
-    },
-    getIconURL (gameSlug) {
-      return this.iconURLs[gameSlug]
     },
     async changePage (page) {
       await this.$store.dispatch('matches/fetch', {
