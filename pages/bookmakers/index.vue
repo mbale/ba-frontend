@@ -61,7 +61,7 @@
 <script>
 import Vue from 'vue'
 import StarRating from 'vue-star-rating'
-import Card from '~/components/common/card'
+import Card from '~/components/common/card.vue'
 import CardBox from '~/components/common/card-box'
 import BitcoinImage from '~/assets/images/depositmethods/bitcoin.svg'
 import CreditCardImage from '~/assets/images/depositmethods/credit-card.svg'
