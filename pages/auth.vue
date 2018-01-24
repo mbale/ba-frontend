@@ -3,9 +3,6 @@
     <div class="auth-block__col">
       <signup-form class="content-panel"></signup-form>
     </div>
-    <div class="auth-block__separator">
-      <icon class="icon" scale="3" name="sort"></icon>
-    </div>
     <div class="auth-block__col">
       <login-form class="content-panel"></login-form>
     </div>
@@ -14,17 +11,14 @@
 
 <script>
 import Vue from 'vue'
-import 'vue-awesome/icons/sort'
 import LoginForm from '~/components/auth/login-form'
 import SignupForm from '~/components/auth/signup-form'
-import Icon from 'vue-awesome/components/Icon'
 
 export default Vue.extend({
   name: 'AuthPage',
   components: {
     LoginForm,
-    SignupForm,
-    Icon
+    SignupForm
   }
 })
 </script>
@@ -57,7 +51,5 @@ breaking-point = 1000px
       transform rotate(90deg)
       +below(breaking-point)
         transform rotate(0deg)
-  
+
 </style>
-
-
