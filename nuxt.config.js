@@ -36,6 +36,8 @@ module.exports = {
   proxy: [
     ['/api', { target: BACKEND_URL, pathRewrite: { '^/api': '' } }]
   ],
+  // due to bug
+  modulesDir: ['node_modules'],
   /*
   ** Headers of the page
   */
