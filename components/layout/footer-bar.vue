@@ -60,7 +60,7 @@
 
 <script>
 import Vue from 'vue'
-import Logo from '~/components/common/logo.vue'
+import Logo from '~/components/common/logo'
 
 export default Vue.extend({
   name: 'FooterBar',
