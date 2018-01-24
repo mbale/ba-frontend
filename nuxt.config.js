@@ -92,8 +92,7 @@ module.exports = {
       'vee-validate',
       'vue-awesome',
       'vuex-persistedstate',
-      'oddslib',
-      'lodash/groupby'
+      'oddslib'
     ],
     /*
     ** Webpack plugins
