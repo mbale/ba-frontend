@@ -75,8 +75,6 @@ figure img
   display flex
   justify-content center
   flex 1
-  padding 50px
-  background-color #F4F7FA
 
 .main-container
   display flex
@@ -109,14 +107,5 @@ figure img
   +below(3)
     flex 0 0 100%
     padding 20px 20px 0 20px
-
-/*
-** Common
-*/
-
-.content-panel
-  background-color white
-  border 1px solid #D2D7D3
-
 
 </style>

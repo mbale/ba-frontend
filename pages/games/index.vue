@@ -37,7 +37,6 @@ export default Vue.extend({
 </script>
 
 <style lang="stylus">
-
 $full-width =
   max-width 100%
   flex-basis 100%
