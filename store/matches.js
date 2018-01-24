@@ -1,4 +1,4 @@
-import groupBy from 'lodash/groupby'
+import _ from 'lodash'
 
 const MUTATIONS = {
   UPDATE_LIST: 'update_list',
@@ -34,12 +34,12 @@ export const state = () => ({
 
 export const getters = {
   groupUMatchesByDay (state) {
-    return groupBy(state.upcoming.list, (match) => {
+    return _.groupBy(state.upcoming.list, (match) => {
       return new Date(match.date).toDateString()
     })
   },
   groupCMatchesByDay (state) {
-    return groupBy(state.completed.list, (match) => {
+    return _.groupBy(state.completed.list, (match) => {
       return new Date(match.date).toDateString()
     })
   },
