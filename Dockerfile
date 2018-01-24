@@ -7,10 +7,11 @@ WORKDIR /app
 ENV FRONTEND_BACKEND_URL=$FRONTEND_BACKEND_URL
 
 # Installing & building
-RUN npm cache verify
-RUN npm install
-RUN npm run build
+RUN npm install yarn -g
+RUN yarn cache clean
+RUN yarn install
+RUN yarn build
 
-CMD npm run start
+CMD yarn start
 
 EXPOSE 5000
