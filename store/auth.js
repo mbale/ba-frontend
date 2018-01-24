@@ -177,6 +177,9 @@ export const actions = {
         const date = new Date()
         const expires = date.setDate(date.getDate() - 1)
         params.expires = expires
+      } else {
+        const date = new Date()
+        params.expires = date.setDate(date.getDate() + 1)
       }
 
       // issue to server too
