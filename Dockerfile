@@ -3,6 +3,10 @@ FROM node:latest
 COPY . /app
 WORKDIR /app
 
+ARG FRONTEND_BACKEND_URL
+
+RUN echo $FRONTEND_BACKEND_URL
+
 # Installing & building
 RUN npm install yarn -g
 RUN yarn cache clean
