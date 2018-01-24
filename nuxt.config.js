@@ -26,12 +26,16 @@ module.exports = {
     ssr: true
   }],
   modules: [
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy'
   ],
   axios: {
-    baseURL: BACKEND_URL,
-    credentials: false
+    credentials: false,
+    prefix: '/api'
   },
+  proxy: [
+    ['/api', { target: BACKEND_URL, pathRewrite: { '^/api': '' } }]
+  ],
   /*
   ** Headers of the page
   */
