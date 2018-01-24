@@ -1,6 +1,9 @@
 # dependencies
 node_modules
 
+# Mac
+.DS_Store
+
 # logs
 npm-debug.log
 
