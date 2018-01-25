@@ -11,10 +11,8 @@
       </li>
     </ul>
     <div class="matches__separator"></div>
-    <no-ssr>
-      <upcoming-matches v-if="upcomingTabActive"></upcoming-matches>
-      <completed-matches v-else></completed-matches>
-    </no-ssr>
+    <upcoming-matches v-if="upcomingTabActive"></upcoming-matches>
+    <completed-matches v-else></completed-matches>
     <div class="matches__pagination">
       <!-- PAGINATION -->
       <paginate
