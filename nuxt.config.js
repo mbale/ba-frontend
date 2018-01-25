@@ -31,7 +31,7 @@ module.exports = {
     '@nuxtjs/proxy'
   ],
   axios: {
-    baseUrl: FRONTEND_URL,
+    baseURL: FRONTEND_URL,
     credentials: false,
     prefix: '/api'
   },
