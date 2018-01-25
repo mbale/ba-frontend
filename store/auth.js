@@ -175,14 +175,13 @@ export const actions = {
       if (!accessToken) {
         // make it expire
         const date = new Date()
-        const expires = date.setDate(date.getDate() - 1)
-        params.expires = expires
+        params.expires = new Date(date.setMonth(date.getMonth() - 1))
       } else {
         const date = new Date()
-        params.expires = date.setDate(date.getDate() + 1)
+        // plus one month
+        params.expires = new Date(date.setMonth(date.getMonth() + 1))
       }
 
-      // issue to server too
       this.app.context.res.setHeader('Set-Cookie', Cookie.serialize('accessToken', accessToken, params))
     }
   },
