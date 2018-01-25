@@ -5,6 +5,8 @@ WORKDIR /app
 
 # ENV FRONTEND_BACKEND_URL = ${FRONTEND_BACKEND_URL}
 
+RUN export FRONTEND_BACKEND_URL = $FRONTEND_BACKEND_URL
+
 # Installing & building
 RUN npm install yarn -g
 RUN yarn cache clean
