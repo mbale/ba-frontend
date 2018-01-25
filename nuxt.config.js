@@ -8,7 +8,10 @@ dotenv.config()
 const BACKEND_URL = process.env.BACKEND_URL
 const FRONTEND_URL = process.env.FRONTEND_URL
 
+process.env.DEBUG = 'nuxt:*'
+
 module.exports = {
+  debug: true,
   // Vue
   plugins: [{
     src: '~/plugins/vue-social-share',
