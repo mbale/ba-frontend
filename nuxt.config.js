@@ -6,6 +6,7 @@ const nodeExternals = require('webpack-node-externals')
 dotenv.config()
 
 const BACKEND_URL = process.env.FRONTEND_BACKEND_URL
+const FRONTEND_URL = `${process.env.HOST}:${process.env.PORT}`
 
 module.exports = {
   // Vue
@@ -30,7 +31,7 @@ module.exports = {
     '@nuxtjs/proxy'
   ],
   axios: {
-    baseUrl: 'localhost',
+    baseUrl: FRONTEND_URL,
     credentials: false,
     prefix: '/api'
   },
