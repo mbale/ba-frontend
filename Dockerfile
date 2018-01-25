@@ -3,8 +3,10 @@ FROM node:latest
 COPY . /app
 WORKDIR /app
 
-ENV FRONTEND_BACKEND_URL='http://dockerhost.ba-staging.development.c66.me:3000'
-ENV FRONTEND_URL=$HOST:$PORT
+ENV HOST=$FRONTEND_HOST
+ENV PORT=$FRONTEND_PORT
+ENV FRONTEND_URL=$FRONTEND_HOST:FRONTEND_PORT
+ENV BACKEND_URL=$BACKEND_URL
 
 # Installing & building
 RUN npm install yarn -g

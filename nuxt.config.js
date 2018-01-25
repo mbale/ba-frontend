@@ -5,7 +5,7 @@ const nodeExternals = require('webpack-node-externals')
 
 dotenv.config()
 
-const BACKEND_URL = process.env.FRONTEND_BACKEND_URL
+const BACKEND_URL = process.env.BACKEND_URL
 const FRONTEND_URL = process.env.FRONTEND_URL
 
 module.exports = {
