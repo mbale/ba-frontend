@@ -6,7 +6,7 @@ const nodeExternals = require('webpack-node-externals')
 dotenv.config()
 
 const BACKEND_URL = process.env.FRONTEND_BACKEND_URL
-const FRONTEND_URL = `${process.env.HOST}:${process.env.PORT}`
+const FRONTEND_URL = process.env.FRONTEND_URL
 
 module.exports = {
   // Vue
