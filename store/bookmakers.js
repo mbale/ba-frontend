@@ -1,7 +1,8 @@
 const MUTATIONS = {
   UPDATE_LIST: 'update_list',
   SET_FILTER: 'set_filter',
-  FILTER_BY_DEPOSIT_METHOD: 'filter_by_method'
+  FILTER_BY_DEPOSIT_METHOD: 'filter_by_method',
+  SET_BOOKMAKER: 'set_bookmaker'
 }
 
 export const mutations = {
@@ -10,6 +11,9 @@ export const mutations = {
   },
   [MUTATIONS.SET_FILTER] (state, payload) {
     state.filter = payload.filter ? payload.filter : null
+  },
+  [MUTATIONS.SET_BOOKMAKER] (state, payload) {
+    state.bookmaker = payload.bookmaker
   }
 }
 
@@ -41,5 +45,12 @@ export const actions = {
       }
     })
     context.commit(MUTATIONS.UPDATE_LIST, { bookmakers })
+  },
+  async getBySlug (context, { slug }) {
+    const bookmaker = await this.$axios.$get(`v1/bookmakers/${slug}`)
+
+    context.commit(MUTATIONS.SET_BOOKMAKER, {
+      bookmaker
+    })
   }
 }

@@ -9,8 +9,12 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'Bookmaker',
-  async asyncData ({ params }) {
-    console.log(params)
+  async asyncData ({ store, params }) {
+    const slug = params.slug
+
+    await store.dispatch('bookmakers/getBySlug', {
+      slug
+    })
   }
 })
 </script>
