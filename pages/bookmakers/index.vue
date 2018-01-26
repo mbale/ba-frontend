@@ -40,7 +40,9 @@
             {{ bookmaker.name }}
           </h1>
           <div class="rating" slot="body">
-            <star-rating :rating="bookmaker.reviews.avg" :star-size="25" :show-rating="false" :read-only="true" :inline="true"></star-rating>
+            <no-ssr>
+              <star-rating :rating="bookmaker.reviews.avg" :star-size="25" :show-rating="false" :read-only="true" :inline="true"></star-rating>
+            </no-ssr>
           </div>
           <div class="action" slot="body">
             <nuxt-link class="review" :to="{ path: bookmaker.slug }" append>
