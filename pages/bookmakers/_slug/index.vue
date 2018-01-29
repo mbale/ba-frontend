@@ -1,10 +1,10 @@
 <template>
   <div class="bookmaker">
     <div class="information">
-      <h1 class="header">
+      <h1 class="header-text header-text--one">
         {{ bookmaker.name }}
       </h1>
-      <h2 class="sub-header">
+      <h2 class="header-text header-text--two">
         {{ bookmaker.founded }} - {{ bookmaker.headquarters }}
       </h2>
       <div class="content">
@@ -46,7 +46,7 @@
         <div class="row">
           <span class="property">Bonuses</span>
           <div class="text text__bonuses">
-            <span class="bonus" v-bind:key="bonus" v-for="bonus in bookmaker.bonuses">
+            <span class="bonus" v-bind:key="bonus.type" v-for="bonus in bookmaker.bonuses">
               <span>{{ bonus.title }}</span>
               <img class="image" v-bind:src="getBonusIconURL(bonus.type)">
             </span>
@@ -69,8 +69,30 @@
       </div>
     </div>
     <div class="reviews">
-      <h1 class="header">Reviews</h1>
-      <h2 class="sub-header">what you said about them</h2>
+      <h1 class="header-text header-text--one">Reviews</h1>
+      <h2 class="header-text header-text--two">
+        what other people said
+      </h2>
+      <div class="new" v-show="userCanSubmitReview">
+        <div class="row row__review">
+          <h3 class="header-text header-text--three uppercase">Rating</h3>
+        </div>
+        <div class="row">
+          <no-ssr>
+            <star-rating class="rating" active-color="#F4D03F" @rating-selected="setReviewRating" :show-rating="false" :star-size="36"></star-rating>
+          </no-ssr>
+        </div>
+        <div class="row row__review">
+          <h3 class="header-text header-text--three uppercase">Your experience</h3>
+          <span class="header-text header-text--four">(optional)</span>
+        </div>
+        <div class="row row__review-text">
+          <textarea class="textbox" v-model="review.text"></textarea>
+        </div>
+        <div class="row">
+          <div class="button button--primary" @click="submitReview">Submit</div>
+        </div>
+      </div>
       <div class="content">
         <div class="review" v-bind:key="review.text" v-for="review of reviews">
           {{ review.text }}
@@ -82,19 +104,61 @@
 
 <script>
 import Vue from 'vue'
+import StarRating from 'vue-star-rating'
 import signupBIconURL from '~/assets/images/bonuses/signup-bonus.svg'
 
 export default Vue.extend({
   name: 'Bookmaker',
+  data () {
+    return {
+      review: {
+        rating: null,
+        text: null
+      }
+    }
+  },
+  components: {
+    StarRating
+  },
   computed: {
     bookmaker () {
       return this.$store.state.bookmakers.bookmaker
     },
     reviews () {
       return this.bookmaker.reviews.items
+    },
+    userCanSubmitReview () {
+      const reviews = this.$store.state.bookmakers.bookmaker.reviews.items
+      const user = this.$store.state.auth.user
+
+      if (!user) {
+        return false
+      }
+
+      const match = reviews.find((review) => review.user.id === user.profile.id)
+
+      if (match) {
+        return false
+      }
+
+      return true
     }
   },
   methods: {
+    setReviewRating (rating) {
+      this.review.rating = rating
+    },
+    async submitReview () {
+      const {
+        rating: rate,
+        text
+      } = this.review
+
+      this.$store.dispatch('bookmakers/addReview', {
+        rate,
+        text
+      })
+    },
     getBonusIconURL (type) {
       if (type === 'Signup') {
         return signupBIconURL
@@ -112,6 +176,8 @@ export default Vue.extend({
 </script>
 
 <style lang="stylus" scoped>
+@import '~assets/style/components.styl'
+@import '~assets/style/utilities.styl'
 
 .bookmaker
   display flex
@@ -128,7 +194,7 @@ export default Vue.extend({
   .sub-header
     font-size 1.1em
     color #6c7a89
-    // border-bottom 1px solid #d2d7d3
+    border-bottom 1px solid #d2d7d3
     margin-bottom 25px
     padding-bottom 5px
     font-weight 300
@@ -144,68 +210,90 @@ export default Vue.extend({
       display flex
       flex-direction column
 
-      .row
+  .row
+    display flex
+    justify-content flex-start
+    margin-bottom 35px
+
+    &__review
+      margin-bottom 8px
+
+    &:nth-child(2)
+      margin-bottom 15px
+
+    &__image
+      align-self center
+
+    .image
+      max-width 100%
+      height auto
+
+    .property
+      color #99A7BC
+      font-weight 800
+      text-transform uppercase
+      margin-right auto
+
+    .text
+      color #4F5969
+
+      &__country
         display flex
-        justify-content flex-start
-        margin-bottom 35px
+        max-width 50%
+        flex-wrap wrap
 
-        &:nth-child(2)
-          margin-bottom 15px
+        .country
+          margin 5px
 
-        &__image
-          align-self center
+      &__description
+        line-height 1.75
+        // max-width 75%
 
-        .image
-          max-width 100%
-          height auto
+      &__bonuses
+        display flex
+        flex-direction column
 
-        .property
-          color #99A7BC
-          font-weight 800
-          text-transform uppercase
-          margin-right auto
+        .bonus
+          display flex
+          flex-direction column
+          align-items center
 
-        .text
-          color #4F5969
+          .image
+            color inherit
+            align-self flex-end
+            max-width 15%
+            margin-top 20px
 
-          &__country
-            display flex
-            max-width 50%
-            flex-wrap wrap
+      &__licenses
+        display flex
+        flex-direction column
 
-            .country
-              margin 5px
-
-          &__description
-            line-height 1.75
-            // max-width 75%
-
-          &__bonuses
-            display flex
-            flex-direction column
-
-            .bonus
-              display flex
-              flex-direction column
-              align-items center
-
-              .image
-                color inherit
-                align-self flex-end
-                max-width 15%
-                margin-top 20px
-
-          &__licenses
-            display flex
-            flex-direction column
-
-            .license
-              margin-bottom 10px
+        .license
+          margin-bottom 10px
 
 
 
   .reviews
     background-color white
     padding 20px
+
+    .sub-header
+      border-bottom 1px solid #d2d7d3
+
+    .new
+      display flex
+      flex-direction column
+
+      .text
+        color #494949
+        font-size 100%
+        flex 1
+        width 50%
+        background-color #fff
+        padding 10px 40px 10px 10px
+        border-radius 2px
+        border 1px solid #ceced9
+      // border-top 1px solid #d2d7d3
+      // border-bottom 1px solid #d2d7d3
 
 </style>

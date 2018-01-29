@@ -2,7 +2,8 @@ const MUTATIONS = {
   UPDATE_LIST: 'update_list',
   SET_FILTER: 'set_filter',
   FILTER_BY_DEPOSIT_METHOD: 'filter_by_method',
-  SET_BOOKMAKER: 'set_bookmaker'
+  SET_BOOKMAKER: 'set_bookmaker',
+  ADD_REVIEW_FAIL: 'add_review_fail'
 }
 
 export const mutations = {
@@ -52,5 +53,29 @@ export const actions = {
     context.commit(MUTATIONS.SET_BOOKMAKER, {
       bookmaker
     })
+  },
+  async addReview ({ dispatch, commit, state }, { rate, text }) {
+    try {
+      const {
+        slug
+      } = state.bookmaker
+
+      console.log(rate)
+      console.log(text)
+
+      await this.$axios.$post(`v1/bookmakers/${slug}/reviews`, {
+        rate,
+        text
+      })
+
+      await dispatch('getBySlug', {
+        slug
+      })
+    } catch (error) {
+      console.log(error)
+      // commit(MUTATIONS.ADD_REVIEW_FAIL, {
+      //   error
+      // })
+    }
   }
 }
