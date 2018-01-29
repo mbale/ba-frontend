@@ -48,7 +48,7 @@
           <div class="text text__bonuses">
             <span class="bonus" v-bind:key="bonus.type" v-for="bonus in bookmaker.bonuses">
               <span>{{ bonus.title }}</span>
-              <img class="image" v-bind:src="getBonusIconURL(bonus.type)">
+              <!-- <img class="image" v-bind:src="getBonusIconURL(bonus.type)"> -->
             </span>
           </div>
         </div>
@@ -73,8 +73,8 @@
       <h2 class="header-text header-text--two">
         what other people said
       </h2>
-      <div class="new" v-show="userCanSubmitReview">
-        <div class="row row__review">
+      <div class="reviews__add" v-show="userCanSubmitReview">
+        <div class="row">
           <h3 class="header-text header-text--three uppercase">Rating</h3>
         </div>
         <div class="row">
@@ -82,20 +82,30 @@
             <star-rating class="rating" active-color="#F4D03F" @rating-selected="setReviewRating" :show-rating="false" :star-size="36"></star-rating>
           </no-ssr>
         </div>
-        <div class="row row__review">
+        <div class="row">
           <h3 class="header-text header-text--three uppercase">Your experience</h3>
           <span class="header-text header-text--four">(optional)</span>
         </div>
-        <div class="row row__review-text">
+        <div class="row">
           <textarea class="textbox" v-model="review.text"></textarea>
         </div>
         <div class="row">
           <div class="button button--primary" @click="submitReview">Submit</div>
         </div>
       </div>
-      <div class="content">
-        <div class="review" v-bind:key="review.text" v-for="review of reviews">
-          {{ review.text }}
+      <div class="reviews__existing">
+        <div class="row" v-bind:key="getUserObject(review).id" v-for="review of reviews">
+          <div class="col">
+            <!-- if avatar -->
+            <img class="avatar img-responsive" v-if="getUserObject(review).avatar" v-bind:src="getUserObject(review).avatar">
+            <!-- no avatar -->
+            <img class="avatar img-responsive" v-else v-bind:src="noAvatarImage">
+            <span class="username">{{ getUserObject(review).username }}</span>
+          </div>
+          <div class="col">
+            <span class="rating">{{ review.rate }}</span>
+            <p>{{ review.text }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -106,6 +116,7 @@
 import Vue from 'vue'
 import StarRating from 'vue-star-rating'
 import signupBIconURL from '~/assets/images/bonuses/signup-bonus.svg'
+import noAvatarImage from '~/assets/images/no_avatar.png'
 
 export default Vue.extend({
   name: 'Bookmaker',
@@ -114,7 +125,8 @@ export default Vue.extend({
       review: {
         rating: null,
         text: null
-      }
+      },
+      noAvatarImage
     }
   },
   components: {
@@ -145,6 +157,9 @@ export default Vue.extend({
     }
   },
   methods: {
+    getUserObject (review) {
+      return review.user
+    },
     setReviewRating (rating) {
       this.review.rating = rating
     },
@@ -213,7 +228,6 @@ export default Vue.extend({
   .row
     display flex
     justify-content flex-start
-    margin-bottom 35px
 
     &__review
       margin-bottom 8px
@@ -277,23 +291,17 @@ export default Vue.extend({
     background-color white
     padding 20px
 
-    .sub-header
-      border-bottom 1px solid #d2d7d3
+    &__existing
+      .review__user
+        display flex
 
-    .new
-      display flex
-      flex-direction column
+      .avatar
+        max-width 100%
+        max-height 76px
+        +below(992px)
+          max-height 64px
 
-      .text
-        color #494949
-        font-size 100%
-        flex 1
-        width 50%
-        background-color #fff
-        padding 10px 40px 10px 10px
-        border-radius 2px
-        border 1px solid #ceced9
-      // border-top 1px solid #d2d7d3
-      // border-bottom 1px solid #d2d7d3
+      .username
+        margin 5px
 
 </style>
