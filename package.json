@@ -22,7 +22,7 @@
     "js-cookie": "^2.2.0",
     "lodash": "^4.17.4",
     "marked": "^0.3.7",
-    "nuxt": "^1.0.0",
+    "nuxt": "^1.2.1",
     "oddslib": "^1.0.3",
     "remove": "^0.1.5",
     "vee-validate": "^2.0.3",
