@@ -60,9 +60,6 @@ export const actions = {
         slug
       } = state.bookmaker
 
-      console.log(rate)
-      console.log(text)
-
       await this.$axios.$post(`v1/bookmakers/${slug}/reviews`, {
         rate,
         text

@@ -8,16 +8,19 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'MatchDetail',
+  name: 'Match',
   computed: {
     match () {
       return this.$store.state.matches.match
     }
   },
-  async asyncData ({ store, params }) {
-    await store.dispatch('matches/getById', { matchId: params.id })
-
-    console.log(store.state.matches)
+  async asyncData ({ store, params, error }) {
+    try {
+      const matchId = params.id
+      await store.dispatch('matches/getById', { matchId })
+    } catch (e) {
+      return error({ statusCode: 404 })
+    }
   }
 })
 </script>
