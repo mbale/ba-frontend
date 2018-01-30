@@ -70,7 +70,7 @@
     <div class="reviews">
       <h1 class="header-text header-text--one">Reviews</h1>
       <h2 class="header-text header-text--two">
-        what other people said
+        what others think
       </h2>
       <div class="reviews__add" v-show="userCanSubmitReview">
         <div class="row">
@@ -94,16 +94,22 @@
       </div>
       <div class="reviews__existing">
         <div class="row" v-bind:key="getUserObject(review).id" v-for="review of reviews">
-          <div class="col">
+          <div class="col col--center">
             <!-- if avatar -->
             <img class="avatar img-responsive" v-if="getUserObject(review).avatar" v-bind:src="getUserObject(review).avatar">
             <!-- no avatar -->
             <img class="avatar img-responsive" v-else v-bind:src="noAvatarImage">
             <span class="username">{{ getUserObject(review).username }}</span>
           </div>
-          <div class="col">
-            <span class="rating">{{ review.rate }}</span>
-            <p>{{ review.text }}</p>
+          <div class="col col--start">
+            <div class="row margin-2-0">
+              <no-ssr>
+                <star-rating active-color="#F4D03F" :read-only="true" :rating="review.rate" :star-size="18" :show-rating="false"></star-rating>
+              </no-ssr>
+            </div>
+            <div class="row margin-4-0">
+              <p>{{ review.text }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -289,6 +295,8 @@ export default Vue.extend({
         display flex
 
       .avatar
+        min-width 67px
+        min-height 67px
         max-width 100%
         max-height 76px
         +below(992px)
