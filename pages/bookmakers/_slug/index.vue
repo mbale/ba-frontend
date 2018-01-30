@@ -48,7 +48,6 @@
           <div class="text text__bonuses">
             <span class="bonus" v-bind:key="bonus.type" v-for="bonus in bookmaker.bonuses">
               <span>{{ bonus.title }}</span>
-              <!-- <img class="image" v-bind:src="getBonusIconURL(bonus.type)"> -->
             </span>
           </div>
         </div>
@@ -115,7 +114,6 @@
 <script>
 import Vue from 'vue'
 import StarRating from 'vue-star-rating'
-import signupBIconURL from '~/assets/images/bonuses/signup-bonus.svg'
 import noAvatarImage from '~/assets/images/no_avatar.png'
 
 export default Vue.extend({
@@ -173,11 +171,6 @@ export default Vue.extend({
         rate,
         text
       })
-    },
-    getBonusIconURL (type) {
-      if (type === 'Signup') {
-        return signupBIconURL
-      }
     }
   },
   async asyncData ({ store, params }) {
