@@ -21,7 +21,7 @@ module.exports = {
     ssr: true
   }, {
     src: '~/plugins/vue-star-rating',
-    ssr: true
+    ssr: false
   }, {
     src: '~/plugins/vue-awesome',
     ssr: true
