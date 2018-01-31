@@ -1,7 +1,7 @@
 <template>
   <div class="notfound">
-    <h1 class='notfound__title'>404</h1>
-    <p class='notfound__p'>The page you're looking for has moved or doesn't exist.</p>
+    <h1 class='notfound__title'>{{ statusCode }}</h1>
+    <p class='notfound__p'>{{ message }}</p>
     <div class='notfound_links'>
       <a class='notfound__link' href='mailto:hello@betacle.com'>Report This</a>
       <nuxt-link class='notfound__link notfound__link--cta' to='/'>Return Home</nuxt-link>
@@ -15,6 +15,14 @@ export default {
   head () {
     return {
       title: 'Not Found - Betacle'
+    }
+  },
+  computed: {
+    statusCode () {
+      return this.error.statusCode || 500
+    },
+    message () {
+      return this.error.message || `The page you're looking for has moved or doesn't exist.`
     }
   }
 }
