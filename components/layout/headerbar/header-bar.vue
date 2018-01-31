@@ -36,14 +36,8 @@ export default Vue.extend({
 </script>
 
 <style lang="stylus" scoped>
-
-$link-color = rgba(#fff,.66)
-$link-color--hover =  #fff
-$link-color--active = #fff
-
 .page-header
-  // background $purple linear-gradient(to right, $purple, #3D86E0)
-  background #3A539B
+  background $purple linear-gradient(to right, $purple, $blue)
   display flex
   align-items center
   height 60px

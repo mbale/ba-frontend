@@ -48,10 +48,6 @@ export default Vue.extend({
   display flex
   flex-direction column
   overflow hidden
-  transition transform .2s ease
-  &:hover
-    transform scale(1.03, 1.03)
-
   .card__head
     display flex
     flex-direction column

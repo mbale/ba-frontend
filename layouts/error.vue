@@ -20,7 +20,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 .notfound
   background-image linear-gradient(rgba($purple, .9),rgba($purple, .9)), url("~/assets/images/crying-dawson.gif")
   background-repeat no-repeat

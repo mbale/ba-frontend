@@ -24,11 +24,6 @@ export default Vue.extend({
   flex-direction column
   overflow hidden
   background-color white
-  transition transform .2s ease
-
-  &:hover
-    transform scale(1.03, 1.03)
-
   .card-box__header
     display flex
     flex-direction column

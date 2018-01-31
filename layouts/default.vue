@@ -1,30 +1,24 @@
 <template>
   <div class="layout">
-    <header-bar></header-bar>
+    <header-bar />
     <main class="page-body">
       <nuxt />
     </main>
-    <footer-bar></footer-bar>
+    <footer-bar />
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
 import HeaderBar from '~/components/layout/headerbar/header-bar'
 import FooterBar from '~/components/layout/footer-bar'
 
-export default Vue.extend({
+export default {
   name: 'MainLayout',
   components: {
     HeaderBar,
     FooterBar
-  },
-  data () {
-    return {
-
-    }
   }
-})
+}
 </script>
 
 
