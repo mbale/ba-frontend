@@ -75,7 +75,7 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 .page-footer
   background-color #fff
   font-size 14px
@@ -99,7 +99,6 @@ export default Vue.extend({
     padding 0
     &:last-child
       margin 0
-
 
 .footer-col--about
   flex 2 0 0

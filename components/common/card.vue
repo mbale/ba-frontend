@@ -15,9 +15,7 @@
 </template>
 
 <script>
-import Vue from 'vue'
-
-export default Vue.extend({
+export default {
   name: 'Card',
   props: {
     title: {
@@ -37,7 +35,7 @@ export default Vue.extend({
       required: false
     }
   }
-})
+}
 </script>
 
 <style lang="stylus">

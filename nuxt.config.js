@@ -13,22 +13,27 @@ process.env.DEBUG = 'nuxt:*'
 module.exports = {
   debug: true,
   // Vue
-  plugins: [{
-    src: '~/plugins/vue-social-share',
-    ssr: true
-  }, {
-    src: '~/plugins/vee-validate',
-    ssr: true
-  }, {
-    src: '~/plugins/vue-star-rating',
-    ssr: false
-  }, {
-    src: '~/plugins/vue-awesome',
-    ssr: true
-  }, {
-    src: '~/plugins/sync-auth-ssr-client',
-    ssr: true
-  }],
+  plugins: [
+    {
+      src: '~/plugins/vue-social-share',
+      ssr: true
+    }, {
+      src: '~/plugins/vee-validate',
+      ssr: true
+    }, {
+      src: '~/plugins/vue-star-rating',
+      ssr: false
+    }, {
+      src: '~/plugins/vue-awesome',
+      ssr: true
+    }, {
+      src: '~/plugins/sync-auth-ssr-client',
+      ssr: true
+    }, {
+      src: '~/plugins/vue-paginate',
+      ssr: false
+    }
+  ],
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/proxy'

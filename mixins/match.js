@@ -1,28 +1,6 @@
-import csgoIconURL from '~/assets/images/games/icons/csgo.svg'
-import dota2IconURL from '~/assets/images/games/icons/dota-2.svg'
-import hearthStoneIconURL from '~/assets/images/games/icons/hearthstone.svg'
-import hotsIConURL from '~/assets/images/games/icons/heroes-of-the-storm.svg'
-import lolIconURL from '~/assets/images/games/icons/lol.svg'
-import owIconURL from '~/assets/images/games/icons/ow.svg'
-import rlIconURL from '~/assets/images/games/icons/rocket-league.svg'
-import sc2IconURL from '~/assets/images/games/icons/starcraft-2.svg'
 import format from 'date-fns/format'
 
 export default {
-  data () {
-    return {
-      iconURLs: {
-        csgo: csgoIconURL,
-        'dota-2': dota2IconURL,
-        'hearthstone': hearthStoneIconURL,
-        'heroes-of-the-storm': hotsIConURL,
-        lol: lolIconURL,
-        overwatch: owIconURL,
-        'rocket-league': rlIconURL,
-        'starcraft-2': sc2IconURL
-      }
-    }
-  },
   methods: {
     getMatchURLPath ({homeTeam, awayTeam, date, id}) {
       return {

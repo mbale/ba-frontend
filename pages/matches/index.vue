@@ -1,83 +1,45 @@
 <template>
-  <div class="matches content-panel">
-    <ul class="matches__tabs">
-      <li class="tab" v-bind:class="{'tab--active': upcomingTabActive }" ref="upcoming" @click="changeTab('upcoming', $event)">
-        <span class="text">upcoming</span>
-        <span class="counter">{{ matchCount.upcoming }}</span>
-      </li>
-      <li class="tab" v-bind:class="{'tab--active': !upcomingTabActive }" ref="completed" @click="changeTab('completed', $event)">
-        <span class="text">completed</span>
-        <span class="counter">{{ matchCount.completed }}</span>
-      </li>
-    </ul>
-    <div class="matches__separator"></div>
-    <upcoming-matches v-if="upcomingTabActive"></upcoming-matches>
-    <completed-matches v-else></completed-matches>
-    <div class="matches__pagination">
-      <!-- PAGINATION -->
-      <paginate
-        ref="pagination"
-        :page-count="pageCount"
-        :click-handler="changePage"
-        :prev-text="'Prev'"
-        :next-text="'Next'"
-        :container-class="'list'"
-        :prev-class="'previous'"
-        :next-class="'next'"
-        :page-class="'item'"
-        :page-link-class="'item-link'"
-        :active-class="'active'"
-        :disabled-class="'disabled'">
-          <span slot="prevContent">
-            <icon name="angle-left" scale="1.5"></icon>
-          </span>
-          <span slot="nextContent">
-            <icon name="angle-right" scale="1.5"></icon>
-          </span>
-      </paginate>
+  <div class='matches-con'>
+    <div class='page-filter'>
+      <ul class="tabs">
+        <li class="tab" v-bind:class="{'tab--active': upcomingTabActive }" ref="upcoming" @click="changeTab('upcoming', $event)">
+          <span class="text">upcoming</span>
+          <span class="counter">{{ matchCount.upcoming }}</span>
+        </li>
+        <li class="tab" v-bind:class="{'tab--active': !upcomingTabActive }" ref="completed" @click="changeTab('completed', $event)">
+          <span class="text">completed</span>
+          <span class="counter">{{ matchCount.completed }}</span>
+        </li>
+      </ul>
+    </div>
+    <div class='matches'>
+      <upcoming-matches v-if="upcomingTabActive" />
+      <completed-matches v-else />
+      <div class="matches-pagination">
+        <!-- PAGINATION -->
+        <paginate
+          :pageCount="pageCount"
+          :changePage="changePage"
+          />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
-import Paginate from 'vuejs-paginate/src/components/Paginate.vue'
-import csgoIconURL from '~/assets/images/games/icons/csgo.svg'
-import dota2IconURL from '~/assets/images/games/icons/dota-2.svg'
-import hearthStoneIconURL from '~/assets/images/games/icons/hearthstone.svg'
-import hotsIConURL from '~/assets/images/games/icons/heroes-of-the-storm.svg'
-import lolIconURL from '~/assets/images/games/icons/lol.svg'
-import owIconURL from '~/assets/images/games/icons/ow.svg'
-import rlIconURL from '~/assets/images/games/icons/rocket-league.svg'
-import sc2IconURL from '~/assets/images/games/icons/starcraft-2.svg'
+import Paginate from '~/components/common/paginate'
+
 import matchMixins from '~/mixins/match'
-import Icon from 'vue-awesome/components/Icon'
-import 'vue-awesome/icons/angle-left'
-import 'vue-awesome/icons/angle-right'
-import format from 'date-fns/format'
+
+import { format } from 'date-fns'
 import UpcomingMatches from '~/components/matches/upcoming-matches'
 import CompletedMatches from '~/components/matches/completed-matches'
 
-export default Vue.extend({
+export default {
   name: 'Matches',
   mixins: [matchMixins],
-  data () {
-    return {
-      iconURLs: {
-        csgo: csgoIconURL,
-        'dota-2': dota2IconURL,
-        'hearthstone': hearthStoneIconURL,
-        'heroes-of-the-storm': hotsIConURL,
-        lol: lolIconURL,
-        ow: owIconURL,
-        'rocket-league': rlIconURL,
-        'starcraft-2': sc2IconURL
-      }
-    }
-  },
   components: {
     Paginate,
-    Icon,
     UpcomingMatches,
     CompletedMatches
   },
@@ -129,16 +91,10 @@ export default Vue.extend({
     },
     async changePage (page) {
       const activeTab = this.$store.state.matches.active
-
       await this.$store.dispatch('matches/fetch', {
         page,
         statusType: activeTab
       })
-    }
-  },
-  watch: {
-    upcomingTabActive () {
-      this.$refs.pagination.selected = 0
     }
   },
   async asyncData ({ store, route }) {
@@ -152,120 +108,49 @@ export default Vue.extend({
       store.dispatch('games/fetchAll', {})
     ])
   }
-})
+}
 </script>
 
 <style lang="stylus">
-.matches
+.matches-con
   display flex
   flex-direction column
   width 100%
-  padding 30px
 
-  &__separator
-    width 65%
-    height 2px
-    background #D2D7D3
+.matches
+  padding: 20px 40px
 
-  &__tabs
-    display flex
-    margin-right auto
-    list-style none
-    user-select none
-    text-transform uppercase
-    margin-bottom 20px
+.page-filter
+  background #fff
 
-    .tab
-      font-size 1em
-      font-weight 700
-      // padding 12px 0px
-      margin-right 20px
+.tabs
+  display flex
+  margin-right auto
+  list-style none
+  user-select none
+  text-transform uppercase
+  margin-bottom 20px
 
+  .tab
+    font-size 1em
+    font-weight 700
+    // padding 12px 0px
+    margin-right 20px
+    .text
+      margin-right 5px
+      padding 5px
+    .counter
+      padding 5px
+      background-color #F3F4F3
+      border 1px solid #F3F4F3
+      color #95A0AD
+    &--active
       .text
-        margin-right 5px
-        padding 5px
-
+        color #E84449
       .counter
-        padding 5px
-        background-color #F3F4F3
-        border 1px solid #F3F4F3
-        color #95A0AD
-
-      &--active
-        .text
-          color #E84449
-
-        .counter
-          background-color #E84449
-          border 1px solid #E84449
-          color white
-
-
-  &__pagination
-    display flex
-    margin-top 20px
-
-    .list
-      display flex
-      display flex
-      flex-direction row
-      flex-wrap wrap
-      border 1px solid #D1D2D7
-      list-style none
-      user-select none
-
-      .item
-        display inline-flex
-        justify-content center
-        align-items center
-        margin 2px 6px
-        padding 6px
-
-        .item-link
-          color black
-
-      .item.active
-        background-color #E8444A
+        background-color #E84449
+        border 1px solid #E84449
         color white
-        font-weight 600
-        border-radius 4px
-        padding 0px 12px
-
-        a
-          color white
-
-      // all item as links
-      a
-        display inline-flex
-        justify-content center
-        align-items center
-
-      .previous
-        display inline-flex
-        justify-content center
-        padding 6px 16px
-        border-right 1px solid #DADEE2
-        margin-right 3px
-
-        a
-          color #E8444A
-
-      .next
-        display inline-flex
-        justify-content center
-        padding 6px 16px
-        border-left 1px solid #DADEE2
-        margin-left 3px
-
-        a
-          color #E8444A
-
-      // .item
-      //   padding 5px
-      //   color black
-
-      //   a
-      //     color black
 
   &__list
     display flex
@@ -332,6 +217,9 @@ export default Vue.extend({
           margin 0px 5px
           font-weight 500
 
-
+.matches-pagination
+  display flex
+  justify-content: center
+  margin 20px 0
 
 </style>
