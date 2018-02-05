@@ -59,7 +59,7 @@ export default {
       }
     },
     pageCount () {
-      return Math.round(this.matchCount[this.$store.state.matches.active] / 20)
+      return Math.ceil(this.matchCount[this.$store.state.matches.active] / 20)
     }
   },
   methods: {
