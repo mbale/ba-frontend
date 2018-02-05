@@ -105,8 +105,6 @@ export default Vue.extend({
 </script>
 
 <style lang="stylus" scoped>
-@import '~assets/style/components.styl'
-
 .row
   justify-content space-between
 

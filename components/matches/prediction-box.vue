@@ -15,7 +15,7 @@
           <h3 class="header-text header-text--three uppercase">Selected team</h3>
         </div>
         <div class="col">
-          
+
         </div>
       </div>
 
@@ -42,8 +42,6 @@ export default Vue.extend({
 </script>
 
 <style lang="stylus" scoped>
-@import '~assets/style/components.styl'
-@import '~assets/style/utilities.styl'
 
 .col-header
   flex-basis 85%
@@ -55,7 +53,7 @@ export default Vue.extend({
   border-bottom 1px solid #d2d7d3
   margin-bottom 25px
   padding-bottom 10px
-  
+
   > *
     cursor pointer
 
