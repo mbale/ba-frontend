@@ -80,4 +80,10 @@ export default {
 .pagination__item--arrow
   a
     color $blue
+  &:first-child
+    padding 0 15px 0 0
+    border-right 1px solid #dbdbdb
+  &:last-child
+    padding 0 0 0 15px
+    border-left 1px solid #dbdbdb
 </style>

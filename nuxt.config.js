@@ -114,14 +114,19 @@ module.exports = {
           stylus: {
             preferPathResolver: 'webpack', // otherwise it would use his own resolve mechanism (without alias)
             import: [
-              '~assets/style/fonts.styl',
-              '~assets/style/mixins.styl',
-              '~assets/style/settings.styl'
+              '~assets/styles/utilities/settings.styl',
+              '~assets/styles/utilities/mixins.styl'
             ], // globals
             use: [rupture()] // additional plugins
           }
         }
       })
     ]
-  }
+  },
+  /*
+  ** Global CSS
+  */
+  css: [
+    '@/assets/styles/main.styl'
+  ]
 }

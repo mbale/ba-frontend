@@ -1,53 +1,53 @@
 <template>
-  <div class='match' v-bind:class="match.gameSlug">
+  <div class='match' :class="gameSlug">
     <div class='date'>
-      {{ formattedDate(match.date) }}
+      {{ formattedDate(date) }}
     </div>
     <div class='teams'>
       <div class='team team--home'>
-        <div class='team-name'>{{ match.homeTeam }}</div>
+        <div class='team-name'>{{ homeTeam }}</div>
         <nuxt-link
-          v-if="isSettled(match)"
+          v-if="isSettled()"
           class='team-score'
-          :to="getMatchURLPath(match)"
+          :to="getMatchURLPath()"
           append
         >
-          {{ getMatchScore(match).home }}
+          {{ getMatchScore(state).home }}
         </nuxt-link>
         <nuxt-link
           v-else
           class='team-odds'
-          :to="getMatchURLPath(match)"
+          :to="getMatchURLPath()"
           append
         >
-          {{ getLatestOdds(match.odds).home }}
+          {{ getLatestOdds(odds).home }}
         </nuxt-link>
       </div>
       <div class='team team--away'>
-        <div class='team-name'>{{ match.awayTeam }}</div>
+        <div class='team-name'>{{ awayTeam }}</div>
         <nuxt-link
-          v-if="isSettled(match)"
+          v-if="isSettled()"
           class='team-score'
-          :to="getMatchURLPath(match)"
+          :to="getMatchURLPath()"
           append
         >
-          {{ getMatchScore(match).away }}
+          {{ getMatchScore(state).away }}
         </nuxt-link>
         <nuxt-link
           v-else
           class='team-odds'
-          :to="getMatchURLPath(match)"
+          :to="getMatchURLPath()"
           append
         >
-          {{ getLatestOdds(match.odds).away }}
+          {{ getLatestOdds(odds).away }}
         </nuxt-link>
       </div>
     </div>
     <div class='league'>
-      {{ match.league }}
+      {{ league }}
     </div>
     <div class='misc'>
-      <nuxt-link class="tips-btn" :to="getMatchURLPath(match)" append>0 Tips</nuxt-link>
+      <nuxt-link class="tips-btn" :to="getMatchURLPath()" append>0 Tips</nuxt-link>
     </div>
   </div>
 </template>
@@ -57,19 +57,11 @@ import { format } from 'date-fns'
 
 export default {
   name: 'MatchItem',
-  props: {
-    match: {
-      type: Object,
-      required: true
-    }
-  },
-  mounted: function () {
-    console.log(this.match)
-  },
+  props: ['gameSlug', 'homeTeam', 'awayTeam', 'date', 'id', 'odds', 'state', 'league'],
   methods: {
-    getMatchURLPath ({homeTeam, awayTeam, date, id}) {
+    getMatchURLPath () {
       return {
-        path: `${id}/${this.buildMatchURLSegment(homeTeam, awayTeam)}`
+        path: `${this.id}/${this.buildMatchURLSegment(this.homeTeam, this.awayTeam)}`
       }
     },
     buildMatchURLSegment (homeTeam, awayTeam) {
@@ -85,11 +77,11 @@ export default {
       }
       return oddsRanked[0]
     },
-    getMatchScore (match) {
-      if (match.state.scores) {
+    getMatchScore (state) {
+      if (state.scores) {
         return {
-          home: match.state.scores.homeTeam,
-          away: match.state.scores.awayTeam
+          home: state.scores.homeTeam,
+          away: state.scores.awayTeam
         }
       }
       return {
@@ -97,8 +89,8 @@ export default {
         away: null
       }
     },
-    isSettled (match) {
-      return match.state.type === 'settled'
+    isSettled () {
+      return this.state.type === 'settled'
     }
   }
 }
@@ -122,7 +114,7 @@ export default {
   &.lol
     border-left-color $color-lol
   &.overwatch
-    border-left-color $color-overwatch
+    border-left-color $color-ow
 
 .date
   padding 0 20px
@@ -183,7 +175,7 @@ export default {
 
 .misc
   text-align right
-  padding 0 20px
+  margin 0 0 0 20px
   flex 1
   +below(650px)
     text-align left

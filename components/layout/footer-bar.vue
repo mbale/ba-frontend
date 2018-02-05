@@ -52,27 +52,27 @@
       </div>
     </div>
     <div class='page-footer__micro'>
-      <p class='page-footer__copyright'>© {{ currentYear }} Betacle. We <s>bet</s> beat esports.</p>
+      <p class='page-footer__copyright'>© {{ footerYear }} Betacle. We <s>bet</s> beat esports.</p>
       <p class='page-footer__responsible'>Gamble Responsibly 18+</p>
     </div>
   </footer>
 </template>
 
 <script>
-import Vue from 'vue'
 import Logo from '~/components/common/logo'
 
-export default Vue.extend({
+export default {
   name: 'FooterBar',
   data () {
+    const footerYear = new Date().getFullYear()
     return {
-      currentYear: new Date().getFullYear()
+      footerYear: footerYear
     }
   },
   components: {
     Logo
   }
-})
+}
 </script>
 
 <style lang="stylus" scoped>

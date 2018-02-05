@@ -1,0 +1,23 @@
+button($color = $blue, $invert = false)
+  padding 10px 20px
+  text-align center
+  border-radius 2px
+  font-size 14px
+  user-select none
+  font-weight bold
+  cursor pointer
+  if $invert == "invert"
+    background-color transparent
+    border 1px solid $color
+    color $color
+    &:hover
+      color $color
+  else
+    background-color $color
+    color $white
+    border 1px solid transparent
+    &:hover
+      color $white
+      background-color darken($color, 10%)
+  &:active
+    transform scale(.98)

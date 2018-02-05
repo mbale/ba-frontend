@@ -5,11 +5,9 @@
 </template>
 
 <script>
-import Vue from 'vue'
-
-export default Vue.extend({
+export default {
   name: 'Dropdown'
-})
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -24,18 +22,16 @@ export default Vue.extend({
   top 65px
   right 0px
 
-  &__item
-    display flex
-    justify-content row
-    justify-content center
-    padding 12px
-
-    &:first-child
-      padding-bottom 0px
-      padding-top 12px
-
-    &:last-child
-      padding-top 0px
-      padding-bottom 12px
+.dropdown__item
+  display flex
+  justify-content row
+  justify-content center
+  padding 12px
+  &:first-child
+    padding-bottom 0px
+    padding-top 12px
+  &:last-child
+    padding-top 0px
+    padding-bottom 12px
 
 </style>

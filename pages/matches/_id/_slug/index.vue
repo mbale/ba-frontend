@@ -61,7 +61,5 @@ export default Vue.extend({
 </script>
 
 <style lang="stylus" scoped>
-@import '~assets/style/components.styl'
-
 
 </style>
