@@ -94,7 +94,7 @@
       </div>
       <div class="reviews__existing">
         <div class="row" v-bind:key="getUserObject(review).id" v-for="review of reviews">
-          <div class="col col--center">
+          <div class="col col-user col--center">
             <!-- if avatar -->
             <img class="avatar img-responsive" v-if="getUserObject(review).avatar" v-bind:src="getUserObject(review).avatar">
             <!-- no avatar -->
@@ -304,5 +304,8 @@ export default Vue.extend({
 
       .username
         margin 5px
+
+      .col-user
+        margin-right 15px
 
 </style>
