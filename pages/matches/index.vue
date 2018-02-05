@@ -86,8 +86,7 @@ export default {
       }),
       store.dispatch('matches/fetch', {
         statusType: 'completed'
-      }),
-      store.dispatch('games/fetchAll', {})
+      })
     ])
   }
 }
