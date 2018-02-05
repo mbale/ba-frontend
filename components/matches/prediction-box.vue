@@ -6,7 +6,7 @@
         <h2 class="header-text header-text--two">on .. </h2>
       </div>
       <div class="col col-icon">
-        <icon name="times" scale="1.6"></icon>
+        <icon @click.native="toggleBox" name="times" scale="1.6"></icon>
       </div>
     </div>
     <div class="content">
@@ -35,6 +35,11 @@ export default Vue.extend({
       selectedTeam: null
     }
   },
+  methods: {
+    toggleBox () {
+      this.$store.commit('predictions/toggle_box', {})
+    }
+  },
   components: {
     Icon
   }
@@ -55,7 +60,7 @@ export default Vue.extend({
   border-bottom 1px solid #d2d7d3
   margin-bottom 25px
   padding-bottom 10px
-  
+
   > *
     cursor pointer
 
