@@ -1,9 +1,10 @@
-import { groupBy } from 'lodash'
+import { groupBy, filter } from 'lodash'
 
 const MUTATIONS = {
   UPDATE_LIST: 'update_list',
   SET_ACTIVE_LIST: 'set_active_list',
-  SET_MATCH: 'set_match'
+  SET_MATCH: 'set_match',
+  SET_GAME_FILTER: 'set_game_filter'
 }
 
 export const mutations = {
@@ -16,6 +17,9 @@ export const mutations = {
   },
   [MUTATIONS.SET_MATCH] (state, payload) {
     state.match = payload.match
+  },
+  [MUTATIONS.SET_GAME_FILTER] (state, payload) {
+    state.gameFilters = payload.filters
   }
 }
 
@@ -29,7 +33,16 @@ export const state = () => ({
     count: null
   },
   active: 'upcoming',
-  match: null
+  match: null,
+  gameFilters: {
+    csgo: true,
+    hs: true,
+    dota2: true,
+    lol: true,
+    ow: true,
+    sc2: true,
+    hots: true
+  }
 })
 
 export const getters = {

@@ -55,6 +55,7 @@ export default {
     },
     toggleGame (game) {
       this.selectedGames[game] = !this.selectedGames[game]
+      this.$emit('selectedGamesChanged', this.selectedGames)
     }
   }
 }

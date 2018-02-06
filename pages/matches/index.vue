@@ -6,7 +6,7 @@
         <tab :class="{'tab--active': !upcomingTabActive }" ref="completed" @click.native="changeTab('completed')">Completed</tab>
       </tabs>
       <div class="filters">
-          <games-filter />
+          <games-filter @selectedGamesChanged="filterByGames" />
       </div>
     </div>
     <div class='matches wrapper'>
@@ -78,6 +78,11 @@ export default {
       await this.$store.dispatch('matches/fetch', {
         page,
         statusType: activeTab
+      })
+    },
+    async filterByGames (games) {
+      this.$store.commit('matches/set_game_filter', {
+        filters: games
       })
     }
   },
