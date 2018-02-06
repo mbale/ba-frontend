@@ -21,7 +21,7 @@
         </li>
       </ul>
     </section>
-    
+
   </section>
 </template>
 
@@ -102,7 +102,7 @@ $one-fifth =
   flex-basis 20%
 
 .guides
-  margin 10px 40px
+  margin 10px auto
   max-width 1180px
 
   .guides__item--tools
@@ -156,5 +156,5 @@ $one-fifth =
 
     .image
       max-height 75px
-  
+
 </style>

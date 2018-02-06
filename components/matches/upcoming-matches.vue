@@ -1,10 +1,10 @@
 <template>
   <div class="matches-list">
-    <section class="matches-perday" v-bind:key="date" v-for="[date, matches] in Object.entries(groupedMatches)">
+    <section class="matches-perday" :key="date" v-for="[date, matches] in Object.entries(groupedMatches)">
       <!-- TIMESTAMP -->
       <h3 class='matches-timestamp'>{{ formatGroupTimeStamp(date) }}</h3>
       <!-- ROW -->
-      <match-item v-bind:key="match.id" v-for="match of matches" :match="match" />
+      <match-item :key="match.id" v-for="match in matches" v-bind="match" />
     </section>
   </div>
 </template>
@@ -28,13 +28,5 @@ export default {
 </script>
 
 <style lang="stylus">
-.matches-perday
-  margin-bottom 20px
 
-.matches-timestamp
-  font-family $font-dinpro
-  color $dgray
-  font-size 16px
-  font-weight 500
-  margin-bottom 15px
 </style>

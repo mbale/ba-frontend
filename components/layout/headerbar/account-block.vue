@@ -11,18 +11,11 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Dropdown from '~/components/common/dropdown'
-import Icon from 'vue-awesome/components/Icon'
-import 'vue-awesome/icons/chevron-down'
-import 'vue-awesome/icons/cog'
-import 'vue-awesome/icons/sign-out'
-import 'vue-awesome/icons/user'
 
-export default Vue.extend({
+export default {
   name: 'AccountBlock',
   components: {
-    Icon,
     Dropdown
   },
   data () {
@@ -41,13 +34,13 @@ export default Vue.extend({
     },
     async signout () {
       await this.$store.dispatch('auth/logout', {})
+      this.$router.push('/loggedout')
     }
   }
-})
+}
 </script>
 
 <style lang="stylus">
-
 .account-block
   user-select none
   display flex
@@ -73,7 +66,7 @@ export default Vue.extend({
       font-weight 500
       margin-right 10px
 
-    .image 
+    .image
       max-width 100%
       height auto
 

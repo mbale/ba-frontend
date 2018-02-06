@@ -190,9 +190,6 @@ export default Vue.extend({
 </script>
 
 <style lang="stylus" scoped>
-@import '~assets/style/components.styl'
-@import '~assets/style/utilities.styl'
-
 .bookmaker
   display flex
   flex-direction column
