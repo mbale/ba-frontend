@@ -6,7 +6,7 @@
         <tab :class="{'tab--active': !upcomingTabActive }" ref="completed" @click.native="changeTab('completed')">Completed</tab>
       </tabs>
       <div class="filters">
-        <games-filter />
+          <games-filter />
       </div>
     </div>
     <div class='matches wrapper'>
@@ -14,10 +14,12 @@
       <completed-matches v-else />
       <div class="matches-pagination">
         <!-- PAGINATION -->
-        <paginate
-          :pageCount="pageCount"
-          :changePage="changePage"
-          />
+        <no-ssr>
+          <paginate
+            :pageCount="pageCount"
+            :changePage="changePage"
+            />
+        </no-ssr>
       </div>
     </div>
   </div>
