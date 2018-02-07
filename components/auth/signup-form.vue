@@ -4,19 +4,29 @@
     <div class="form-field">
       <label class="form-label" for="email">Email</label>
       <div class="form-input">
-        <text-input v-model="email" placeholder="Your email" type="email" />
+        <text-input
+          v-model="email"
+          placeholder="Your email"
+          type="email"
+          :validation="'required|email'" />
       </div>
     </div>
     <div class="form-field">
       <label class="form-label" for="username">Username</label>
       <div class="form-input">
-        <text-input v-model="username" placeholder="Your username" />
+        <text-input
+          v-model="username"
+          placeholder="Your username"
+          :validation="{ required: true, min: 4, alpha: true }" />
       </div>
     </div>
     <div class="form-field">
       <label class="form-label" for="password">Password</label>
       <div class="form-input">
-        <password-input v-model="password" placeholder="Minimum 6 characters"/>
+        <password-input
+          v-model="password"
+          placeholder="Minimum 6 characters"
+          :validation="{ required: true, min: 6, alpha: true }" />
       </div>
     </div>
     <!-- SIGNUP -->
@@ -52,6 +62,13 @@ export default {
   components: {
     TextInput,
     PasswordInput
+  },
+  data () {
+    return {
+      email: '',
+      username: '',
+      password: ''
+    }
   },
   computed: {
     isSignupInProgress () {

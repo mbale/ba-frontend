@@ -7,6 +7,7 @@
       :placeholder="placeholder"
       :value='value'
       :readonly='readOnly'
+      v-validate="validation"
       @input='onInput'
       >
     <span class="input-container__errors" v-show="errors.has('text')">
@@ -33,7 +34,8 @@ export default {
       default: 'text',
       validator: type => includes(TYPES, type)
     },
-    readOnly: [Boolean, String]
+    readOnly: [Boolean, String],
+    validation: [Object, String]
   },
   methods: {
     onInput (event) {

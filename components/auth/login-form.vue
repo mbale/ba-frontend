@@ -17,13 +17,16 @@
         <text-input
           v-model="username"
           placeholder="Your username"
-          v-validate="{ required: true, min: 4, regex: /^[a-zA-Z0-9_]+$/ }"/>
+          :validation="{ required: true, min: 4, alpha: true }" />
       </div>
     </div>
     <div class="form-field">
       <label class="form-label" for="password">Password</label>
       <div class="form-input">
-        <password-input v-model="password" placeholder="Minimum 6 characters" />
+        <password-input
+          v-model="password"
+          placeholder="Minimum 6 characters"
+          :validation="{ required: true, min: 6, alpha: true }" />
       </div>
     </div>
     <!-- LOGIN -->
