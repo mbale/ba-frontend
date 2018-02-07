@@ -2,8 +2,8 @@
   <dropdown class='filter-dropdown'>
     <dropdown-button class="filter-dropdown__button">Games</dropdown-button>
     <div slot="content" class="filter-dropdown__content">
-      <div class="filter-game" v-for="(game, key) in games" @click="toggleGame(key)" :class="{'is-active': selectedGames[key] }">
-        <span class="icon" :class="key" /><span class="name">{{game}}</span>
+      <div class="filter-game" v-for="game in games" @click="toggleGame(game)" :class="{'is-active': game.isActive }">
+        <span class="icon" :class="game.slug" /><span class="name">{{game.name}}</span>
       </div>
     </div>
   </dropdown>
@@ -18,29 +18,20 @@ export default {
   },
   data () {
     return {
-      games: {
-        csgo: 'CSGO',
-        hs: 'Hearthstone',
-        dota2: 'Dota2',
-        lol: 'LoL',
-        ow: 'Overwatch',
-        sc2: 'Starcraft 2',
-        hots: 'HotS'
-      },
-      selectedGames: {
-        csgo: true,
-        hs: true,
-        dota2: true,
-        lol: true,
-        ow: true,
-        sc2: true,
-        hots: true
-      }
+      games: [
+        { slug: 'csgo', name: 'CSGO' },
+        { slug: 'hs', name: 'Hearthstone' },
+        { slug: 'dota2', name: 'Dota2' },
+        { slug: 'lol', name: 'LoL' },
+        { slug: 'ow', name: 'Overwatch' },
+        { slug: 'sc2', name: 'Starcraft 2' },
+        { slug: 'hots', name: 'HotS' }
+      ]
     }
   },
   methods: {
     toggleGame (game) {
-      this.selectedGames[game] = !this.selectedGames[game]
+      this.$set(game, 'isActive', !game.isActive)
     }
   }
 }
