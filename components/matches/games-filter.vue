@@ -11,6 +11,7 @@
 
 <script>
 import { Dropdown, DropdownButton } from '~/components/common/dropdown'
+import { every, map } from 'lodash'
 
 export default {
   components: {
@@ -19,19 +20,31 @@ export default {
   data () {
     return {
       games: [
-        { slug: 'csgo', name: 'CSGO' },
-        { slug: 'hs', name: 'Hearthstone' },
-        { slug: 'dota2', name: 'Dota2' },
-        { slug: 'lol', name: 'LoL' },
-        { slug: 'ow', name: 'Overwatch' },
-        { slug: 'sc2', name: 'Starcraft 2' },
-        { slug: 'hots', name: 'HotS' }
+        { slug: 'csgo', name: 'CSGO', isActive: true },
+        { slug: 'hs', name: 'Hearthstone', isActive: true },
+        { slug: 'dota2', name: 'Dota2', isActive: true },
+        { slug: 'lol', name: 'LoL', isActive: true },
+        { slug: 'ow', name: 'Overwatch', isActive: true },
+        { slug: 'sc2', name: 'Starcraft 2', isActive: true },
+        { slug: 'hots', name: 'HotS', isActive: true }
       ]
     }
   },
   methods: {
     toggleGame (game) {
+      // If all games are active, set them all to inactive
+      if (every(this.games, 'isActive')) {
+        map(this.games, function (game) {
+          game.isActive = false
+        })
+      }
       this.$set(game, 'isActive', !game.isActive)
+      // If all games are inactive, set them all to active
+      if (every(this.games, ['isActive', false])) {
+        map(this.games, function (game) {
+          game.isActive = true
+        })
+      }
     }
   }
 }
