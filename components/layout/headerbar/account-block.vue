@@ -1,27 +1,25 @@
 <template>
-  <div class="account-block" @click="toggleMenu">
-    <nuxt-link tag="div" class="account-block__avatar" :to="{ path: '/profile' }">
-      <span class="text">{{ username }}</span>
-      <icon name="user" scale="1.4"></icon>
-    </nuxt-link>
-    <div class="account-block__logout" @click="signout">
-      <icon name="sign-out" scale="1.4"></icon>
+  <dropdown>
+    <dropdown-button class="acc-profile">
+      <img src='~/assets/images/no_avatar.png' class="acc-profile__avatar" />
+    </dropdown-button>
+    <div slot="content" class="acc-dropdown">
+      <nav>
+        <nuxt-link class="acc-dropdown__link" :to="{ path: '/profile' }">View Profile</nuxt-link>
+        <hr class="acc-dropdown__seperator" />
+        <div class="acc-dropdown__link" @click="signout">Logout</div>
+      </nav>
     </div>
-  </div>
+  </dropdown>
 </template>
 
 <script>
-import Dropdown from '~/components/common/dropdown'
+import { Dropdown, DropdownButton } from '~/components/common/dropdown'
 
 export default {
   name: 'AccountBlock',
   components: {
-    Dropdown
-  },
-  data () {
-    return {
-      dropdownState: true
-    }
+    Dropdown, DropdownButton
   },
   computed: {
     username () {
@@ -29,9 +27,6 @@ export default {
     }
   },
   methods: {
-    toggleMenu () {
-      this.dropdownState = !this.dropdownState
-    },
     async signout () {
       await this.$store.dispatch('auth/logout', {})
       this.$router.push('/loggedout')
@@ -41,60 +36,67 @@ export default {
 </script>
 
 <style lang="stylus">
-.account-block
-  user-select none
+$link-color = rgba(#fff,.66)
+$link-color--hover =  #fff
+$link-color--active = #fff
+
+.acc-nav
+  padding 15px
+  margin-left auto
+  position relative
+  z-index: 999
+
+.acc-profile
+  display inline-block
   display flex
-  justify-content center
   align-items center
-  color white
-  font-family "DINPro", Helvetica, sans-serif
-  font-size 16px
+  cursor pointer
+  &:after
+    content ''
+    width 0
+    height 0
+    border 6px solid transparent
+    border-top-width 6px
+    border-bottom-width 0
+    border-top-color #fff
+    transition all .25s
+    margin-left 10px
 
-  &__avatar
-    color rgba(255, 255, 255, .66)
-    display flex
-    margin-right 10px
-    overflow hidden
-    border-right 1px solid rgba(237, 237, 237, .5)
-    padding-right 10px
+.acc-profile__avatar
+  height 30px
+  width 30px
+  user-select none
 
-    &:hover
-      color white
+.acc-dropdown
+  right: 0
+  min-width: 150px
+  background: $purple
+  z-index: 1
+  nav
+    padding 20px
 
-    .text
-      letter-spacing 1px
-      font-weight 500
-      margin-right 10px
+.acc-dropdown__link
+  font-family: $font-dinpro
+  font-size: 13px
+  text-transform: uppercase
+  color $link-color
+  font-weight: 500
+  user-select none
+  display: block
+  white-space: nowrap
+  cursor: pointer
+  &:hover
+    color $link-color--hover
+  &:active
+    color $link-color--active
+  & ~ .acc-dropdown__link
+    margin-top 15px
 
-    .image
-      max-width 100%
-      height auto
-
-  &__username
-    color rgba(255, 255, 255, .66)
-    display flex
-    flex-direction column
-    justify-content center
-    margin 6px 6px 6px 8px
-    line-height 30px
-    font-weight 500
-
-  &__settings
-    display flex
-    color rgba(255, 255, 255, .66)
-    padding-right 20px
-    margin-right 20px
-    border-right 1px solid rgba(237, 237, 237, .5)
-
-    &:hover
-      color white
-
-  &__logout
-    display flex
-    color rgba(255, 255, 255, .66)
-
-    &:hover
-      color white
-
+.acc-dropdown__seperator
+  border: 0
+  height 1px
+  background: rgba(237,237,237,0.1)
+  display: block
+  margin: 15px 0
 
 </style>

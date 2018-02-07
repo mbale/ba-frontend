@@ -1,40 +1,32 @@
 <template>
-  <div class='filter__dropdown' v-on-clickaway="closeMenu">
-    <div class='filter__dropdown__label' @click="toggleMenu()">Games</div>
-    <div class="filter__dropdown__content" v-if="showDropdown">
-      <div class="filter-game" @click="toggleGame('csgo')" :class="{'is-active': selectedGames['csgo'] }">
-        <span class="icon csgo" /><span class="name">CSGO</span>
-      </div>
-      <div class="filter-game" @click="toggleGame('hs')" :class="{'is-active': selectedGames['hs'] }">
-        <span class="icon hs" /><span class="name">Hearthstone</span>
-      </div>
-      <div class="filter-game" @click="toggleGame('dota2')" :class="{'is-active': selectedGames['dota2'] }">
-        <span class="icon dota2" /><span class="name">Dota2</span>
-      </div>
-      <div class="filter-game" @click="toggleGame('lol')" :class="{'is-active': selectedGames['lol'] }">
-        <span class="icon lol" /><span class="name">LoL</span>
-      </div>
-      <div class="filter-game" @click="toggleGame('ow')" :class="{'is-active': selectedGames['ow'] }">
-        <span class="icon ow" /><span class="name">Overwatch</span>
-      </div>
-      <div class="filter-game" @click="toggleGame('sc2')" :class="{'is-active': selectedGames['sc2'] }">
-        <span class="icon sc2" /><span class="name">Starcraft 2</span>
-      </div>
-      <div class="filter-game" @click="toggleGame('hots')" :class="{'is-active': selectedGames['hots'] }">
-        <span class="icon hots" /><span class="name">HotS</span>
+  <dropdown class='filter-dropdown'>
+    <dropdown-button class="filter-dropdown__button">Games</dropdown-button>
+    <div slot="content" class="filter-dropdown__content">
+      <div class="filter-game" v-for="(game, key) in games" @click="toggleGame(key)" :class="{'is-active': selectedGames[key] }">
+        <span class="icon" :class="key" /><span class="name">{{game}}</span>
       </div>
     </div>
-  </div>
+  </dropdown>
 </template>
 
 <script>
-import { mixin as clickaway } from 'vue-clickaway'
+import { Dropdown, DropdownButton } from '~/components/common/dropdown'
 
 export default {
-  mixins: [ clickaway ],
+  components: {
+    Dropdown, DropdownButton
+  },
   data () {
     return {
-      showDropdown: false,
+      games: {
+        csgo: 'CSGO',
+        hs: 'Hearthstone',
+        dota2: 'Dota2',
+        lol: 'LoL',
+        ow: 'Overwatch',
+        sc2: 'Starcraft 2',
+        hots: 'HotS'
+      },
       selectedGames: {
         csgo: true,
         hs: true,
@@ -47,12 +39,6 @@ export default {
     }
   },
   methods: {
-    toggleMenu () {
-      this.showDropdown = !this.showDropdown
-    },
-    closeMenu () {
-      this.showDropdown = false
-    },
     toggleGame (game) {
       this.selectedGames[game] = !this.selectedGames[game]
     }
@@ -61,13 +47,11 @@ export default {
 </script>
 
 <style lang="stylus">
-  .filter__dropdown__label
-    user-select none
+  .filter-dropdown__button
     font-weight 700
     text-transform uppercase
     padding 15px
     font-size 14px
-    cursor pointer
     color $dgray
     display flex
     align-items center
@@ -81,14 +65,7 @@ export default {
       border-top-color $dgray
       transition all .25s
       margin-left 10px
-
-  .filter__dropdown
-    position relative
-  .filter__dropdown__content
-    position absolute
-    top 100%
-    right 0
-    width auto
+  .filter-dropdown__content
     background-color: #fff
     border 1px solid $color-border
     padding 10px
@@ -126,7 +103,6 @@ export default {
       font-size 14px
       user-select none
       color #aaa
-
     &.is-active
       .icon
         &.csgo
@@ -143,7 +119,6 @@ export default {
           background-color: $color-sc2
         &.hots
           background-color: $color-hots
-
       .name
         color $dgray
 </style>
