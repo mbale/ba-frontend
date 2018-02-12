@@ -66,6 +66,11 @@ export default {
   },
   methods: {
     async changeTab (tab) {
+      this.$router.push({
+        query: {
+          'status-type': tab
+        }
+      })
       await this.$store.commit('matches/set_active_list', {
         active: tab
       })
@@ -87,6 +92,8 @@ export default {
     }
   },
   async asyncData ({ store, route }) {
+    const queryParams = route.query
+
     await Promise.all([
       store.dispatch('matches/fetch', {
         statusType: 'upcoming'
@@ -95,6 +102,18 @@ export default {
         statusType: 'completed'
       })
     ])
+
+    if (queryParams['status-type']) {
+      if (queryParams['status-type'] === 'upcoming') {
+        await store.commit('matches/set_active_list', {
+          active: 'upcoming'
+        })
+      } else {
+        await store.commit('matches/set_active_list', {
+          active: 'completed'
+        })
+      }
+    }
   }
 }
 </script>
