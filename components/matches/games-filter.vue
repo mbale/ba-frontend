@@ -45,6 +45,7 @@ export default {
           game.isActive = true
         })
       }
+      this.$emit('selectedGamesChanged', this.games)
     }
   }
 }
