@@ -32,6 +32,9 @@ module.exports = {
     }, {
       src: '~/plugins/vue-paginate',
       ssr: false
+    }, {
+      src: '~/plugins/vue-numeric',
+      ssr: true
     }
   ],
   modules: [
@@ -102,6 +105,8 @@ module.exports = {
       'vee-validate',
       'vue-awesome',
       'vuex-persistedstate',
+      'vuejs-paginate',
+      'vue-numeric',
       'oddslib'
     ],
     /*

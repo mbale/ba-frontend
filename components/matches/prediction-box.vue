@@ -3,22 +3,28 @@
     <div class="row">
       <div class="col col-header">
         <h1 class="header-text header-text--one">Placing a bet</h1>
-        <h2 class="header-text header-text--two">on .. </h2>
+        <h2 class="header-text header-text--two">on your team</h2>
       </div>
       <div class="col col-icon">
         <icon @click.native="toggleBox" name="times" scale="1.6"></icon>
       </div>
     </div>
-    <div class="content">
+    <div class="content col">
       <div class="row">
-        <div class="col">
-          <h3 class="header-text header-text--three uppercase">Selected team</h3>
-        </div>
-        <div class="col">
-
-        </div>
+        <h3 class="header-text header-text--three">Stake</h3>
       </div>
-
+      <div class="row">
+        <input type="number" name="" id="">
+      </div>
+      <div class="row">
+        <h3 class="header-text header-text--three">Selected team</h3>
+      </div>
+      <div class="row">
+        <h3 class="header-text header-text--three">Your opinion</h3>
+      </div>
+      <div class="row">
+        <textarea class="textbox"></textarea>
+      </div>
     </div>
   </div>
 </template>
