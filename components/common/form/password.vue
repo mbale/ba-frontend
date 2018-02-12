@@ -2,11 +2,12 @@
   <div class="input-container" v-bind:class="{'input-container--has-errors': errors.has('password')}">
     <input
       class="input-text"
+      name="password"
       type="password"
       :placeholder="placeholder"
       :value='value'
       @input='onInput'
-      v-validate="{ required: true, min: 6, regex: /^[a-zA-Z0-9_]+$/ }"
+      v-validate="validation"
       ref="password">
     <div class="input-container__icon input-container__icon--right input-container__icon--button">
       <icon :name="iconType" scale="1.2" v-on:click.native="togglePasswordInputType" />
@@ -28,7 +29,8 @@ export default {
     placeholder: {
       type: String,
       default: null
-    }
+    },
+    validation: [Object, String]
   },
   data () {
     return {

@@ -1,74 +1,61 @@
 <template>
-  <div class='filter__dropdown' v-on-clickaway="closeMenu">
-    <div class='filter__dropdown__label' @click="toggleMenu()">Games</div>
-    <div class="filter__dropdown__content" v-if="showDropdown">
-      <div class="filter-game" @click="toggleGame('csgo')" :class="{'is-active': selectedGames['csgo'] }">
-        <span class="icon csgo" /><span class="name">CSGO</span>
-      </div>
-      <div class="filter-game" @click="toggleGame('hs')" :class="{'is-active': selectedGames['hs'] }">
-        <span class="icon hs" /><span class="name">Hearthstone</span>
-      </div>
-      <div class="filter-game" @click="toggleGame('dota2')" :class="{'is-active': selectedGames['dota2'] }">
-        <span class="icon dota2" /><span class="name">Dota2</span>
-      </div>
-      <div class="filter-game" @click="toggleGame('lol')" :class="{'is-active': selectedGames['lol'] }">
-        <span class="icon lol" /><span class="name">LoL</span>
-      </div>
-      <div class="filter-game" @click="toggleGame('ow')" :class="{'is-active': selectedGames['ow'] }">
-        <span class="icon ow" /><span class="name">Overwatch</span>
-      </div>
-      <div class="filter-game" @click="toggleGame('sc2')" :class="{'is-active': selectedGames['sc2'] }">
-        <span class="icon sc2" /><span class="name">Starcraft 2</span>
-      </div>
-      <div class="filter-game" @click="toggleGame('hots')" :class="{'is-active': selectedGames['hots'] }">
-        <span class="icon hots" /><span class="name">HotS</span>
+  <dropdown class='filter-dropdown'>
+    <dropdown-button class="filter-dropdown__button">Games</dropdown-button>
+    <div slot="content" class="filter-dropdown__content">
+      <div class="filter-game" v-for="game in games" @click="toggleGame(game)" :class="{'is-active': game.isActive }">
+        <span class="icon" :class="game.slug" /><span class="name">{{game.name}}</span>
       </div>
     </div>
-  </div>
+  </dropdown>
 </template>
 
 <script>
-import { mixin as clickaway } from 'vue-clickaway'
+import { Dropdown, DropdownButton } from '~/components/common/dropdown'
+import { every, map } from 'lodash'
 
 export default {
-  mixins: [ clickaway ],
+  components: {
+    Dropdown, DropdownButton
+  },
   data () {
     return {
-      showDropdown: false,
-      selectedGames: {
-        csgo: true,
-        hs: true,
-        dota2: true,
-        lol: true,
-        ow: true,
-        sc2: true,
-        hots: true
-      }
+      games: [
+        { slug: 'csgo', name: 'CSGO', isActive: true },
+        { slug: 'hs', name: 'Hearthstone', isActive: true },
+        { slug: 'dota2', name: 'Dota2', isActive: true },
+        { slug: 'lol', name: 'LoL', isActive: true },
+        { slug: 'ow', name: 'Overwatch', isActive: true },
+        { slug: 'sc2', name: 'Starcraft 2', isActive: true },
+        { slug: 'hots', name: 'HotS', isActive: true }
+      ]
     }
   },
   methods: {
-    toggleMenu () {
-      this.showDropdown = !this.showDropdown
-    },
-    closeMenu () {
-      this.showDropdown = false
-    },
     toggleGame (game) {
-      this.selectedGames[game] = !this.selectedGames[game]
-      this.$emit('selectedGamesChanged', this.selectedGames)
+      // If all games are active, set them all to inactive
+      if (every(this.games, 'isActive')) {
+        map(this.games, function (game) {
+          game.isActive = false
+        })
+      }
+      this.$set(game, 'isActive', !game.isActive)
+      // If all games are inactive, set them all to active
+      if (every(this.games, ['isActive', false])) {
+        map(this.games, function (game) {
+          game.isActive = true
+        })
+      }
     }
   }
 }
 </script>
 
 <style lang="stylus">
-  .filter__dropdown__label
-    user-select none
+  .filter-dropdown__button
     font-weight 700
     text-transform uppercase
     padding 15px
     font-size 14px
-    cursor pointer
     color $dgray
     display flex
     align-items center
@@ -82,14 +69,7 @@ export default {
       border-top-color $dgray
       transition all .25s
       margin-left 10px
-
-  .filter__dropdown
-    position relative
-  .filter__dropdown__content
-    position absolute
-    top 100%
-    right 0
-    width auto
+  .filter-dropdown__content
     background-color: #fff
     border 1px solid $color-border
     padding 10px
@@ -127,7 +107,6 @@ export default {
       font-size 14px
       user-select none
       color #aaa
-
     &.is-active
       .icon
         &.csgo
@@ -144,7 +123,6 @@ export default {
           background-color: $color-sc2
         &.hots
           background-color: $color-hots
-
       .name
         color $dgray
 </style>

@@ -8,7 +8,7 @@
       <nuxt-link class="acc-nav__btn" to="/login">Login</nuxt-link>
       <nuxt-link class="acc-nav__btn acc-nav__btn--primary" to="/signup">Signup</nuxt-link>
     </div>
-    <account-block class="page-header__account" v-if="loggedIn"></account-block>
+    <account-block class="acc-nav" v-if="loggedIn"></account-block>
   </header>
 </template>
 
