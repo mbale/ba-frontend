@@ -6,7 +6,7 @@
         <tab :class="{'tab--active': !upcomingTabActive }" ref="completed" @click.native="changeTab('completed')">Completed</tab>
       </tabs>
       <div class="filters">
-          <games-filter @selectedGamesChanged="filterByGames" />
+        <games-filter @selectedGamesChanged="filterByGames" />
       </div>
     </div>
     <div class='matches wrapper'>
@@ -103,6 +103,12 @@ export default {
 .page-filter
   background #fff
   display flex
+
+.filters
+  display flex
+  justify-content center
+  align-items center
+  padding 8px
 
 .matches-pagination
   display flex

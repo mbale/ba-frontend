@@ -1,4 +1,4 @@
-import { groupBy, filter } from 'lodash'
+import { groupBy } from 'lodash'
 
 const MUTATIONS = {
   UPDATE_LIST: 'update_list',
