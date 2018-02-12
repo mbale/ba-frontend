@@ -18,23 +18,6 @@
         you may predict on
       </h2>
       <div class="odds__list col">
-        <div class="row row-header">
-          <div class="col odds-header">
-            <h3 class="header-text header-text--three">
-              Home
-            </h3>
-          </div>
-          <div class="col odds-header">
-            <h3 class="header-text header-text--three">
-              Away
-            </h3>
-          </div>
-          <div class="col odds-header">
-            <h3 class="header-text header-text--three">
-              When
-            </h3>
-          </div>
-        </div>
         <div class="row row-odds" v-bind:key="o._id" v-for="o of odds">
           <span class="col col-odds" v-text="o.home"></span>
           <span class="col col-odds" v-text="o.away"></span>
