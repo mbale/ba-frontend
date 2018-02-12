@@ -59,13 +59,19 @@ export const getters = {
 }
 
 export const actions = {
-  async fetch ({ commit }, { page = 0, limit = 20, statusType = 'upcoming' }) {
+  async fetch ({ commit }, { page = 0, limit = 20, statusType = 'upcoming', gameIds }) {
+    const params = {
+      limit,
+      page,
+      statusType
+    }
+
+    if (gameIds) {
+      params.gameIds = gameIds
+    }
+
     const { data: matches, headers } = await this.$axios.get('v1/matches', {
-      params: {
-        limit,
-        page,
-        statusType
-      }
+      params
     })
 
     commit(MUTATIONS.UPDATE_LIST, {

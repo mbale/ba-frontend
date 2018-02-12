@@ -6,7 +6,10 @@ const MUTATIONS = {
 
 export const mutations = {
   [MUTATIONS.INIT] (state, payload) {
-    state.list = payload
+    state.list = payload.map(g => {
+      g.isActive = true
+      return g
+    })
   },
   [MUTATIONS.GET_BY_SLUG] (state, payload) {
     state.game = payload.game

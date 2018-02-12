@@ -17,17 +17,9 @@ export default {
   components: {
     Dropdown, DropdownButton
   },
-  data () {
-    return {
-      games: [
-        { slug: 'csgo', name: 'CSGO', isActive: true },
-        { slug: 'hs', name: 'Hearthstone', isActive: true },
-        { slug: 'dota2', name: 'Dota2', isActive: true },
-        { slug: 'lol', name: 'LoL', isActive: true },
-        { slug: 'ow', name: 'Overwatch', isActive: true },
-        { slug: 'sc2', name: 'Starcraft 2', isActive: true },
-        { slug: 'hots', name: 'HotS', isActive: true }
-      ]
+  computed: {
+    games () {
+      return this.$store.state.games.list
     }
   },
   methods: {
@@ -45,7 +37,7 @@ export default {
           game.isActive = true
         })
       }
-      this.$emit('selectedGamesChanged', this.games)
+      this.$emit('selectedGamesChanged')
     }
   }
 }
@@ -91,17 +83,17 @@ export default {
       background-color #afafaf
       &.csgo
         background-image url('~assets/images/games/icons/csgo.svg')
-      &.hs
+      &.hearthstone
         background-image url('~assets/images/games/icons/hs.svg')
       &.lol
         background-image url('~assets/images/games/icons/lol.svg')
-      &.dota2
+      &.dota-2
         background-image url('~assets/images/games/icons/dota2.svg')
-      &.ow
+      &.overwatch
         background-image url('~assets/images/games/icons/ow.svg')
-      &.sc2
+      &.starcraft-2
         background-image url('~assets/images/games/icons/sc2.svg')
-      &.hots
+      &.heroes-of-the-storm
         background-image url('~assets/images/games/icons/hots.svg')
     .name
       font-weight bold
@@ -112,17 +104,17 @@ export default {
       .icon
         &.csgo
           background-color $color-csgo
-        &.hs
+        &.hearthstone
           background-color: $color-hs
         &.lol
           background-color: $color-lol
-        &.dota2
+        &.dota-2
           background-color: $color-dota2
-        &.ow
+        &.overwatch
           background-color: $color-ow
-        &.sc2
+        &.starcraft-2
           background-color: $color-sc2
-        &.hots
+        &.heroes-of-the-storm
           background-color: $color-hots
       .name
         color $dgray

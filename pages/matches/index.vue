@@ -80,21 +80,44 @@ export default {
     },
     async changePage (page) {
       const activeTab = this.$store.state.matches.active
+
+      // get active game filter first
+      const activeGames = this.$store.state.games.list.filter(g => g.isActive && g.id)
+
+      // get back ids
+      const gameIds = activeGames.map(g => {
+        return g.id
+      })
+
       await this.$store.dispatch('matches/fetch', {
         page,
+        gameIds,
         statusType: activeTab
       })
     },
-    async filterByGames (games) {
-      this.$store.commit('matches/set_game_filter', {
-        filters: games
+    async filterByGames () {
+      // get active game filter first
+      const activeGames = this.$store.state.games.list.filter(g => g.isActive && g.id)
+
+      // get back ids
+      const gameIds = activeGames.map(g => {
+        return g.id
+      })
+
+      await this.$store.dispatch('matches/fetch', {
+        statusType: this.$store.state.matches.active,
+        gameIds
       })
     }
   },
   async asyncData ({ store, route }) {
     const queryParams = route.query
 
+    // get game types
+    // needs due to gamefilter
+    // and get all matches
     await Promise.all([
+      store.dispatch('games/fetchAll'),
       store.dispatch('matches/fetch', {
         statusType: 'upcoming'
       }),
@@ -103,13 +126,14 @@ export default {
       })
     ])
 
+    // based on query params switch tab
     if (queryParams['status-type']) {
       if (queryParams['status-type'] === 'upcoming') {
-        await store.commit('matches/set_active_list', {
+        store.commit('matches/set_active_list', {
           active: 'upcoming'
         })
       } else {
-        await store.commit('matches/set_active_list', {
+        store.commit('matches/set_active_list', {
           active: 'completed'
         })
       }
