@@ -46,7 +46,7 @@ export const state = () => ({
 })
 
 export const actions = {
-  async postPrediction ({ state }) {
+  async postPrediction ({ state, commit }) {
     const {
       matchId,
       oddsId,
@@ -65,6 +65,10 @@ export const actions = {
         text,
         team: selectedTeam,
         oddsId
+      })
+
+      commit(MUTATIONS.SET_BOX_STATE, {
+        boxState: false
       })
     } catch (error) {
       console.log(error)
