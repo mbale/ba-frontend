@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <prediction-box v-show="predictionBoxActive"></prediction-box>
+    <prediction-box v-if="predictionBoxState"></prediction-box>
   </div>
 </template>
 
@@ -49,8 +49,8 @@ export default Vue.extend({
     odds () {
       return this.match.odds
     },
-    predictionBoxActive () {
-      return this.$store.state.predictions.boxActive
+    predictionBoxState () {
+      return this.$store.state.predictions.boxState
     }
   },
   methods: {
@@ -61,19 +61,32 @@ export default Vue.extend({
       })
     },
     togglePredictionBox (odds) {
-      if (this.predictionBoxActive) {
-        this.$store.commit('predictions/set_prediction', {
-          predictions: {
-            selectedTeam: 'home',
-            oddsId: odds._id
-          },
-          teams: []
-        })
-      } else {
-        this.$store.commit('predictions/toggle_box', {
-          state: true
+      const boxState = this.predictionBoxState
+      const {
+        homeTeam,
+        awayTeam,
+        id: matchId
+      } = this.match
+      const oddsId = odds._id
+
+      if (!boxState) {
+        this.$store.commit('predictions/set_box_state', {
+          boxState: true
         })
       }
+
+      this.$store.commit('predictions/set_odds', {
+        oddsId
+      })
+
+      this.$store.commit('predictions/set_match_id', {
+        matchId
+      })
+
+      this.$store.commit('predictions/set_teams', {
+        homeTeam,
+        awayTeam
+      })
     }
   },
   async asyncData ({ store, params, error }) {

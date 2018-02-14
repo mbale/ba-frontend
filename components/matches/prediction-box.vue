@@ -1,12 +1,12 @@
 <template>
   <div class="prediction-box panel">
-    <div class="row">
+    <div class="row prediction-header">
       <div class="col col-header">
         <h1 class="header-text header-text--one">Placing a bet</h1>
-        <h2 class="header-text header-text--two">on your team</h2>
+        <h2 class="header-text header-text--two">on {{ selectedTeam }}</h2>
       </div>
       <div class="col col-icon">
-        <icon @click.native="toggleBox" name="times" scale="1.6"></icon>
+        <icon @click.native="closeBox" name="times" scale="1.6"></icon>
       </div>
     </div>
     <div class="write-prediction col">
@@ -19,11 +19,20 @@
       <div class="row">
         <h3 class="header-text header-text--three">Selected team</h3>
       </div>
+      <div class="row row-teams">
+        <label for="home-team">{{ homeTeam }}</label>
+        <input type="radio" class="team-select" :value="homeTeam" v-model="selectedTeam">
+        <label for="home-team">{{ awayTeam }}</label>
+        <input type="radio" class="team-select" :value="awayTeam" v-model="selectedTeam">
+      </div>
       <div class="row">
         <h3 class="header-text header-text--three">Your opinion (optional)</h3>
       </div>
       <div class="row">
-        <textarea class="textbox"></textarea>
+        <textarea class="textbox" v-model="text"></textarea>
+      </div>
+      <div class="row">
+        <button class="button button--primary" type="submit" @click="sendPrediction">Send</button>
       </div>
     </div>
   </div>
@@ -39,13 +48,40 @@ export default Vue.extend({
   name: 'PredictionBox',
   data () {
     return {
-      selectedTeam: null,
-      stake: 0
+      stake: 0,
+      text: null,
+      selectedTeam: null
+    }
+  },
+  computed: {
+    homeTeam () {
+      return this.$store.state.predictions.homeTeam
+    },
+    awayTeam () {
+      return this.$store.state.predictions.awayTeam
     }
   },
   methods: {
-    toggleBox () {
-      this.$store.commit('predictions/toggle_box', {})
+    closeBox () {
+      this.$store.commit('predictions/set_box_state', {
+        boxState: false
+      })
+    },
+    async sendPrediction () {
+      const {
+        stake,
+        text,
+        selectedTeam
+      } = this
+
+      this.$store.commit('predictions/set_prediction', {
+        prediction: {
+          stake,
+          text,
+          selectedTeam
+        }
+      })
+      await this.$store.dispatch('predictions/postPrediction')
     }
   },
   components: {
@@ -56,6 +92,8 @@ export default Vue.extend({
 </script>
 
 <style lang="stylus" scoped>
+.prediction-header
+  margin-bottom 0px
 
 .write-prediction
   .row
@@ -71,8 +109,20 @@ export default Vue.extend({
       font-size 100%
       background-color #fff
 
+    .team-select
+      margin-right 8px
+      margin-left 2px
+
     .textbox
       min-width 100%
+
+  .row-teams
+    display flex
+    justify-content flex-start
+    align-items center
+
+    > *
+      margin-right 5px
 
 .col-header
   flex-basis 85%
