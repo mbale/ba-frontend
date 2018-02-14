@@ -21,8 +21,10 @@
       </div>
       <div class="row row-teams">
         <label for="home-team">{{ homeTeam }}</label>
+        <span class="home-odds">[{{ homeOdds }}]</span>
         <input type="radio" class="team-select" :value="homeTeam" v-model="selectedTeam">
         <label for="home-team">{{ awayTeam }}</label>
+        <span class="away-odds">[{{ awayOdds }}]</span>
         <input type="radio" class="team-select" :value="awayTeam" v-model="selectedTeam">
       </div>
       <div class="row">
@@ -54,6 +56,12 @@ export default Vue.extend({
     }
   },
   computed: {
+    homeOdds () {
+      return this.$store.state.predictions.homeOdds
+    },
+    awayOdds () {
+      return this.$store.state.predictions.awayOdds
+    },
     homeTeam () {
       return this.$store.state.predictions.homeTeam
     },

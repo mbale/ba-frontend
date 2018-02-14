@@ -67,7 +67,11 @@ export default Vue.extend({
         awayTeam,
         id: matchId
       } = this.match
-      const oddsId = odds._id
+      const {
+        _id: oddsId,
+        home: homeOdds,
+        away: awayOdds
+      } = odds
 
       if (!boxState) {
         this.$store.commit('predictions/set_box_state', {
@@ -76,7 +80,9 @@ export default Vue.extend({
       }
 
       this.$store.commit('predictions/set_odds', {
-        oddsId
+        oddsId,
+        homeOdds,
+        awayOdds
       })
 
       this.$store.commit('predictions/set_match_id', {
