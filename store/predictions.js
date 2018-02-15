@@ -3,7 +3,8 @@ const MUTATIONS = {
   SET_BOX_STATE: 'set_box_state',
   SET_TEAMS: 'set_teams',
   SET_ODDS: 'set_odds',
-  SET_MATCH_ID: 'set_match_id'
+  SET_MATCH_ID: 'set_match_id',
+  RESET_STATE: 'reset_state'
 }
 
 export const mutations = {
@@ -13,17 +14,26 @@ export const mutations = {
   [MUTATIONS.SET_BOX_STATE] (state, { boxState = true }) {
     state.boxState = boxState
   },
-  [MUTATIONS.SET_TEAMS] (state, { homeTeam, awayTeam }) {
+  [MUTATIONS.SET_TEAMS] (state, { homeTeam = null, awayTeam = null }) {
     state.homeTeam = homeTeam
     state.awayTeam = awayTeam
   },
-  [MUTATIONS.SET_ODDS] (state, { oddsId, homeOdds, awayOdds }) {
+  [MUTATIONS.SET_ODDS] (state, { oddsId = null, homeOdds = null, awayOdds = null }) {
     state.oddsId = oddsId
     state.homeOdds = homeOdds
     state.awayOdds = awayOdds
   },
   [MUTATIONS.SET_MATCH_ID] (state, { matchId }) {
     state.matchId = matchId
+  },
+  [MUTATIONS.RESET_STATE] (state) {
+    state.boxState = false
+    state.homeTeam = null
+    state.awayTeam = null
+    state.oddsId = null
+    state.homeOdds = null
+    state.awayOdds = null
+    state.matchId = null
   }
 }
 

@@ -95,6 +95,10 @@ export default Vue.extend({
       })
     }
   },
+  beforeRouteLeave (to, from, next) {
+    this.$store.commit('predictions/reset_state')
+    next()
+  },
   async asyncData ({ store, params, error }) {
     try {
       const matchId = params.id
