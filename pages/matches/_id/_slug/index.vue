@@ -27,12 +27,13 @@
       </div>
     </div>
     <prediction-box v-if="predictionBoxState"></prediction-box>
+
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import PredictionBox from '~/components/matches//prediction-box'
+import PredictionBox from '~/components/match/prediction-box'
 import matchMixins from '~/mixins/match'
 import distance from 'date-fns/distance_in_words'
 
