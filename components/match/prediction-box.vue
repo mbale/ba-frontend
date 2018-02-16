@@ -14,7 +14,11 @@
         <h3 class="header-text header-text--three">Stake</h3>
       </div>
       <div class="row">
-        <vue-numeric class="stake" currency="$" separator="," v-model="stake" :minus="false" :max="3" placeholder="your stake"></vue-numeric>
+        <vue-numeric
+          class="stake" currency="$" separator=","
+          v-model="stake" :minus="false" :max="3"
+          placeholder="your stake">
+        </vue-numeric>
       </div>
       <div class="row">
         <h3 class="header-text header-text--three">Selected team</h3>
@@ -22,10 +26,16 @@
       <div class="row row-teams">
         <label for="home-team">{{ homeTeam }}</label>
         <span class="home-odds">[{{ homeOdds }}]</span>
-        <input type="radio" class="team-select" :value="homeTeam" v-model="selectedTeam">
+        <input
+          type="radio" class="team-select" name="select-team"
+          :value="homeTeam" v-model="selectedTeam"
+          v-validate="{ rules: `required|in:${awayTeam},${homeTeam}`, arg: 'select-team' }">
         <label for="home-team">{{ awayTeam }}</label>
         <span class="away-odds">[{{ awayOdds }}]</span>
-        <input type="radio" class="team-select" :value="awayTeam" v-model="selectedTeam">
+        <input type="radio" class="team-select" name="select-team" :value="awayTeam" v-model="selectedTeam">
+      </div>
+      <div class="row row__error" v-show="errors.has('select-team')">
+        <span>You need to select a team</span>
       </div>
       <div class="row">
         <h3 class="header-text header-text--three">Your opinion (optional)</h3>
@@ -76,20 +86,31 @@ export default Vue.extend({
       })
     },
     async sendPrediction () {
-      const {
-        stake,
-        text,
-        selectedTeam
-      } = this
+      const isValid = await this.$validator.validateAll()
 
-      this.$store.commit('predictions/set_prediction', {
-        prediction: {
+      if (isValid) {
+        const {
           stake,
           text,
           selectedTeam
-        }
-      })
-      await this.$store.dispatch('predictions/postPrediction')
+        } = this
+
+        // set model for prediction box
+        this.$store.commit('predictions/set_prediction', {
+          prediction: {
+            stake,
+            text,
+            selectedTeam
+          }
+        })
+
+        // sending http request
+        await this.$store.dispatch('predictions/postPrediction')
+
+        // requery model
+        const matchId = this.$store.state.predictions.matchId
+        await this.$store.dispatch('match/getById', { matchId })
+      }
     }
   },
   components: {
@@ -106,6 +127,12 @@ export default Vue.extend({
 .write-prediction
   .row
     margin 8px 0px
+
+    &__error
+      margin 4px 0px
+      width 100%
+      color #ec4040
+      font-size 0.9em
 
     .stake
       flex 1

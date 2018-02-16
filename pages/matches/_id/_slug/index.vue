@@ -27,25 +27,27 @@
       </div>
     </div>
     <prediction-box v-if="predictionBoxState"></prediction-box>
-
+    <prediction-list></prediction-list>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import PredictionBox from '~/components/match/prediction-box'
+import PredictionList from '~/components/match/prediction-list'
 import matchMixins from '~/mixins/match'
 import distance from 'date-fns/distance_in_words'
 
 export default Vue.extend({
   name: 'Match',
   components: {
-    PredictionBox
+    PredictionBox,
+    PredictionList
   },
   mixins: [matchMixins],
   computed: {
     match () {
-      return this.$store.state.matches.match
+      return this.$store.state.match.data
     },
     odds () {
       return this.match.odds
@@ -103,7 +105,7 @@ export default Vue.extend({
   async asyncData ({ store, params, error }) {
     try {
       const matchId = params.id
-      await store.dispatch('matches/getById', { matchId })
+      await store.dispatch('match/getById', { matchId })
     } catch (e) {
       return error({ statusCode: 404 })
     }
