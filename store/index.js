@@ -1,3 +1,6 @@
+// debugging help
+export const strict = false
+
 export const state = () => {
 
 }

@@ -18,23 +18,6 @@
         you may predict on
       </h2>
       <div class="odds__list col">
-        <div class="row row-header">
-          <div class="col odds-header">
-            <h3 class="header-text header-text--three">
-              Home
-            </h3>
-          </div>
-          <div class="col odds-header">
-            <h3 class="header-text header-text--three">
-              Away
-            </h3>
-          </div>
-          <div class="col odds-header">
-            <h3 class="header-text header-text--three">
-              When
-            </h3>
-          </div>
-        </div>
         <div class="row row-odds" v-bind:key="o._id" v-for="o of odds">
           <span class="col col-odds" v-text="o.home"></span>
           <span class="col col-odds" v-text="o.away"></span>
@@ -43,31 +26,34 @@
         </div>
       </div>
     </div>
-    <prediction-box v-show="predictionBoxActive"></prediction-box>
+    <prediction-box v-if="predictionBoxState"></prediction-box>
+    <prediction-list></prediction-list>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import PredictionBox from '~/components/matches//prediction-box'
+import PredictionBox from '~/components/match/prediction-box'
+import PredictionList from '~/components/match/prediction-list'
 import matchMixins from '~/mixins/match'
 import distance from 'date-fns/distance_in_words'
 
 export default Vue.extend({
   name: 'Match',
   components: {
-    PredictionBox
+    PredictionBox,
+    PredictionList
   },
   mixins: [matchMixins],
   computed: {
     match () {
-      return this.$store.state.matches.match
+      return this.$store.state.match.data
     },
     odds () {
       return this.match.odds
     },
-    predictionBoxActive () {
-      return this.$store.state.predictions.boxActive
+    predictionBoxState () {
+      return this.$store.state.predictions.boxState
     }
   },
   methods: {
@@ -78,25 +64,48 @@ export default Vue.extend({
       })
     },
     togglePredictionBox (odds) {
-      if (this.predictionBoxActive) {
-        this.$store.commit('predictions/set_prediction', {
-          predictions: {
-            selectedTeam: 'home',
-            oddsId: odds._id
-          },
-          teams: []
-        })
-      } else {
-        this.$store.commit('predictions/toggle_box', {
-          state: true
+      const boxState = this.predictionBoxState
+      const {
+        homeTeam,
+        awayTeam,
+        id: matchId
+      } = this.match
+      const {
+        _id: oddsId,
+        home: homeOdds,
+        away: awayOdds
+      } = odds
+
+      if (!boxState) {
+        this.$store.commit('predictions/set_box_state', {
+          boxState: true
         })
       }
+
+      this.$store.commit('predictions/set_odds', {
+        oddsId,
+        homeOdds,
+        awayOdds
+      })
+
+      this.$store.commit('predictions/set_match_id', {
+        matchId
+      })
+
+      this.$store.commit('predictions/set_teams', {
+        homeTeam,
+        awayTeam
+      })
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    this.$store.commit('predictions/reset_state')
+    next()
   },
   async asyncData ({ store, params, error }) {
     try {
       const matchId = params.id
-      await store.dispatch('matches/getById', { matchId })
+      await store.dispatch('match/getById', { matchId })
     } catch (e) {
       return error({ statusCode: 404 })
     }

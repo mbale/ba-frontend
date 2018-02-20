@@ -47,7 +47,7 @@
       {{ league }}
     </div>
     <div class='misc'>
-      <nuxt-link class="tips-btn" :to="getMatchURLPath()" append>0 Tips</nuxt-link>
+      <nuxt-link class="tips-btn" :to="getMatchURLPath()" append> {{ predictionCount }} Tips</nuxt-link>
     </div>
   </div>
 </template>
@@ -57,7 +57,7 @@ import { format } from 'date-fns'
 
 export default {
   name: 'MatchItem',
-  props: ['gameSlug', 'homeTeam', 'awayTeam', 'date', 'id', 'odds', 'state', 'league'],
+  props: ['gameSlug', 'homeTeam', 'awayTeam', 'date', 'id', 'odds', 'state', 'league', 'predictionCount'],
   methods: {
     getMatchURLPath () {
       return {

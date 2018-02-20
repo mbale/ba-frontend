@@ -6,7 +6,7 @@
         <tab :class="{'tab--active': !upcomingTabActive }" ref="completed" @click.native="changeTab('completed')">Completed</tab>
       </tabs>
       <div class="filters">
-        <games-filter />
+        <games-filter @selectedGamesChanged="filterByGames" />
       </div>
     </div>
     <div class='matches wrapper'>
@@ -14,10 +14,12 @@
       <completed-matches v-else />
       <div class="matches-pagination">
         <!-- PAGINATION -->
-        <paginate
-          :pageCount="pageCount"
-          :changePage="changePage"
-          />
+        <no-ssr>
+          <paginate
+            :pageCount="pageCount"
+            :changePage="changePage"
+            />
+        </no-ssr>
       </div>
     </div>
   </div>
@@ -64,6 +66,11 @@ export default {
   },
   methods: {
     async changeTab (tab) {
+      this.$router.push({
+        query: {
+          'status-type': tab
+        }
+      })
       await this.$store.commit('matches/set_active_list', {
         active: tab
       })
@@ -73,14 +80,44 @@ export default {
     },
     async changePage (page) {
       const activeTab = this.$store.state.matches.active
+
+      // get active game filter first
+      const activeGames = this.$store.state.games.list.filter(g => g.isActive && g.id)
+
+      // get back ids
+      const gameIds = activeGames.map(g => {
+        return g.id
+      })
+
       await this.$store.dispatch('matches/fetch', {
         page,
+        gameIds,
         statusType: activeTab
+      })
+    },
+    async filterByGames () {
+      // get active game filter first
+      const activeGames = this.$store.state.games.list.filter(g => g.isActive && g.id)
+
+      // get back ids
+      const gameIds = activeGames.map(g => {
+        return g.id
+      })
+
+      await this.$store.dispatch('matches/fetch', {
+        statusType: this.$store.state.matches.active,
+        gameIds
       })
     }
   },
   async asyncData ({ store, route }) {
+    const queryParams = route.query
+
+    // get game types
+    // needs due to gamefilter
+    // and get all matches
     await Promise.all([
+      store.dispatch('games/fetchAll'),
       store.dispatch('matches/fetch', {
         statusType: 'upcoming'
       }),
@@ -88,6 +125,19 @@ export default {
         statusType: 'completed'
       })
     ])
+
+    // based on query params switch tab
+    if (queryParams['status-type']) {
+      if (queryParams['status-type'] === 'upcoming') {
+        store.commit('matches/set_active_list', {
+          active: 'upcoming'
+        })
+      } else {
+        store.commit('matches/set_active_list', {
+          active: 'completed'
+        })
+      }
+    }
   }
 }
 </script>
@@ -95,6 +145,12 @@ export default {
 <style lang="stylus" scoped>
 .filter
 
+
+.filters
+  display flex
+  justify-content center
+  align-items center
+  padding 8px
 
 .matches-pagination
   display flex
