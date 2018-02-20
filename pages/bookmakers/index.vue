@@ -1,13 +1,10 @@
 <template>
   <section class="bookmakers">
-    <!-- FILTER -->
-    <div class="bookmakers__filter">
-      <span class="text">Deposit methods</span>
-      <nuxt-link v-bind:key="depositMethod.type"  v-for="depositMethod of depositMethods"
-        :to="{ query: { 'deposit-method': depositMethod.type } }"
-        v-on:click.native="filterByDepositMethod(depositMethod.type)">
-        <img v-bind:class="`image`" v-bind:src="depositMethod.imageURL">
-      </nuxt-link>
+    <div class="toolbar">
+      <!-- FILTER -->
+      <div class="filters">
+        <deposit-filter />
+      </div>
     </div>
     <!-- LIST -->
     <div class="bookmakers__list">
@@ -67,17 +64,15 @@ import Vue from 'vue'
 import StarRating from 'vue-star-rating'
 import Card from '~/components/common/card'
 import CardBox from '~/components/common/card-box'
-import BitcoinImage from '~/assets/images/depositmethods/bitcoin.svg'
-import CreditCardImage from '~/assets/images/depositmethods/credit-card.svg'
-import PaypalImage from '~/assets/images/depositmethods/paypal.svg'
-import SkinImage from '~/assets/images/depositmethods/skins.svg'
+import DepositFilter from '~/components/bookmakers/deposit-filter'
 
 export default Vue.extend({
   name: 'Bookmakers',
   components: {
     Card,
     CardBox,
-    StarRating
+    StarRating,
+    DepositFilter
   },
   head () {
     return {
@@ -87,28 +82,6 @@ export default Vue.extend({
   methods: {
     getBookmakersByInterval (from, to) {
       return this.bookmakers.slice(from, to)
-    },
-    filterByDepositMethod (method) {
-      this.$store.commit('bookmakers/set_filter', {
-        filter: method
-      })
-    }
-  },
-  data () {
-    return {
-      depositMethods: [{
-        type: 'bitcoin',
-        imageURL: BitcoinImage
-      }, {
-        type: 'credit-card',
-        imageURL: CreditCardImage
-      }, {
-        type: 'paypal',
-        imageURL: PaypalImage
-      }, {
-        type: 'skin',
-        imageURL: SkinImage
-      }]
     }
   },
   beforeRouteUpdate (from, to, next) {

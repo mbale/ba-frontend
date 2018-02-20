@@ -1,8 +1,8 @@
 <template>
   <div class="dropdown" v-on-clickaway="closeMenu">
     <slot />
-    <div class="dropdown-content">
-      <slot name="content" v-if="showDropdown" />
+    <div class="dropdown-content" v-if="showDropdown">
+      <slot name="content" />
     </div>
   </div>
 </template>
@@ -39,7 +39,7 @@ export default {
 .dropdown-content
   position absolute
   top 100%
-  width auto
+  min-width 100%
   right 0
-  z-index 999
+  z-index 10
 </style>

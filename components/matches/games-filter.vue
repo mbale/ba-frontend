@@ -51,28 +51,6 @@ export default {
 </script>
 
 <style lang="stylus">
-  .filter-dropdown__button
-    font-weight 700
-    text-transform uppercase
-    padding 15px
-    font-size 14px
-    color $dgray
-    display flex
-    align-items center
-    &:after
-      content ''
-      width 0
-      height 0
-      border 6px solid transparent
-      border-top-width 6px
-      border-bottom-width 0
-      border-top-color $dgray
-      transition all .25s
-      margin-left 10px
-  .filter-dropdown__content
-    background-color: #fff
-    border 1px solid $color-border
-    padding 10px
   .filter-game
     padding 5px 10px
     cursor pointer

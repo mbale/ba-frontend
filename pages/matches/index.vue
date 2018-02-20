@@ -92,10 +92,9 @@ export default {
 }
 </script>
 
-<style lang="stylus">
-.page-filter
-  background #fff
-  display flex
+<style lang="stylus" scoped>
+.filter
+
 
 .matches-pagination
   display flex

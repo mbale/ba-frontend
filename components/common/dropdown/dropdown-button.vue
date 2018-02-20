@@ -18,7 +18,6 @@ export default {
 
 <style lang="stylus">
   .dropdown-button
-    padding 0
     user-select none
     cursor pointer
     border 0

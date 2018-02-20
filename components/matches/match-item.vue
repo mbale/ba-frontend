@@ -172,6 +172,7 @@ export default {
 
 .league
   padding 0 20px
+  white-space nowrap
 
 .misc
   text-align right
