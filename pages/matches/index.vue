@@ -143,14 +143,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.filter
-
-
 .filters
   display flex
   justify-content center
   align-items center
-  padding 8px
 
 .matches-pagination
   display flex

@@ -7,7 +7,7 @@
       :page-class="'pagination__item'"
       :prev-class="'pagination__item pagination__item--arrow'"
       :next-class="'pagination__item pagination__item--arrow'"
-      :page-link-class="'item-link'"
+      :page-link-class="'pagination__link'"
       :active-class="'pagination__item--active'"
       :disabled-class="'pagination__item--disabled'"
     >
@@ -18,14 +18,10 @@
 </template>
 
 <script>
-import Icon from 'vue-awesome/components/Icon'
 import 'vue-awesome/icons/angle-left'
 import 'vue-awesome/icons/angle-right'
 
 export default {
-  components: {
-    Icon
-  },
   props: {
     pageCount: {
       type: Number,
@@ -56,12 +52,19 @@ export default {
   align-items center
   margin 0 6px
   padding 2px 5px
-  a
-    color $lgray
+
+.pagination__link
+  color $lgray
+  &:hover
+    color $mgray
+  &:active
+    color $mgray
+  .pagination__item--active &
+    color #fff
     &:hover
-      color $mgray
+      color #fff
     &:active
-      color $mgray
+      color #fff
 
 .pagination__item--active
   background-color $blue
@@ -69,8 +72,6 @@ export default {
   font-weight 600
   border-radius 4px
   padding 0px 12px
-  a
-    color #fff
 
 .pagination__item--disabled
   a

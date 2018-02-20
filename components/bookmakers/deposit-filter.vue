@@ -54,8 +54,8 @@ export default {
     }
   },
   watch: {
-    '$route.query.deposit-method'() {
-      this.filterByDepositMethod(this.$route.query.deposit-method)
+    '$route.query.deposit-method' () {
+      this.filterByDepositMethod(this.$route.query['deposit-method'])
     }
   }
 }
