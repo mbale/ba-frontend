@@ -20,8 +20,8 @@ export default {
     formatGroupTimeStamp (date) {
       return format(new Date(date), 'dddd, MMMM D')
     },
-    formatMatchDate (date) {
-      return format(new Date(date), 'HH:mm')
+    formatMatchDate (date, schema = 'HH:mm') {
+      return format(new Date(date), schema)
     }
   }
 }
