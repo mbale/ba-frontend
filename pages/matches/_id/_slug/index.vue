@@ -18,7 +18,7 @@
       </div>
     </div>
     <prediction-box v-if="predictionBoxState"></prediction-box>
-    <prediction-list></prediction-list>
+    <prediction-list v-if="predictionCount"></prediction-list>
   </div>
 </template>
 
@@ -37,6 +37,11 @@ export default Vue.extend({
     PredictionBox,
     PredictionList
   },
+  head () {
+    return {
+      title: `Betacle - ${this.match.homeTeam} vs ${this.match.awayTeam}`
+    }
+  },
   mixins: [matchMixins],
   computed: {
     match () {
@@ -44,6 +49,9 @@ export default Vue.extend({
     },
     odds () {
       return this.match.odds
+    },
+    predictionCount () {
+      return this.match.predictionCount
     },
     predictionBoxState () {
       return this.$store.state.predictions.boxState

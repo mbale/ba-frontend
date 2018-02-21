@@ -10,11 +10,11 @@
     </header>
     <main class="content">
       <div class="col">
-        <span class="title">hometeam</span>
+        <span class="title">home</span>
         <span class="text">{{ match.homeTeam}}</span>
       </div>
       <div class="col">
-        <span class="title">awayteam</span>
+        <span class="title">away</span>
         <span class="text">{{ match.awayTeam}}</span>
       </div>
       <div class="col">
