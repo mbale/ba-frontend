@@ -80,7 +80,7 @@ export default {
       return false
     },
     isLoggedIn () {
-      return this.$store.state.auth.user
+      return this.$store.state.user.profile
     },
     loginError () {
       return this.$store.state.auth.loginError || {}

@@ -21,7 +21,7 @@ export default Vue.extend({
   name: 'Profile',
   computed: {
     user () {
-      return this.$store.state.auth.user
+      return this.$store.state.user
     },
     username () {
       return this.user.profile.username
@@ -31,7 +31,7 @@ export default Vue.extend({
     }
   },
   async asyncData (context) {
-    if (!context.store.state.auth.user) {
+    if (!context.store.state.user.profile) {
       context.redirect('/')
     }
   }

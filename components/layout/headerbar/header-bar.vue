@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     loggedIn () {
-      return this.$store.state.auth.user
+      return this.$store.state.user.profile
     }
   }
 }
