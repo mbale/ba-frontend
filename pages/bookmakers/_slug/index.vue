@@ -145,7 +145,7 @@ export default Vue.extend({
     },
     userCanSubmitReview () {
       const reviews = this.$store.state.bookmakers.bookmaker.reviews.items
-      const user = this.$store.state.user.profile
+      const user = this.$store.state.user
 
       if (!user) {
         return false
