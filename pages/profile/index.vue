@@ -1,33 +1,66 @@
 <template>
-  <div class="profile content-panel">
-    <div class="profile__header">
-      <h1 class="welcome">
-        <span class="text">Hello, </span>
-        <span class="username">{{ username }}</span>
-      </h1>
+  <div class="profile panel">
+    <div class="profile__details col">
+      <!-- DETAILS -->
+      <div class="basic">
+        <!-- DATA -->
+        <div class="avatar">
+          <img class="image" v-bind:src="avatarURL" alt="">
+        </div>
+        <div class="info">
+          <span class="username">{{ username }}</span>
+          <span class="registered-on">{{ registeredOn }}</span>
+          <span class="registered-on">
+            <flag :iso="countryCode" />
+          </span>
+        </div>
+        <!-- SETTINGS -->
+        <div class="settings col">
+          <div class="row">
+            <span class="change-avatar"></span>
+            <span class="change-basic"></span>
+          </div>
+        </div>
+      </div>
+      <!-- STATISTICS -->
+      <div class="row">
+
+      </div>
     </div>
-    <div class="avatar">
-      <img v-bind:src="avatar">
-    </div>
-    <div class="bio"></div>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import noAvatarImage from '~/assets/images/no_avatar.png'
+import Flag from 'vue-flag-icon/components/icon/Flag.vue'
 
 export default Vue.extend({
   name: 'Profile',
+  components: {
+    Flag
+  },
   computed: {
     user () {
       return this.$store.state.user
     },
-    username () {
-      return this.user.profile.username
+    profile () {
+      return this.user.profile
     },
-    avatar () {
-      return this.user.avatar || noAvatarImage
+    username () {
+      return this.profile.username
+    },
+    email () {
+      return this.profile.email
+    },
+    registeredOn () {
+      return this.profile.registeredOn
+    },
+    countryCode () {
+      return this.profile.countryCode
+    },
+    avatarURL () {
+      return this.profile.avatar || noAvatarImage
     }
   },
   async asyncData (context) {
@@ -41,8 +74,39 @@ export default Vue.extend({
 <style lang="stylus">
 
 .profile
-  padding 50px
-  &__header
+  padding 40px
+  min-width 60%
+
+  &__details
     display flex
+
+    .basic
+      display flex
+      align-items flex-start
+
+      .avatar
+        display flex
+        align-items flex-start
+        justify-content flex-start
+        flex-basis 20%
+
+        .image
+          max-width 100%
+          border-radius 50%
+
+      .info
+        display flex
+        flex-direction column
+        align-items flex-start
+        justify-content center
+        flex-basis 75%
+        padding 20px 25px
+
+        .username
+          display flex
+          justify-content flex-start
+          font-size 2em
+          color #1F1F26
+          // margin-bottom 12px
 
 </style>

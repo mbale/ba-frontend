@@ -36,5 +36,8 @@ export const actions = {
         root: true
       })
     }
+  },
+  async uploadAvatar (context) {
+
   }
 }
