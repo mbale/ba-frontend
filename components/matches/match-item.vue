@@ -109,7 +109,7 @@ export default {
     flex-direction: column
   &.csgo
     border-left-color $color-csgo
-  &.dota2
+  &.dota-2
     border-left-color $color-dota2
   &.lol
     border-left-color $color-lol
