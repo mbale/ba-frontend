@@ -14,11 +14,12 @@
         <h3 class="header-text header-text--three">Stake</h3>
       </div>
       <div class="row">
-        <vue-numeric
+        <v-slider v-model="stake" thumb-label step="10" ticks></v-slider>
+        <!-- <vue-numeric
           class="stake" currency="$" separator=","
           v-model="stake" :minus="false" :max="3"
           placeholder="your stake">
-        </vue-numeric>
+        </vue-numeric> -->
       </div>
       <div class="row">
         <h3 class="header-text header-text--three">Selected team</h3>

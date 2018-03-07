@@ -6385,6 +6385,10 @@ vuejs-paginate@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/vuejs-paginate/-/vuejs-paginate-1.6.0.tgz#2abfcd9e601627bba0f1338b04bde9664c345fd5"
 
+vuetify@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.0.5.tgz#10e83123a78c82e3d9c2efe6734b7f55ba678dd4"
+
 vuex-persistedstate@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/vuex-persistedstate/-/vuex-persistedstate-2.4.2.tgz#a8caf63b07ce4bdff6d82b29634c051ead382bf3"
