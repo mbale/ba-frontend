@@ -81,7 +81,7 @@ export default {
       return false
     },
     isLoggedIn () {
-      return this.$store.state.auth.user
+      return this.$store.state.user.profile
     },
     signupError () {
       return this.$store.state.auth.signupError || {}

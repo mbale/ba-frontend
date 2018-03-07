@@ -41,22 +41,15 @@ export default {
   methods: {
     toggleDepositMethod (depositMethod) {
       const newRoute = Object.assign({}, this.$route.query, { 'deposit-method': depositMethod.type })
-      console.log('this.$route.query', this.$route.query)
+      // console.log('this.$route.query', this.$route.query)
       console.log('route', newRoute)
       this.$router.push({ name: 'bookmakers', query: newRoute })
-      // this.filterByDepositMethod(depositMethod)
-    },
-    filterByDepositMethod (method) {
-      console.log('this runs', method)
       this.$store.commit('bookmakers/set_filter', {
-        filter: method
+        filter: depositMethod.type
       })
     }
   },
   watch: {
-    '$route.query.deposit-method' () {
-      this.filterByDepositMethod(this.$route.query['deposit-method'])
-    }
   }
 }
 </script>

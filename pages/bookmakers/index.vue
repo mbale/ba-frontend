@@ -84,8 +84,9 @@ export default Vue.extend({
       return this.bookmakers.slice(from, to)
     }
   },
-  beforeRouteUpdate (from, to, next) {
-    if (to.name === 'bookmakers') {
+  beforeRouteUpdate ({name, query}, to, next) {
+    if (name === 'bookmakers' && !query['deposit-method']) {
+      console.log('hi')
       this.$store.commit('bookmakers/set_filter', {})
     }
     next()

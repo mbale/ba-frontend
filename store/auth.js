@@ -12,7 +12,6 @@ const MUTATIONS = {
   SIGNUP_IN_PROGRESS: 'signup_in_progress',
   SIGNUP_SUCCESS: 'signup_success',
   //
-  GET_PROFILE: 'get_profile',
   SET_TOKEN: 'set_token',
   LOG_OUT: 'log_out'
 }
@@ -45,12 +44,6 @@ export const mutations = {
   //
   [MUTATIONS.SET_TOKEN] (state, payload) {
     state.accessToken = payload.accessToken
-  },
-  [MUTATIONS.GET_PROFILE] (state, payload) {
-    state.user = payload.user
-  },
-  [MUTATIONS.LOG_OUT] (state) {
-    state.user = null
   }
 }
 
@@ -84,7 +77,7 @@ export const actions = {
 
       commit(MUTATIONS.SIGNUP_SUCCESS)
 
-      await dispatch('getProfile')
+      await dispatch('user/getProfile', {}, { root: true })
     } catch (error) {
       commit(MUTATIONS.SIGNUP_FAIL, {
         error
@@ -108,7 +101,7 @@ export const actions = {
 
       commit(MUTATIONS.LOGIN_SUCCESS)
 
-      await dispatch('getProfile')
+      await dispatch('user/getProfile', {}, { root: true })
     } catch (error) {
       commit(MUTATIONS.LOGIN_FAIL, {
         error
@@ -185,22 +178,8 @@ export const actions = {
       this.app.context.res.setHeader('Set-Cookie', Cookie.serialize('accessToken', accessToken, params))
     }
   },
-  /*
-  **  Authenticated calls behalf of user
-  */
-  async getProfile (context) {
-    try {
-      const user = await this.$axios.$get('v1/users/me')
-
-      context.commit(MUTATIONS.GET_PROFILE, {
-        user
-      })
-    } catch (error) {
-      await context.dispatch('updateToken', {})
-    }
-  },
   async logout ({ commit, dispatch }) {
     await dispatch('updateToken', {})
-    commit(MUTATIONS.LOG_OUT)
+    commit('user/reset_data', {}, { root: true })
   }
 }

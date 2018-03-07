@@ -60,7 +60,8 @@ export const actions = {
     const {
       matchId,
       oddsId,
-      prediction
+      prediction,
+      homeTeam
     } = state
 
     const {
@@ -69,13 +70,24 @@ export const actions = {
       selectedTeam
     } = prediction
 
+    let team = 'away'
+
+    if (selectedTeam === homeTeam) {
+      team = 'home'
+    }
+
     try {
-      await this.$axios.$post(`v1/matches/${matchId}/predictions`, {
+      const payload = {
         stake,
-        text,
-        team: selectedTeam,
+        team,
         oddsId
-      })
+      }
+
+      if (text) {
+        payload.text = text
+      }
+
+      await this.$axios.$post(`v1/matches/${matchId}/predictions`, payload)
 
       commit(MUTATIONS.SET_BOX_STATE, {
         boxState: false

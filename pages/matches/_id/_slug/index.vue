@@ -1,15 +1,6 @@
 <template>
   <div class="match">
-    <div class="match__info panel">
-      <div class="row">
-        <div class="col">
-          Hometeam
-        </div>
-        <div class="col">
-          Awayteam
-        </div>
-      </div>
-    </div>
+    <info></info>
     <div class="match__odds panel">
       <h1 class="header-text header-text--one">
         Odds
@@ -27,12 +18,13 @@
       </div>
     </div>
     <prediction-box v-if="predictionBoxState"></prediction-box>
-    <prediction-list></prediction-list>
+    <prediction-list v-if="predictionCount"></prediction-list>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
+import Info from '~/components/match/info'
 import PredictionBox from '~/components/match/prediction-box'
 import PredictionList from '~/components/match/prediction-list'
 import matchMixins from '~/mixins/match'
@@ -41,8 +33,14 @@ import distance from 'date-fns/distance_in_words'
 export default Vue.extend({
   name: 'Match',
   components: {
+    Info,
     PredictionBox,
     PredictionList
+  },
+  head () {
+    return {
+      title: `Betacle - ${this.match.homeTeam} vs ${this.match.awayTeam}`
+    }
   },
   mixins: [matchMixins],
   computed: {
@@ -51,6 +49,9 @@ export default Vue.extend({
     },
     odds () {
       return this.match.odds
+    },
+    predictionCount () {
+      return this.match.predictionCount
     },
     predictionBoxState () {
       return this.$store.state.predictions.boxState

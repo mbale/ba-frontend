@@ -100,6 +100,7 @@ module.exports = {
       }
     },
     vendor: [
+      'vue-flag-icon',
       'vue-social-sharing',
       'vue-star-rating',
       'vee-validate',
