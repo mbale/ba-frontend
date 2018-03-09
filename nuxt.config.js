@@ -15,10 +15,6 @@ module.exports = {
   // Vue
   plugins: [
     {
-      src: '~/plugins/vuetify',
-      ssr: true
-    },
-    {
       src: '~/plugins/vue-social-share',
       ssr: true
     }, {

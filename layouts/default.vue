@@ -24,7 +24,7 @@ export default {
 
 <style lang="stylus">
 // main.styl
-@import '~vuetify/src/stylus/main' 
+// @import '~vuetify/src/stylus/main' 
 
 html
   box-sizing border-box
@@ -46,6 +46,11 @@ body
   min-height 100vh
   flex-direction column
   background-color #F1F3F8
+
+a
+  transition all .15s ease-in-out
+  color $blue
+  text-decoration none
 
 .wrapper
   max-width 1180px

@@ -14,7 +14,6 @@
         <h3 class="header-text header-text--three">Stake</h3>
       </div>
       <div class="row">
-        <v-slider v-model="stake" thumb-label step="10" ticks></v-slider>
         <!-- <vue-numeric
           class="stake" currency="$" separator=","
           v-model="stake" :minus="false" :max="3"
