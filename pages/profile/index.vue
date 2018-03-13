@@ -1,6 +1,6 @@
 <template>
-  <div class="profile panel">
-    <div class="profile__details col">
+  <div class="profile">
+    <div class="profile__details panel">
       <!-- DETAILS -->
       <div class="basic">
         <!-- DATA -->
@@ -9,22 +9,30 @@
         </div>
         <div class="info">
           <span class="username">{{ username }}</span>
-          <span class="registered-on">{{ registeredOn }}</span>
-          <span class="registered-on">
-            <flag :iso="countryCode" />
+          <span class="registered-on">{{ sinceDate(registeredOn) }}</span>
+          <span class="country">
+            <flag class="flag" :size="2" :iso="countryCode" />
           </span>
         </div>
         <!-- SETTINGS -->
-        <div class="settings col">
-          <div class="row">
-            <span class="change-avatar"></span>
-            <span class="change-basic"></span>
+        <div class="settings">
+          <div class="change-avatar">
+            <icon name="upload" :scale="1"></icon>
+          </div>
+          <div class="change-basic">
+            <icon name="wrench"></icon>
           </div>
         </div>
       </div>
       <!-- STATISTICS -->
-      <div class="row">
+      <div class="stat">
 
+      </div>
+    </div>
+    <div class="profile__predictions panel">
+      <div v-bind:key="p.id" v-for="p of predictions">
+        {{ p.text }}
+        {{ p.stake }}
       </div>
     </div>
   </div>
@@ -32,13 +40,19 @@
 
 <script>
 import Vue from 'vue'
+import utilsMixin from '~/mixins/utils'
 import noAvatarImage from '~/assets/images/no_avatar.png'
 import Flag from 'vue-flag-icon/components/icon/Flag.vue'
+import 'vue-awesome/icons/wrench'
+import 'vue-awesome/icons/upload'
+import Icon from 'vue-awesome/components/Icon'
 
 export default Vue.extend({
   name: 'Profile',
+  mixins: [utilsMixin],
   components: {
-    Flag
+    Flag,
+    Icon
   },
   computed: {
     user () {
@@ -61,6 +75,9 @@ export default Vue.extend({
     },
     avatarURL () {
       return this.profile.avatar || noAvatarImage
+    },
+    predictions () {
+      return this.user.predictions
     }
   },
   async asyncData (context) {
@@ -79,18 +96,21 @@ export default Vue.extend({
 
   &__details
     display flex
+    flex-direction column
 
     .basic
       display flex
-      align-items flex-start
+      align-items center
+      padding 5px
 
       .avatar
         display flex
         align-items flex-start
         justify-content flex-start
-        flex-basis 20%
+        flex-basis 15%
 
         .image
+          min-width 100px
           max-width 100%
           border-radius 50%
 
@@ -100,7 +120,10 @@ export default Vue.extend({
         align-items flex-start
         justify-content center
         flex-basis 75%
-        padding 20px 25px
+        padding-left 25px
+
+        > *
+          margin-bottom 4px
 
         .username
           display flex
@@ -108,5 +131,18 @@ export default Vue.extend({
           font-size 2em
           color #1F1F26
           // margin-bottom 12px
+
+        .country
+          font-size 1.2em
+
+      .settings
+        display flex
+        flex-direction column
+        justify-content flex-end
+        align-items flex-end
+        flex-basis 10%
+
+        > *
+          margin 8px 0px
 
 </style>

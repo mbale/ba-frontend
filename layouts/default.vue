@@ -23,6 +23,9 @@ export default {
 
 
 <style lang="stylus">
+// main.styl
+// @import '~vuetify/src/stylus/main' 
+
 html
   box-sizing border-box
   min-height 100%
@@ -42,23 +45,17 @@ body
   display flex
   min-height 100vh
   flex-direction column
+  background-color #F1F3F8
+
+a
+  transition all .15s ease-in-out
+  color $blue
+  text-decoration none
 
 .wrapper
   max-width 1180px
   margin 0 auto
   padding 0 15px
 
-a
-  transition all .15s ease-in-out
-  color $blue
-  text-decoration none
-  &:hover
-    color darken($blue, 15%)
-
-figure img
-  display block
-
-*:focus
-  outline none
 
 </style>
