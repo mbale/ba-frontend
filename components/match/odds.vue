@@ -1,17 +1,17 @@
 <template>
   <div class="odds panel">
     <h1 class="header-text header-text--one">
-      Odds
+      Latest odds
     </h1>
     <h2 class="header-text header-text--two">
       you may bet on
     </h2>
-    <div class="list col">
-      <div class="row row-odds" v-bind:key="o._id" v-for="o of odds">
-        <span class="col col-odds" v-text="o.home"></span>
-        <span class="col col-odds" v-text="o.away"></span>
-        <span class="col col-date" v-text="formatDate(o.fetchedAt)"></span>
-        <div class="button button--primary" @click="togglePredictionBox(o)">Bet</div>
+    <div class="odds-list col">
+      <div class="odds-row" v-bind:key="o._id" v-for="o of odds">
+        <span class="row-item odds-team" v-text="o.home"></span>
+        <span class="row-item odds-team" v-text="o.away"></span>
+        <span class="row-item odds-date" v-text="sinceInWords(o.fetchedAt)"></span>
+        <div class="odds-btn button button--primary" @click="$emit('openPredictionBox', o)">Bet</div>
       </div>
     </div>
   </div>
@@ -28,44 +28,40 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 
-.list
-  .row-header
-    flex-direction row
-    justify-content flex-start
+.odds
+  .odds-list
+    .odds-row
+      display flex
+      flex-direction row
+      margin 0px
 
-    .odds-header
-      margin-right 55px
-      margin-bottom 5px
+      .row-item
+        margin-right 15px
+        justify-content center
 
-  .row-odds
-    margin 0px
+      .odds-date
+        display flex
+        align-items center
+        min-width 130px
 
-    > *
-      margin-right 15px
-      margin-bottom 10px
-      justify-content center
+      .odds-team
+        display flex
+        flex-direction column
+        justify-content center
+        align-items center
+        border 1px solid #dbdbdb
+        border-radius 2px
+        padding 5px 10px
+        width 80px
+        text-align center
+        font-size 13px
+        font-weight 700
+        color #62626f
+        user-select none
 
-      &:last-child
+      .odds-btn
         margin-right 0px
-
-  .col-date
-    min-width 130px
-
-  .col-odds
-    display flex
-    flex-direction column
-    justify-content center
-    align-items center
-    border 1px solid #dbdbdb
-    border-radius 2px
-    padding 5px 10px
-    width 80px
-    text-align center
-    font-size 13px
-    font-weight 700
-    color #62626f
-    user-select none
 
 </style>

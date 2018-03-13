@@ -1,7 +1,7 @@
 <template>
   <div class="match">
     <info></info>
-    <match-odds :odds="odds" v-if="!isMatchFinished"></match-odds>
+    <match-odds @openPredictionBox="togglePredictionBox" :odds="odds" v-if="!isMatchFinished"></match-odds>
     <match-scores :scores="scores" v-else></match-scores>
     <prediction-box v-if="predictionBoxState"></prediction-box>
     <prediction-list v-if="predictionCount"></prediction-list>
