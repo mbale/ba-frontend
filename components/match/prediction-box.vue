@@ -14,15 +14,19 @@
         <h3 class="header-text header-text--three">Selected team</h3>
       </div>
       <div class="row row-teams">
-        <label for="home-team">{{ homeTeam }}</label>
+        <p-radio class="team-select p-default p-curve" :value="homeTeam" v-model="selectedTeam" name="select-team" color="primary-o"
+        v-validate="{ rules: `required|in:${awayTeam},${homeTeam}`, arg: 'select-team' }">
+          {{ awayTeam }}
+        </p-radio>
         <span class="home-odds">[{{ homeOdds }}]</span>
-        <input
+        <!-- <input
           type="radio" class="team-select" name="select-team"
           :value="homeTeam" v-model="selectedTeam"
-          v-validate="{ rules: `required|in:${awayTeam},${homeTeam}`, arg: 'select-team' }">
-        <label for="home-team">{{ awayTeam }}</label>
+          v-validate="{ rules: `required|in:${awayTeam},${homeTeam}`, arg: 'select-team' }"> -->
+        <p-radio class="team-select p-default p-curve" :value="awayTeam" v-model="selectedTeam" name="select-team" color="primary-o">
+          {{ awayTeam }}
+        </p-radio>
         <span class="away-odds">[{{ awayOdds }}]</span>
-        <input type="radio" class="team-select" name="select-team" :value="awayTeam" v-model="selectedTeam">
       </div>
       <div class="row row__error" v-show="errors.has('select-team')">
         <span>You need to select a team</span>
@@ -32,7 +36,7 @@
       </div>
       <div class="row">
         <div class="row" v-bind:key="allowed.stake" v-for="allowed of allowedStakes">
-          <p-radio class="p-default p-curve" v-bind:value="allowed.stake" v-model="stake" name="color" color="primary-o" :disabled="isStakeDisabled(allowed)">
+          <p-radio class="p-default p-curve" v-bind:value="allowed.stake" v-model="stake" name="stake" color="primary-o" :disabled="isStakeDisabled(allowed)">
             {{ allowed.stake }}
           </p-radio>
         </div>
