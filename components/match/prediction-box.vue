@@ -11,17 +11,6 @@
     </div>
     <div class="write-prediction col">
       <div class="row">
-        <h3 class="header-text header-text--three">Stake</h3>
-      </div>
-      <div class="row">
-         <p-check color="success">Success</p-check>
-        <!-- <vue-numeric
-          class="stake" currency="$" separator=","
-          v-model="stake" :minus="false" :max="3"
-          placeholder="your stake">
-        </vue-numeric> -->
-      </div>
-      <div class="row">
         <h3 class="header-text header-text--three">Selected team</h3>
       </div>
       <div class="row row-teams">
@@ -37,6 +26,16 @@
       </div>
       <div class="row row__error" v-show="errors.has('select-team')">
         <span>You need to select a team</span>
+      </div>
+      <div class="row">
+        <h3 class="header-text header-text--three">Stake</h3>
+      </div>
+      <div class="row">
+        <div class="row" v-bind:key="allowed.stake" v-for="allowed of allowedStakes">
+          <p-radio class="p-default p-curve" v-bind:value="allowed.stake" v-model="stake" name="color" color="primary-o" :disabled="isStakeDisabled(allowed)">
+            {{ allowed.stake }}
+          </p-radio>
+        </div>
       </div>
       <div class="row">
         <h3 class="header-text header-text--three">Your opinion (optional)</h3>
@@ -55,7 +54,6 @@
 import Vue from 'vue'
 import 'vue-awesome/icons/times'
 import Icon from 'vue-awesome/components/Icon'
-import VueNumeric from 'vue-numeric'
 
 export default Vue.extend({
   name: 'PredictionBox',
@@ -78,9 +76,71 @@ export default Vue.extend({
     },
     awayTeam () {
       return this.$store.state.predictions.awayTeam
+    },
+    allowedStakes () {
+      const awayOdds = this.awayOdds
+      const homeOdds = this.homeOdds
+
+      let allowedMaxStakes = {
+        home: 0.5,
+        away: 0.5
+      }
+
+      // interval check
+      if (homeOdds < 2.5) {
+        allowedMaxStakes.home = 3
+      }
+
+      if (awayOdds < 2.5) {
+        allowedMaxStakes.away = 3
+      }
+
+      //
+
+      if (homeOdds >= 2.5 && homeOdds < 5) {
+        allowedMaxStakes.home = 2
+      }
+
+      if (awayOdds >= 2.5 && awayOdds < 5) {
+        allowedMaxStakes.away = 2
+      }
+
+      //
+
+      if (homeOdds >= 5 && homeOdds < 7.5) {
+        allowedMaxStakes.home = 1
+      }
+
+      if (awayOdds >= 5 && awayOdds < 7.5) {
+        allowedMaxStakes.away = 1
+      }
+
+      const stakes = [0.5, 1, 2, 3]
+
+      const rules = []
+
+      stakes.forEach(stake => {
+        rules.push({
+          stake,
+          home: allowedMaxStakes.home >= stake,
+          away: allowedMaxStakes.away >= stake
+        })
+      })
+
+      return rules
     }
   },
   methods: {
+    isStakeDisabled (stakeObj) {
+      const selectedTeam = this.selectedTeam
+      let team = 'home'
+
+      if (selectedTeam === this.awayTeam) {
+        team = 'away'
+      }
+
+      return !stakeObj[team]
+    },
     closeBox () {
       this.$store.commit('predictions/set_box_state', {
         boxState: false
@@ -115,8 +175,7 @@ export default Vue.extend({
     }
   },
   components: {
-    Icon,
-    VueNumeric
+    Icon
   }
 })
 </script>
