@@ -14,6 +14,7 @@
         <h3 class="header-text header-text--three">Stake</h3>
       </div>
       <div class="row">
+         <p-check color="success">Success</p-check>
         <!-- <vue-numeric
           class="stake" currency="$" separator=","
           v-model="stake" :minus="false" :max="3"

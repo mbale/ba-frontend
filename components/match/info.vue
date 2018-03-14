@@ -46,7 +46,6 @@ export default Vue.extend({
 
 <style lang="stylus">
 .match__info
-
   .content
     display flex
     flex-direction row

@@ -15,6 +15,10 @@ module.exports = {
   // Vue
   plugins: [
     {
+      src: '~/plugins/pretty-checkbox-vue',
+      ssr: true
+    },
+    {
       src: '~/plugins/vue-social-share',
       ssr: true
     }, {
