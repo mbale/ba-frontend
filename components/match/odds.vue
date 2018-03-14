@@ -35,7 +35,8 @@ export default Vue.extend({
     .odds-row
       display flex
       flex-direction row
-      margin 0px
+      justify-content space-between
+      margin 0
 
       .row-item
         margin-right 15px
