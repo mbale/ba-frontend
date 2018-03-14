@@ -39,7 +39,6 @@
     "items": []
   }
 }
-
 // API REVIEWINFO
 [
   {
@@ -67,6 +66,7 @@
 ]
 -->
 
+
 <template>
     <div class="bookmaker-container">
 
@@ -76,11 +76,8 @@
           <img v-bind:src="bookmaker.logo" alt="">
         </div>
 
-        <!-- <img v-bind:src="bookmaker.logo" alt=""> -->
-
         <div class="information">
           <h1 class="bookmaker-name">{{ bookmaker.name }}</h1>
-          <!-- <div class="rating"></div> -->
           <div class="rating" slot="body">
             <no-ssr>
               <star-rating active-color="#ffcd02" :rating="bookmaker.reviews.avg" :star-size="18" :show-rating="false" :read-only="true" :inline="true"></star-rating>
@@ -111,75 +108,72 @@
 
           <!-- ABOUT TAB  -->
           <div v-show="currentTab === 0" class="about">
-            <h3 class="heading">About {{ bookmaker.name }}</h3>
-            <p>{{ bookmaker.description }}</p>
 
-            <h3 class="heading">Details</h3>
-            <table>
-              <tbody>
+            <div class="about-content">
+              <h3 class="heading">About {{ bookmaker.name }}</h3>
+              <p>{{ bookmaker.description }}</p>
+            </div>
 
-                <!-- Official Website -->
-                <tr v-if="bookmaker.url">
-                  <td>Official Website</td>
-                  <td>
-                    <a target="_blank" v-bind:href="bookmaker.url">{{ bookmaker.url }}</a>
-                  </td>
-                </tr>
+            <div class="details-content">
+              <h3 class="heading">Details</h3>
+              <table>
+                <tbody>
 
-                <!-- Affiliate URL -->
-                <!-- <tr v-if="bookmaker.affiliateUrl">
-                  <td>Affiliate URL</td>
-                  <td>
-                    <a target="_blank" v-bind:href="bookmaker.url">{{ bookmaker.affiliateUrl }}</a>
-                  </td>
-                </tr> -->
+                  <!-- Official Website -->
+                  <tr v-if="bookmaker.url">
+                    <td>Official Website</td>
+                    <td>
+                      <a target="_blank" v-bind:href="bookmaker.url">{{ bookmaker.url }}</a>
+                    </td>
+                  </tr>
 
-                <!-- Support Email -->
-                <tr v-if="bookmaker.supportEmail !== 'n/a'">
-                  <td>Support Email</td>
-                  <td>
-                    <a v-bind:href="`mailto:${bookmaker.supportEmail}?subject=support`">{{ bookmaker.supportEmail }}</a>
-                  </td>
-                </tr>
+                  <!-- Support Email -->
+                  <tr v-if="bookmaker.supportEmail !== 'n/a'">
+                    <td>Support Email</td>
+                    <td>
+                      <a v-bind:href="`mailto:${bookmaker.supportEmail}?subject=support`">{{ bookmaker.supportEmail }}</a>
+                    </td>
+                  </tr>
 
-                <!-- Founded -->
-                <tr v-if="bookmaker.founded">
-                  <td>Founded</td>
-                  <td>{{ bookmaker.founded }}</td>
-                </tr>
+                  <!-- Founded -->
+                  <tr v-if="bookmaker.founded">
+                    <td>Founded</td>
+                    <td>{{ bookmaker.founded }}</td>
+                  </tr>
 
-                <!-- Deposit Methods -->
-                <tr v-if="bookmaker.depositMethods">
-                  <td>Deposit Methods</td>
-                  <td>
-                    <span v-for="(method) in bookmaker.depositMethods" class="item">
-                      <span>{{ method.name }}</span>
-                    </span>
-                  </td>
-                </tr>
+                  <!-- Deposit Methods -->
+                  <tr v-if="bookmaker.depositMethods">
+                    <td>Deposit Methods</td>
+                    <td>
+                      <span v-for="(method) in bookmaker.depositMethods" class="item">
+                        <span>{{ method.name }}</span>
+                      </span>
+                    </td>
+                  </tr>
 
-                <!-- Licenses -->
-                <tr v-if="bookmaker.licenses">
-                  <td>Licenses</td>
-                  <td>
-                    <span v-for="(license) in bookmaker.licenses" class="item">
-                      <span>{{ license }}</span>
-                    </span>
-                  </td>
-                </tr>
+                  <!-- Licenses -->
+                  <tr v-if="bookmaker.licenses">
+                    <td>Licenses</td>
+                    <td>
+                      <span v-for="(license) in bookmaker.licenses" class="item">
+                        <span>{{ license }}</span>
+                      </span>
+                    </td>
+                  </tr>
 
-                <!-- Restricted Countries -->
-                <tr v-if="bookmaker.restrictedCountries">
-                  <td>Restricted Countries</td>
-                  <td>
-                    <span v-for="(country) in bookmaker.restrictedCountries" class="item">
-                      <span>{{ country }}</span>
-                    </span>
-                  </td>
-                </tr>
+                  <!-- Restricted Countries -->
+                  <tr v-if="bookmaker.restrictedCountries">
+                    <td>Restricted Countries</td>
+                    <td>
+                      <span v-for="(country) in bookmaker.restrictedCountries" class="item">
+                        <span>{{ country }}</span>
+                      </span>
+                    </td>
+                  </tr>
 
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <!-- BONUSES TAB -->
@@ -202,7 +196,7 @@
           <!-- REVIEWS TAB -->
           <div v-show="currentTab === 2" class="reviews">
 
-            <div class="reviews">
+            <div class="reviews-content">
               <header>
                 <h3 class="heading">{{ bookmaker.reviews.items.length }} Reviews</h3>
                 <div class="rating">
@@ -230,54 +224,30 @@
                   <p>{{ review.text }}</p>
                 </div>
               </div>
+            </div>
 
-              <div class="make-review" v-show="userCanSubmitReview">
-                <div class="select-rating">
-                  <span>Rating</span>
-                  <div class="ratings">
-                    <no-ssr>
-                      <star-rating active-color="#ffcd02" @rating-selected="setReviewRating" :increment="0.5" :star-size="30" :show-rating="false" :inline="true"></star-rating>
-                    </no-ssr>
-                  </div>
+            <!-- Write a review yourself section -->
+            <div class="make-review" v-show="userCanSubmitReview">
+              <div class="select-rating">
+                <span>Rating</span>
+                <div class="ratings">
+                  <no-ssr>
+                    <star-rating active-color="#ffcd02" @rating-selected="setReviewRating" :increment="0.5" :star-size="30" :show-rating="false" :inline="true"></star-rating>
+                  </no-ssr>
                 </div>
+              </div>
 
-                <div class="write-review">
-                  <span>Review</span>
-                  <textarea v-model="review.text" name="review-field" cols="30" rows="10"></textarea>
-                  <button class="blue-bg" @click="submitReview">Post Review</button>
-                </div>
+              <div class="write-review">
+                <span>Review</span>
+                <textarea v-model="review.text" name="review-field" cols="30" rows="10"></textarea>
+                <button class="blue-bg" @click="submitReview">Post Review</button>
               </div>
             </div>
 
           </div>
         </div>
 
-        <div class="sportsbook-content">
-            <img src="~/assets/images/bookmaker/aside.png" alt="">
-
-            <div class="sportsbooks">
-              <h4>TOP SPORTSBOOKS</h4>
-
-              <!-- Sportbook  -->
-              <div class="sportsbook" v-for="(bookmaker) in sportsbooks">
-                <img :src="bookmaker.icon" alt="">
-                <h6>
-                  <nuxt-link class="review" :to="{ path: '../' + bookmaker.slug }" append>
-                    {{bookmaker.name}}
-                  </nuxt-link>
-                </h6>
-                <div class="rating">
-                  <no-ssr>
-                    <star-rating active-color="#ffcd02" :rating="bookmaker.reviews.avg" :star-size="12" :show-rating="false" :read-only="true" :inline="true"></star-rating>
-                  </no-ssr>
-                </div>
-                <button class="bet slide-left"><a :href="bookmaker.affiliateUrl">Bet</a></button>
-              </div>
-
-              <h5 class="more" @click="showMoreSportsbooks(5)" v-show="letShowMoreSportsbooks">more sportsbooks reviews</h5>
-            </div>
-
-        </div>
+        <top-sportsbooks />
 
     </div>
 </template>
@@ -286,8 +256,8 @@
 import Vue from 'vue'
 import StarRating from 'vue-star-rating'
 import noAvatarImage from '~/assets/images/no_avatar.png'
-
 import { Tabs, Tab } from '~/components/common/tabs'
+import TopSportsbooks from '~/components/bookmakers/top-sportsbooks'
 
 export default Vue.extend({
   name: 'Bookmaker',
@@ -299,8 +269,6 @@ export default Vue.extend({
         second: 'Bonuses',
         third: 'Reviews'
       },
-      letShowMoreSportsbooks: true,
-      sportsbooksToShow: 2,
       review: {
         rating: null,
         text: null
@@ -311,16 +279,17 @@ export default Vue.extend({
   components: {
     StarRating,
     Tabs,
-    Tab
+    Tab,
+    TopSportsbooks
   },
   computed: {
-    bookmakers () {
-      return this.$store.state.bookmakers.list
-    },
-    sportsbooks () {
-      var topBookmakers = this.$store.state.bookmakers.list.sort(function (a, b) { return a.reviews.avg < b.reviews.avg ? 1 : -1 }).slice(0, this.sportsbooksToShow)
-      return topBookmakers
-    },
+    // bookmakers () {
+    //   return this.$store.state.bookmakers.list
+    // },
+    // sportsbooks () {
+    //   var topBookmakers = this.$store.state.bookmakers.list.sort(function (a, b) { return a.reviews.avg < b.reviews.avg ? 1 : -1 }).slice(0, this.sportsbooksToShow)
+    //   return topBookmakers
+    // },
     bookmaker () {
       return this.$store.state.bookmakers.bookmaker
     },
@@ -345,10 +314,10 @@ export default Vue.extend({
     }
   },
   methods: {
-    showMoreSportsbooks (number) {
-      this.sportsbooksToShow = number
-      this.letShowMoreSportsbooks = false
-    },
+    // showMoreSportsbooks (number) {
+    //   this.sportsbooksToShow = number
+    //   this.letShowMoreSportsbooks = false
+    // },
     getUserObject (review) {
       return review.user
     },
@@ -403,18 +372,19 @@ button.slide-left
 .bookmaker-container
     max-width: 1440px
     width: 100%
-    background-color: white
+    background-color: transparent
     margin-bottom: 30px
 
     .tabs
-        margin-left: 200px
+        padding-left: 200px
+        background-color: white
 
         .tab
             padding: 15px 25px
             font-size: 13px
             font-weight: 600
             color: $mgray
-            font-family: $font-opensans
+            // font-family: $font-opensans
 
             &.tab--active
                 border-bottom: 2px solid #2d3088
@@ -451,8 +421,6 @@ button.slide-left
         button.visit
             background-color: $blue
             color: white
-            font-family: $font-opensans
-            font-size: 14px
             font-weight: 500
             padding: 15px 47px
             border: none
@@ -482,7 +450,6 @@ button.slide-left
                 font-size: 30px
                 font-weight: 500
                 color: white
-                font-family: $font-opensans
                 display: inline-block
                 margin-left: 20px
 
@@ -497,7 +464,6 @@ button.slide-left
                 color: white
                 font-size: 11px
                 font-weight: 600
-                font-family: $font-opensans
                 border: none
                 padding: 5px 13px
                 text-transform: uppercase
@@ -514,14 +480,14 @@ button.slide-left
 
 
     .bookmaker-content
-        padding: 35px 40px
-        width: calc(80% - 25px)
+        padding: 0
+        width: calc(80% - 30px)
         float: left
+        margin-top: 10px
 
         h3.heading
             font-size: 22px
             font-weight: 600
-            font-family: $font-opensans
             color: #2d3088
             margin-bottom: 25px
 
@@ -530,143 +496,154 @@ button.slide-left
 
         .about
 
-            p
-                font-size: 14px
-                line-height: 1.71
-                color: #282828
+            .about-content, .details-content
+                background-color: white
+                padding: 25px 30px
+                margin-top: 15px
+                margin-right: 25px
 
-                strong
-                    font-weight: bold
-                    color: #106bde
+                p
+                    line-height: 1.71
+                    color: #282828
 
-            table
-                border-collapse: separate
-                border-spacing: 1px
+                    strong
+                        font-weight: bold
+                        color: #106bde
 
-                tbody
+                table
+                    border-collapse: separate
+                    border-spacing: 1px
+                    width: 100%
 
-                    tr
-                        background-color: #f5f5f5
-                        height: 36px
+                    tbody
 
-                        &:nth-of-type(2n)
-                            background-color: rgba(245, 245, 245, 0.5)
+                        tr
+                            background-color: #f5f5f5
+                            height: 36px
 
-                        td
-                            padding: 10px 15px
-                            margin: 1px
-                            font-size: 12px
-                            font-family: $font-opensans
-                            font-weight: 500
-                            color: $dgray
+                            &:nth-of-type(2n)
+                                background-color: rgba(245, 245, 245, 0.5)
 
-                            &:first-child
-                                white-space: nowrap
+                            td
+                                padding: 10px 15px
+                                margin: 1px
+                                font-size: 12px
+                                font-weight: 500
+                                color: $dgray
+
+                                &:first-child
+                                    white-space: nowrap
 
 
-        .bonus
+        .bonuses
+            margin-top: 15px
+            margin-right: 25px
 
-            img
-                position: relative
-                top: 7px
+            .bonus
+                padding: 20px
+                background-color: white
+                padding-bottom: 30px
 
-            h5
-                font-family: $font-opensans
-                font-size: 23px
-                font-weight: 600
-                color: $dgray
-                display: inline-block
-                margin-left: 15px
+                img
+                    position: relative
+                    float: left
 
-            .buttons
-                display: inline-block
-                float: right
-
-                button
-                    width: 200px
-                    height: 40px
-                    padding: 10px 0
-                    font-size: 14px
-                    outline: none
-
-                button.white-bg
-                    background-color: #fbfbfb
-                    border: 1px solid #e7e7e7
-                    font-family: $font-dinpro
-                    color: $mgray
+                h5
+                    font-size: 23px
                     font-weight: 600
+                    color: $dgray
+                    display: inline-block
+                    margin-left: 15px
 
-                    span
-                        font-weight: 400
+                .buttons
+                    display: inline-block
+                    float: right
 
-                button.blue-bg
-                    background-color: $blue
-                    color: white
-                    font-family: $font-opensans
-                    border: 1px solid $blue
-                    margin-left: 10px
+                    button
+                        width: 200px
+                        height: 40px
+                        padding: 10px 0
+                        outline: none
+
+                    button.white-bg
+                        background-color: #fbfbfb
+                        border: 1px solid #e7e7e7
+                        font-family: $font-dinpro
+                        color: $mgray
+                        font-weight: 600
+
+                        span
+                            font-weight: 400
+
+                    button.blue-bg
+                        background-color: $blue
+                        color: white
+                        border: 1px solid $blue
+                        margin-left: 10px
 
 
         .reviews
+            margin-top: 15px
+            margin-right: 25px
 
-            header
+            .reviews-content
+                background-color: white
+                padding: 20px
 
-                h3, .rating
-                    display: inline-block
+                header
 
-                .rating
-                    margin-left: 15px
-                    position: relative
-                    top: 1px
-
-            .users-reviews
-
-                .review
-                    margin-bottom: 50px
-
-                    img
-                        height: 50px
-                        width: 50px
-                        border-radius: 2px
-                        background-color: #d8d8d8
-                        float: left
-
-                    span.username
-                        font-size: 16px
-                        font-family: $font-opensans
-                        font-weight: 600
-                        color: #292929
-                        margin-left: 15px
+                    h3, .rating
+                        display: inline-block
 
                     .rating
-                        margin-left: 65px
-                        margin-top: 5px
-
-                    span.date
-                        clear: both
-                        display: block
-                        text-align: right
-                        font-size: 14px
-                        color: $lgray
+                        margin-left: 15px
                         position: relative
-                        top: -20px
+                        top: 1px
 
-                    p
-                        font-size: 14px
-                        font-family: $font-opensans
-                        color: #484848
-                        max-width: 875px
+                .users-reviews
+
+                    .review
+                        margin-bottom: 10px
+
+                        img
+                            height: 50px
+                            width: 50px
+                            border-radius: 2px
+                            background-color: #d8d8d8
+                            float: left
+
+                        span.username
+                            font-size: 16px
+                            font-weight: 600
+                            color: #292929
+                            margin-left: 15px
+
+                        .rating
+                            margin-left: 65px
+                            margin-top: 5px
+
+                        span.date
+                            clear: both
+                            display: block
+                            text-align: right
+                            color: $lgray
+                            position: relative
+                            top: -20px
+
+                        p
+                            color: #484848
+                            max-width: 875px
 
 
             .make-review
-                margin-top: 100px
+                background-color: white
+                padding: 20px
+                margin-top: 5px
 
                 .select-rating, .write-review
 
                     span
-                        font-size: 14px
                         color: $lgray
-                        font-family: $font-opensans
                         position: relative
                         top: -2px
                         width: 75px
@@ -683,14 +660,12 @@ button.slide-left
                 .write-review
 
                     textarea
-                        border-radius: 2px
+                        border-radius: 5px
                         border: 1px solid #d1d1d1
                         background-color: white
                         padding: 20px
-                        width: 100%
+                        width: 80%
                         max-width: 935px
-                        font-size: 14px
-                        font-family: $font-opensans
                         color: $lgray
                         outline: none
 
@@ -707,13 +682,16 @@ button.slide-left
 
 
     .sportsbook-content
-        width: calc(20%)
+        width: calc(20% + 30px)
         float: left
-        margin-right: 25px
+        background-color: white
+        padding: 0 15px
+        margin-top: 25px
+        padding-top: 15px
 
         .sportsbooks
             margin-top: 30px
-            margin-bottom: 30px
+            margin-bottom: 15px
 
             h4
                 font-family: $font-dinpro
@@ -734,8 +712,6 @@ button.slide-left
                     border-radius: 100%
 
                 h6
-                    font-family: $font-opensans
-                    font-size: 15px
                     font-weight: 600
                     color: $blue
 
@@ -760,8 +736,6 @@ button.slide-left
                         padding-right: 25px
 
             h5.more
-                font-family: $font-opensans
-                font-size: 14px
                 color: $blue
                 font-weight: bold
                 border-top: 1px solid $color-border
