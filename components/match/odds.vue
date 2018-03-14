@@ -35,10 +35,11 @@ export default Vue.extend({
     .odds-row
       display flex
       flex-direction row
-      margin 0px
+      justify-content flex-start
+      margin 0
 
       .row-item
-        margin-right 15px
+        margin-right 50px
         justify-content center
 
       .odds-date
