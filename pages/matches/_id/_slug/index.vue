@@ -1,22 +1,8 @@
 <template>
   <div class="match">
     <info></info>
-    <div class="match__odds panel">
-      <h1 class="header-text header-text--one">
-        Odds
-      </h1>
-      <h2 class="header-text header-text--two">
-        you may predict on
-      </h2>
-      <div class="odds__list col">
-        <div class="row row-odds" v-bind:key="o._id" v-for="o of odds">
-          <span class="col col-odds" v-text="o.home"></span>
-          <span class="col col-odds" v-text="o.away"></span>
-          <span class="col col-date" v-text="formatDate(o.fetchedAt)"></span>
-          <div class="button button--primary" @click="togglePredictionBox(o)">Bet</div>
-        </div>
-      </div>
-    </div>
+    <match-odds @openPredictionBox="togglePredictionBox" :odds="odds" v-if="!isMatchFinished"></match-odds>
+    <match-scores :scores="scores" v-else></match-scores>
     <prediction-box v-if="predictionBoxState"></prediction-box>
     <prediction-list v-if="predictionCount"></prediction-list>
   </div>
@@ -25,6 +11,8 @@
 <script>
 import Vue from 'vue'
 import Info from '~/components/match/info'
+import MatchScores from '~/components/match/scores.vue'
+import MatchOdds from '~/components/match/odds.vue'
 import PredictionBox from '~/components/match/prediction-box'
 import PredictionList from '~/components/match/prediction-list'
 import matchMixins from '~/mixins/match'
@@ -34,6 +22,8 @@ export default Vue.extend({
   name: 'Match',
   components: {
     Info,
+    MatchScores,
+    MatchOdds,
     PredictionBox,
     PredictionList
   },
@@ -44,11 +34,17 @@ export default Vue.extend({
   },
   mixins: [matchMixins],
   computed: {
+    isMatchFinished () {
+      return this.match.state.type === 'settled'
+    },
     match () {
       return this.$store.state.match.data
     },
     odds () {
       return this.match.odds
+    },
+    scores () {
+      return this.match.state.scores
     },
     predictionCount () {
       return this.match.predictionCount
@@ -117,43 +113,5 @@ export default Vue.extend({
 <style lang="stylus" scoped>
 .row
   justify-content space-between
-
-.odds__list
-  .row-header
-    flex-direction row
-    justify-content flex-start
-
-    .odds-header
-      margin-right 55px
-      margin-bottom 5px
-
-  .row-odds
-    margin 0px
-
-    > *
-      margin-right 15px
-      margin-bottom 10px
-      justify-content center
-
-      &:last-child
-        margin-right 0px
-
-  .col-date
-    min-width 130px
-
-  .col-odds
-    display flex
-    flex-direction column
-    justify-content center
-    align-items center
-    border 1px solid #dbdbdb
-    border-radius 2px
-    padding 5px 10px
-    width 80px
-    text-align center
-    font-size 13px
-    font-weight 700
-    color #62626f
-    user-select none
 
 </style>

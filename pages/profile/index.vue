@@ -40,7 +40,7 @@
 
 <script>
 import Vue from 'vue'
-import utilsMixin from '~/mixins/utils'
+import dateMixin from '~/mixins/date'
 import noAvatarImage from '~/assets/images/no_avatar.png'
 import Flag from 'vue-flag-icon/components/icon/Flag.vue'
 import 'vue-awesome/icons/wrench'
@@ -49,7 +49,7 @@ import Icon from 'vue-awesome/components/Icon'
 
 export default Vue.extend({
   name: 'Profile',
-  mixins: [utilsMixin],
+  mixins: [dateMixin],
   components: {
     Flag,
     Icon
