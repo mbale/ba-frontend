@@ -16,7 +16,7 @@
       <div class="row row-teams">
         <p-radio class="team-select p-default p-curve" :value="homeTeam" v-model="selectedTeam" name="select-team" color="primary-o"
         v-validate="{ rules: `required|in:${awayTeam},${homeTeam}`, arg: 'select-team' }">
-          {{ awayTeam }}
+          {{ homeTeam }}
         </p-radio>
         <span class="home-odds">[{{ homeOdds }}]</span>
         <p-radio class="team-select p-default p-curve" :value="awayTeam" v-model="selectedTeam" name="select-team" color="primary-o">
