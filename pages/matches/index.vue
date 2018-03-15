@@ -21,11 +21,8 @@
             />
         </no-ssr>
       </div>
-      <div class="no-matches" v-else>
-        <section class="content-body">
-          <h1 class="content-title">Sorry, there are no matches <img src="~/assets/images/misc/kappa.png" alt=""></h1>
-          <p>No matches were found related to your selected game.</p>
-        </section>
+      <div class="blank-slate" v-else>
+        <p>No matches were found related to your selected game. <img class="emoticon" src="~/assets/images/misc/sadface.png" alt="sadface emoji"></p>
       </div>
     </div>
   </div>
@@ -159,9 +156,13 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.content-body
-  background-color: transparent
+.blank-slate
+  margin 40px 0
   text-align: center
+  p
+    font-size 18px
+  .emoticon
+    height 25px
 
 .filters
   display flex
