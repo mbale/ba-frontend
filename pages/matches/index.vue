@@ -12,7 +12,7 @@
     <div class='matches wrapper'>
       <upcoming-matches v-if="upcomingTabActive" />
       <completed-matches v-else />
-      <div class="matches-pagination">
+      <div class="matches-pagination" v-if="numberOfMatches > 0">
         <!-- PAGINATION -->
         <no-ssr>
           <paginate
@@ -20,6 +20,9 @@
             :changePage="changePage"
             />
         </no-ssr>
+      </div>
+      <div class="blank-slate" v-else>
+        <p>No matches were found related to your selected game. <img class="emoticon" src="~/assets/images/misc/sadface.png" alt="sadface emoji"></p>
       </div>
     </div>
   </div>
@@ -37,6 +40,11 @@ import GamesFilter from '~/components/matches/games-filter'
 export default {
   name: 'Matches',
   mixins: [matchMixins],
+  data () {
+    return {
+      numberOfMatches: null
+    }
+  },
   components: {
     Paginate,
     Tabs,
@@ -104,10 +112,15 @@ export default {
         return g.id
       })
 
+      // console.log(this.$store.getters['matches/groupUMatchesByDay'])
+
       await this.$store.dispatch('matches/fetch', {
         statusType: this.$store.state.matches.active,
         gameIds
       })
+
+      // outputs number of matches to variable
+      this.numberOfMatches = Object.keys(this.$store.getters['matches/groupUMatchesByDay']).length
     }
   },
   async asyncData ({ store, route }) {
@@ -143,6 +156,14 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.blank-slate
+  margin 40px 0
+  text-align: center
+  p
+    font-size 18px
+  .emoticon
+    height 25px
+
 .filters
   display flex
   justify-content center
