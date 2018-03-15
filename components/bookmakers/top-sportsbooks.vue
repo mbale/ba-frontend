@@ -3,7 +3,7 @@
     <img src="~/assets/images/bookmaker/aside.png" alt="">
 
     <div class="sportsbooks">
-    <h4>TOP SPORTSBOOKS</h4>
+    <h4>Top Sportbooks</h4>
 
     <!-- Sportbook  -->
     <div class="sportsbook" v-for="(bookmaker) in sportsbooks">
@@ -18,7 +18,7 @@
           <star-rating active-color="#ffcd02" :rating="bookmaker.reviews.avg" :star-size="12" :show-rating="false" :read-only="true" :inline="true"></star-rating>
         </no-ssr>
       </div>
-        <button class="bet slide-left">
+        <button class="bet-btn slide-left">
           <nuxt-link :to="{ path: '../' + bookmaker.slug }" append>
             Bet
           </nuxt-link>
@@ -83,6 +83,7 @@ export default {
 
   h4
     font-family: $font-dinpro
+    text-transform: uppercase
     font-size: 16px
     color: black
     margin-left: 15px
@@ -106,7 +107,7 @@ export default {
     .rating
       display: inline-block
 
-    button.bet
+    .bet-btn
       float: right
       display: inline-block
       border-radius: 2px

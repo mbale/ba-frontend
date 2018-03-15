@@ -69,13 +69,10 @@
 
 <template>
     <div class="bookmaker-container">
-
       <header class="bookmaker-head">
-
         <div class="bookmaker-image" :style="{backgroundColor: bookmaker.themeColor}">
           <img v-bind:src="bookmaker.logo" alt="">
         </div>
-
         <div class="information">
           <h1 class="bookmaker-name">{{ bookmaker.name }}</h1>
           <div class="rating" slot="body">
@@ -83,17 +80,14 @@
               <star-rating active-color="#ffcd02" :rating="bookmaker.reviews.avg" :star-size="18" :show-rating="false" :read-only="true" :inline="true"></star-rating>
             </no-ssr>
           </div>
-
           <button class="bookmaker-label"><img src="~/assets/images/bookmaker/esports-exclusive.svg" alt=""> Esports exclusive</button>
         </div>
-
         <button class="visit slide-left" >
           <nuxt-link :to="{ path: '../' + bookmaker.slug }" append>
             Visit Sportsbook <img src="~/assets/images/bookmaker/btn_icon_left.svg" alt="" />
           </nuxt-link>
         </button>
       </header>
-
         <tabs>
           <tab
             v-for="(tab, key, index) in tabs"
@@ -103,9 +97,7 @@
             @click.native="currentTab = index"
           > {{ tab }} </tab>
         </tabs>
-
         <div class="bookmaker-content">
-
           <!-- ABOUT TAB  -->
           <div v-show="currentTab === 0" class="about">
 
@@ -251,12 +243,9 @@
                 <button class="blue-bg" @click="submitReview">Post Review</button>
               </div>
             </div>
-
           </div>
         </div>
-
         <top-sportsbooks />
-
     </div>
 </template>
 
@@ -375,22 +364,11 @@ button.slide-left
     background-color: transparent
     margin-bottom: 30px
     padding: 0 15px
-
     .tabs
-        padding-left: 200px
-        background-color: white
+      padding-left: 200px
+      background-color: white
 
-        .tab
-            padding: 15px 25px
-            font-size: 13px
-            font-weight: 600
-            color: $mgray
-
-            &.tab--active
-                border-bottom: 2px solid #2d3088
-                color: #2c2f86
-
-    header.bookmaker-head
+    .bookmaker-head
         background-image: linear-gradient(to top, #1d1e4e, #000000)
         box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.5)
         max-height: 160px
