@@ -1,13 +1,21 @@
-import format from 'date-fns/format'
-import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
+import pinnacleLogo from '~/assets/images/bookmakers/pinnacle-logo.jpeg'
 
 export default {
   methods: {
-    formatDate (date, schema = 'HH:mm') {
-      return format(new Date(date), schema)
-    },
-    sinceDate (date, opts) {
-      return distanceInWordsToNow(date, opts)
+    getBookmakerLogo (bookmaker) {
+      try {
+        let url = null
+
+        switch (bookmaker) {
+          case 'pinnacle':
+            url = pinnacleLogo
+            break
+        }
+
+        return url
+      } catch (error) {
+        return error
+      }
     }
   }
 }

@@ -23,6 +23,7 @@ export default {
 
 
 <style lang="stylus">
+@import url('https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css')
 // main.styl
 // @import '~vuetify/src/stylus/main' 
 
