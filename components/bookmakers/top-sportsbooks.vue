@@ -25,7 +25,13 @@
         </button>
       </div>
 
-      <h5 class="more" @click="showMoreSportsbooks(5)" v-show="letShowMoreSportsbooks">more sportsbooks reviews</h5>
+      <!-- <h5 class="more">
+        more sportsbooks reviews
+      </h5> -->
+      <nuxt-link class="more" :to="{ path: '../' }" append>
+        more sportsbooks reviews
+      </nuxt-link>
+
     </div>
 
   </div>
@@ -40,8 +46,8 @@ export default {
   },
   data () {
     return {
-      letShowMoreSportsbooks: true,
-      sportsbooksToShow: 2
+      // letShowMoreSportsbooks: true,
+      sportsbooksToShow: 3
     }
   },
   computed: {
@@ -51,10 +57,10 @@ export default {
     }
   },
   methods: {
-    showMoreSportsbooks (number) {
-      this.sportsbooksToShow = number
-      this.letShowMoreSportsbooks = false
-    }
+    // showMoreSportsbooks (number) {
+    //   this.sportsbooksToShow = number
+    //   this.letShowMoreSportsbooks = false
+    // }
   },
   watch: {
   }
@@ -62,7 +68,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-
 
 .sportsbook-content
   width: calc(20% + 30px)
@@ -122,13 +127,14 @@ export default {
       a
         color: inherit
 
-  h5.more
+  .more
     color: $blue
     font-weight: bold
     border-top: 1px solid $color-border
     text-align: center
     text-transform: uppercase
     padding-top: 10px
-    cursor: pointer
+    // cursor: pointer
+    display: block
 
 </style>

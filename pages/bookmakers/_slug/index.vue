@@ -88,9 +88,9 @@
         </div>
 
         <button class="visit slide-left" >
-          <a :href="bookmaker.affiliateUrl">
+          <nuxt-link :to="{ path: '../' + bookmaker.slug }" append>
             Visit Sportsbook <img src="~/assets/images/bookmaker/btn_icon_left.svg" alt="" />
-          </a>
+          </nuxt-link>
         </button>
       </header>
 
@@ -123,7 +123,10 @@
                   <tr v-if="bookmaker.url">
                     <td>Official Website</td>
                     <td>
-                      <a target="_blank" v-bind:href="bookmaker.url">{{ bookmaker.url }}</a>
+                      <!-- <a target="_blank" v-bind:href="bookmaker.url">{{ bookmaker.url }}</a> -->
+                      <nuxt-link :to="{ path: '../' + bookmaker.slug }" append>
+                        {{ bookmaker.url }}
+                      </nuxt-link>
                     </td>
                   </tr>
 
@@ -187,14 +190,19 @@
 
               <div class="buttons">
                 <button class="white-bg code-btn">CODE <span>FREE25</span></button>
-                <button class="blue-bg slide-left"><a>Claim Bonus</a></button>
+                <button class="blue-bg slide-left">
+                  <!-- <a>Claim Bonus</a> -->
+                  <nuxt-link :to="{ path: '../' + bookmaker.slug }" append>
+                    Claim Bonus
+                  </nuxt-link>
+                </button>
               </div>
             </div>
 
           </div>
 
           <!-- REVIEWS TAB -->
-          <div v-show="currentTab === 2" class="reviews">
+          <div v-show="currentTab === 2" class="reviews" @click="showReviews">
 
             <div class="reviews-content">
               <header>
@@ -283,13 +291,6 @@ export default Vue.extend({
     TopSportsbooks
   },
   computed: {
-    // bookmakers () {
-    //   return this.$store.state.bookmakers.list
-    // },
-    // sportsbooks () {
-    //   var topBookmakers = this.$store.state.bookmakers.list.sort(function (a, b) { return a.reviews.avg < b.reviews.avg ? 1 : -1 }).slice(0, this.sportsbooksToShow)
-    //   return topBookmakers
-    // },
     bookmaker () {
       return this.$store.state.bookmakers.bookmaker
     },
@@ -314,10 +315,9 @@ export default Vue.extend({
     }
   },
   methods: {
-    // showMoreSportsbooks (number) {
-    //   this.sportsbooksToShow = number
-    //   this.letShowMoreSportsbooks = false
-    // },
+    showReviews () {
+      console.log(this.bookmaker.reviews)
+    },
     getUserObject (review) {
       return review.user
     },
@@ -374,6 +374,7 @@ button.slide-left
     width: 100%
     background-color: transparent
     margin-bottom: 30px
+    padding: 0 15px
 
     .tabs
         padding-left: 200px
@@ -384,7 +385,6 @@ button.slide-left
             font-size: 13px
             font-weight: 600
             color: $mgray
-            // font-family: $font-opensans
 
             &.tab--active
                 border-bottom: 2px solid #2d3088
@@ -489,7 +489,7 @@ button.slide-left
             font-size: 22px
             font-weight: 600
             color: #2d3088
-            margin-bottom: 25px
+            margin-bottom: 20px
 
             &:nth-child(n+2)
                 margin-top: 70px

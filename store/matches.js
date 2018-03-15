@@ -34,6 +34,7 @@ export const state = () => ({
   },
   active: 'upcoming',
   match: null,
+  numberOfMatches: null,
   gameFilters: {
     csgo: true,
     hs: true,
