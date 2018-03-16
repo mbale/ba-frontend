@@ -1,16 +1,15 @@
 <template>
   <section class="game content-panel">
-    <div class="game__header">
-      <div class="top">
-        <div class="logo" v-bind:style="{ 'background-color': game.color }">
-          <img class="image" v-bind:src="game.logo">
-        </div>
-        <div class="title">
-          <h1 class="text">{{ game.name }}</h1>
+    <header class="content-header">
+      <div class="content-header__hero">
+        <figure class="content-header__image" v-bind:style="{ 'background-color': game.color }">
+          <img v-bind:src="game.logo" />
+        </figure>
+        <div class="content-header__info">
+          <h1 class="content-header__title">{{ game.name }}</h1>
         </div>
       </div>
-      <div class="bottom"></div>
-    </div>
+    </header>
     <div class="game__body">
       <h1 class="title">{{ articleHeader }}</h1>
       <article v-html="HTMLDescription"></article>
@@ -54,7 +53,6 @@ export default Vue.extend({
 
 .game
   width 100%
-  max-width 1180px
 
   .game__header
     display block

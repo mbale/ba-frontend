@@ -1,39 +1,25 @@
 <template>
-  <div class="sportsbook-content">
-    <img src="~/assets/images/bookmaker/aside.png" alt="">
-
-    <div class="sportsbooks">
-    <h4>Top Sportbooks</h4>
-
-    <!-- Sportbook  -->
-    <div class="sportsbook" v-for="(bookmaker) in sportsbooks">
-      <img :src="bookmaker.icon" alt="">
-      <h6>
-        <nuxt-link class="review" :to="{ path: '../' + bookmaker.slug }" append>
-          {{bookmaker.name}}
-        </nuxt-link>
-      </h6>
-      <div class="rating">
-        <no-ssr>
-          <star-rating active-color="#ffcd02" :rating="bookmaker.reviews.avg" :star-size="12" :show-rating="false" :read-only="true" :inline="true"></star-rating>
-        </no-ssr>
-      </div>
-        <button class="bet-btn slide-left">
-          <nuxt-link :to="{ path: '../' + bookmaker.slug }" append>
-            Bet
-          </nuxt-link>
-        </button>
-      </div>
-
-      <!-- <h5 class="more">
-        more sportsbooks reviews
-      </h5> -->
-      <nuxt-link class="more" :to="{ path: '../' }" append>
-        more sportsbooks reviews
+  <div class="widget top-boomakers">
+    <h4 class="widget-title">Top Sportbooks</h4>
+    <div class="top-bookmakers__item" v-for="(bookmaker) in sportsbooks">
+      <nuxt-link class="top-bookmakers__icon" :to="`/visit/${bookmaker.slug}`">
+        <img :src="bookmaker.icon" alt="`${bookmaker.name} Icon`">
       </nuxt-link>
-
+      <div class="top-bookmakers__txt">
+        <nuxt-link class="top-bookmakers__name":to="`/visit/${bookmaker.slug}`">{{bookmaker.name}}</nuxt-link>
+        <div class="top-bookmakers__rating">
+          <no-ssr>
+            <star-rating active-color="#ffcd02" :rating="bookmaker.reviews.avg" :star-size="12" :show-rating="false" :read-only="true" :inline="true"></star-rating>
+          </no-ssr>
+        </div>
+      </div>
+      <nuxt-link class="top-bookmakers__btn" :to="`/visit/${bookmaker.slug}`">Bet</nuxt-link>
     </div>
-
+    <div class="top-bookmakers__footer">
+      <nuxt-link class="more" to="/bookmakers">
+        More Bookmakers
+      </nuxt-link>
+    </div>
   </div>
 </template>
 
@@ -46,96 +32,61 @@ export default {
   },
   data () {
     return {
-      // letShowMoreSportsbooks: true,
       sportsbooksToShow: 3
     }
   },
   computed: {
     sportsbooks () {
-      var topBookmakers = this.$store.state.bookmakers.list.sort(function (a, b) { return a.reviews.avg < b.reviews.avg ? 1 : -1 }).slice(0, this.sportsbooksToShow)
+      const topBookmakers = this.$store.state.bookmakers.list.sort(function (a, b) {
+        return a.reviews.avg < b.reviews.avg ? 1 : -1
+      }).slice(0, this.sportsbooksToShow)
       return topBookmakers
     }
-  },
-  methods: {
-    // showMoreSportsbooks (number) {
-    //   this.sportsbooksToShow = number
-    //   this.letShowMoreSportsbooks = false
-    // }
-  },
-  watch: {
   }
 }
 </script>
 
 <style lang="stylus" scoped>
+  .top-boomakers
+    background #fff
+    border 1px solid $color-border
 
-.sportsbook-content
-  width: calc(20% + 30px)
-  float: left
-  background-color: white
-  padding: 0 15px
-  margin-top: 25px
-  padding-top: 15px
+  .top-bookmakers__item
+    padding 10px 15px
+    overflow hidden
+    & + .top-bookmakers__item
+      border-top 1px solid $color-border
 
-  .sportsbooks
-    margin-top: 30px
-    margin-bottom: 15px
+  .top-bookmakers__icon
+    height 40px
+    width 40px
+    border-radius 2px
+    margin-right 10px
+    float left
 
-  h4
-    font-family: $font-dinpro
-    text-transform: uppercase
-    font-size: 16px
-    color: black
-    margin-left: 15px
-    margin-bottom: 15px
+  .top-bookmakers__txt
+    float left
 
-  .sportsbook
-    border-top: 1px solid $color-border
-    padding: 10px 0
+  .top-bookmakers__name
+    display block
+    font-weight bold
+    margin-bottom 3px
 
-    img
-      float: left
-      width: 40px
-      height: 40px
-      margin-right: 15px
-      border-radius: 100%
+  .top-bookmakers__btn
+    button($purple)
+    padding 5px 25px
+    margin 5px 0
+    display inline-block
+    font-weight bold
+    float right
 
-    h6
-      font-weight: 600
-      color: $blue
+  .top-bookmakers__footer
+    padding 10px
+    border-top 1px solid #EDEDED
+    text-align center
 
-    .rating
-      display: inline-block
-
-    .bet-btn
-      float: right
-      display: inline-block
-      border-radius: 2px
-      background-color: $purple
-      border: none
-      outline: none
-      padding: 7px 30px
-      color: white
-      position: relative
-      top: -15px
-      margin-right: 15px
-      width: 80px
-      transition: all 0.3s ease
-
-      &:hover, &:focus, &:active
-        padding-right: 25px
-
-      a
-        color: inherit
-
-  .more
-    color: $blue
-    font-weight: bold
-    border-top: 1px solid $color-border
-    text-align: center
-    text-transform: uppercase
-    padding-top: 10px
-    // cursor: pointer
-    display: block
-
+  .top-bookmakers__more
+    text-transform uppercase
+    font-size 13px
+    font-weight 700
 </style>

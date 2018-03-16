@@ -1,0 +1,67 @@
+.content-header
+  width: 100%
+  background-color: #1C1E4E
+  background-image: linear-gradient(to top, rgba(#000,0) 0%, rgba(#000,1) 100%)
+
+.content-header__hero
+  position relative
+  padding 20px
+  height 160px
+  display flex
+  align-items: flex-end
+
+.content-header__image
+  width 160px
+  height 160px
+  display: flex
+  align-items: center
+  background: #000
+  margin 0 20px 0 0
+  margin-bottom -40px
+  border-radius 2px
+  overflow hidden
+  img
+    display block
+    width 100%
+    user-select none
+
+.content-header__info
+  flex 1
+
+.content-header__button
+  button($white, "invert")
+  padding 10px 30px
+  vertical-align middle
+  display inline-block
+  margin-right 10px
+
+.content-header__button--primary
+  button($blue)
+  padding 10px 30px
+  vertical-align middle
+  display inline-block
+  margin-right 10px
+
+.content-header__button--disabled
+  background-color #d8d8d8
+  border-color #d8d8d8
+  &:hover
+    background-color #d8d8d8
+    border-color #d8d8d8
+
+.content-header__title
+  color $white
+  font-family "DINPro"
+  font-weight 700
+  font-size 30px
+  text-shadow 0 0 3px rgba(#000,.5)
+  margin 0 10px 0 0
+  display inline-block
+  vertical-align middle
+
+.content-header__actions
+  margin-top 12px
+
+.content-header__tabs
+  background-color: #fff
+  height: 40px

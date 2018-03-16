@@ -10,11 +10,9 @@
 </template>
 
 <script>
-import Vue from 'vue'
-
-export default Vue.extend({
+export default {
   name: 'CardBox'
-})
+}
 </script>
 
 <style lang="stylus" scoped>

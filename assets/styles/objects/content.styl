@@ -1,21 +1,18 @@
 .content
   display flex
+  justify-content space-between
+  flex-wrap wrap
+  width: 100%
 
 .content-aside
-  flex 0 1 300px
-  padding 30px 0 30px 30px
+  width 300px
 
 .content-body
-  margin 30px
-  flex 0 1 100%
-  color $purplegray
-  background-color: #fff
-  padding 30px
-
-  &--bookmaker-asset
-    margin 25px
-    margin-top 15px
-    margin-left 0
+  padding 20px
+  flex 1
+  margin 0 auto
+  +below(3)
+    padding 20px
 
   p
     line-height 1.75
@@ -29,16 +26,18 @@
   > h1
     font-size 30px
 
-  h2
+  > h2
     margin-bottom 15px
     font-size 23px
     color #4d4d4d
 
-  h3
+  > h3
     margin-bottom 5px
     font-size 17px
     color #4d4d4d
 
+  ul
+    margin 0 0 20px 20px
   li
     margin-bottom 5px
 
@@ -63,11 +62,10 @@ p
     margin-bottom 0
 
 .content-list
+  padding-left 20px
   margin-bottom 20px
-  list-style initial
   li
-    margin-bottom 10px
-    margin-left 20px
+    margin-bottom 15px
 
   ul
     margin-top 10px
@@ -103,15 +101,13 @@ p
   border-spacing 1px
   border-collapse separate
   text-align left
-  font-size 13px
+  font-size 14px
   tr
     background #F5F5F5
     &:nth-child(odd)
       background rgba(#F5F5F5, .5)
   td, th
     padding 8px 15px
-  td:first-child
-    white-space nowrap
   th
     white-space nowrap
     width 1px
