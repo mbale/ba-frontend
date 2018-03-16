@@ -76,7 +76,7 @@ export default Vue.extend({
         min-width 160px
         max-width 160px
         max-height 160px
-        margin-bottom -34px        
+        margin-bottom -34px
 
         .image
           height 60%
@@ -100,7 +100,7 @@ export default Vue.extend({
       width 100%
       background-color white
       height 40px
-    
+
   .game__body
     max-width 1180px
     background-color #fff
@@ -113,7 +113,7 @@ export default Vue.extend({
       font-size 28px
 
     h2
-      margin 15px 0px 15px 0px
+      margin 30px 0px 15px 0px
       font-size 23px
       color #4d4d4d
 
@@ -123,6 +123,6 @@ export default Vue.extend({
     img
       max-width 100%
       margin-top 15px
-        
+
 
 </style>

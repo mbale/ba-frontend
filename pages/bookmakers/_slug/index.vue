@@ -69,46 +69,54 @@
 
 <template>
     <div class="bookmaker-container">
-      <header class="bookmaker-head">
-        <div class="bookmaker-image" :style="{backgroundColor: bookmaker.themeColor}">
-          <img v-bind:src="bookmaker.logo" alt="">
-        </div>
-        <div class="information">
-          <h1 class="bookmaker-name">{{ bookmaker.name }}</h1>
-          <div class="rating" slot="body">
-            <no-ssr>
-              <star-rating active-color="#ffcd02" :rating="bookmaker.reviews.avg" :star-size="18" :show-rating="false" :read-only="true" :inline="true"></star-rating>
-            </no-ssr>
+
+      <div class="bookmaker__header">
+        <div class="top">
+          <div class="logo" v-bind:style="{ 'background-color': bookmaker.themeColor }">
+            <img class="image" v-bind:src="bookmaker.logo">
           </div>
-          <button class="bookmaker-label"><img src="~/assets/images/bookmaker/esports-exclusive.svg" alt=""> Esports exclusive</button>
+          <div class="information">
+            <h1 class="bookmaker-name">{{ bookmaker.name }}</h1>
+            <div class="rating" slot="body">
+              <no-ssr>
+                <star-rating active-color="#ffcd02" :rating="bookmaker.reviews.avg" :star-size="18" :show-rating="false" :read-only="true" :inline="true"></star-rating>
+              </no-ssr>
+            </div>
+            <button class="bookmaker-label">
+              <img src="~/assets/images/bookmaker/esports-exclusive.svg" alt=""> Esports exclusive
+            </button>
+            <button class="visit button button--primary" >
+              <nuxt-link :to="{ path: '../' + bookmaker.slug }" append>
+                Visit Sportsbook <img src="~/assets/images/bookmaker/btn_icon_left.svg" alt="" />
+              </nuxt-link>
+            </button>
+          </div>
         </div>
-        <button class="visit slide-left" >
-          <nuxt-link :to="{ path: '../' + bookmaker.slug }" append>
-            Visit Sportsbook <img src="~/assets/images/bookmaker/btn_icon_left.svg" alt="" />
-          </nuxt-link>
-        </button>
-      </header>
-        <tabs>
-          <tab
-            v-for="(tab, key, index) in tabs"
-            :key="key"
-            :class="{'tab--active': currentTab === index}"
-            ref="upcoming"
-            @click.native="currentTab = index"
-          > {{ tab }} </tab>
-        </tabs>
+        <div class="bottom">
+          <tabs>
+            <tab
+              v-for="(tab, key, index) in tabs"
+              :key="key"
+              :class="{'tab--active': currentTab === index}"
+              ref="upcoming"
+              @click.native="currentTab = index"
+            > {{ tab }} </tab>
+          </tabs>
+        </div>
+      </div>
+
         <div class="bookmaker-content">
           <!-- ABOUT TAB  -->
           <div v-show="currentTab === 0" class="about">
 
-            <div class="about-content">
-              <h3 class="heading">About {{ bookmaker.name }}</h3>
+            <div class="content-body content-body--bookmaker-asset">
+              <h2 class="content-title">About {{ bookmaker.name }}</h2>
               <p>{{ bookmaker.description }}</p>
             </div>
 
-            <div class="details-content">
-              <h3 class="heading">Details</h3>
-              <table>
+            <div class="content-body content-body--bookmaker-asset">
+              <h2 class="content-title">Details</h2>
+              <table class="content__table">
                 <tbody>
 
                   <!-- Official Website -->
@@ -173,17 +181,16 @@
 
           <!-- BONUSES TAB -->
           <div v-show="currentTab === 1" class="bonuses">
-            <h3 class="heading">Bonuses</h3>
+            <h2 class="content-title">Bonuses</h2>
 
-            <div class="bonus" v-bind:key="bonus.type" v-for="bonus in bookmaker.bonuses">
+            <div class="bonus content-body content-body--bookmaker-asset" v-bind:key="bonus.type" v-for="bonus in bookmaker.bonuses">
               <!-- <i></i>  -->
               <img src="~/assets/images/bookmaker/bonus.svg" alt="">
               <h5>{{ bonus.title }}</h5>
 
               <div class="buttons">
-                <button class="white-bg code-btn">CODE <span>FREE25</span></button>
-                <button class="blue-bg slide-left">
-                  <!-- <a>Claim Bonus</a> -->
+                <button class="button button--code">CODE <span>FREE25</span></button>
+                <button class="button button--primary">
                   <nuxt-link :to="{ path: '../' + bookmaker.slug }" append>
                     Claim Bonus
                   </nuxt-link>
@@ -194,11 +201,11 @@
           </div>
 
           <!-- REVIEWS TAB -->
-          <div v-show="currentTab === 2" class="reviews" @click="showReviews">
+          <div v-show="currentTab === 2" class="reviews">
 
-            <div class="reviews-content">
+            <div class="content-body content-body--bookmaker-asset">
               <header>
-                <h3 class="heading">{{ bookmaker.reviews.items.length }} Reviews</h3>
+                <h2 class="content-title">{{ bookmaker.reviews.items.length }} Reviews</h2>
                 <div class="rating">
                   <no-ssr>
                     <star-rating active-color="#ffcd02" :rating="bookmaker.reviews.avg" :star-size="18" :show-rating="false" :read-only="true" :inline="true"></star-rating>
@@ -206,7 +213,7 @@
                 </div>
               </header>
 
-              <div class="users-reviews">
+              <div class="content-body users-reviews">
                 <div class="review" v-bind:key="getUserObject(review).id" v-for="(review, index) in bookmaker.reviews.items">
 
                   <!-- if avatar -->
@@ -214,20 +221,22 @@
                   <!-- no avatar -->
                   <img class="avatar img-responsive" v-else v-bind:src="noAvatarImage">
 
-                  <span class="username">{{ review.user.username }}</span>
-                  <div class="rating">
-                    <no-ssr>
-                      <star-rating active-color="#ffcd02" :rating="review.rate" :star-size="18" :show-rating="false" :read-only="true" :inline="true"></star-rating>
-                    </no-ssr>
+                  <div class="information">
+                    <span class="username">{{ review.user.username }}</span>
+                    <div class="rating">
+                      <no-ssr>
+                        <star-rating active-color="#ffcd02" :rating="review.rate" :star-size="18" :show-rating="false" :read-only="true" :inline="true"></star-rating>
+                      </no-ssr>
+                    </div>
+                    <span class="date">October 2016</span>
                   </div>
-                  <span class="date">October 2016</span>
                   <p>{{ review.text }}</p>
                 </div>
               </div>
             </div>
 
             <!-- Write a review yourself section -->
-            <div class="make-review" v-show="userCanSubmitReview">
+            <div class="content-body content-body--bookmaker-asset" v-show="userCanSubmitReview">
               <div class="select-rating">
                 <span>Rating</span>
                 <div class="ratings">
@@ -239,8 +248,8 @@
 
               <div class="write-review">
                 <span>Review</span>
-                <textarea v-model="review.text" name="review-field" cols="30" rows="10"></textarea>
-                <button class="blue-bg" @click="submitReview">Post Review</button>
+                <textarea class="textbox" v-model="review.text" name="review-field" cols="30" rows="10"></textarea>
+                <button class="button button--primary" @click="submitReview">Post Review</button>
               </div>
             </div>
           </div>
@@ -304,9 +313,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    showReviews () {
-      console.log(this.bookmaker.reviews)
-    },
     getUserObject (review) {
       return review.user
     },
@@ -342,384 +348,206 @@ export default Vue.extend({
 .item + .item:before
     content ", "
 
-button:not(.code-btn)
-    cursor: pointer
+.content-title
+    color: $purple
 
-    a
-        color: inherit
 
-button.blue-bg
-    background-color: $blue
+.bookmaker__header
 
-button.slide-left
-  transition: all 0.3s ease
+  .top
+    display flex
+    justify-content flex-start
+    width 100%
+    padding 14px
+    background-color #1c1e4e
 
-  &:hover, &:focus, &:active
-      text-indent: 5px
+    .logo
+      display flex
+      flex-direction column
+      justify-content center
+      flex-basis 20%
+      height auto
+      min-width 160px
+      max-width 160px
+      max-height 160px
+      margin-bottom -34px
 
-// Bookmaker content styles
+      .image
+        height 60%
+
+    .information
+        margin-top: 15px
+
+        > *
+            display: inline-block
+
+        .bookmaker-name
+            font-size: 30px
+            font-weight: 500
+            color: white
+            margin-left: 20px
+
+        .rating
+            margin-left: 25px
+            margin-right: 10px
+
+        .bookmaker-label
+            color: white
+            font-size: 11px
+            font-weight: 500
+            border: none
+            padding: 5px 13px
+            text-transform: uppercase
+            position: relative
+            background-color: #893F98
+            background-image: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, .1) 0)
+            border-radius: 40px
+            outline: none
+
+            img
+                position: relative
+                left: -4px
+                top: 1px
+
+        .visit
+            background-color: $blue
+            font-weight: 500
+            padding: 15px 47px
+            margin: 15px 0 0 20px
+            display: block
+
+            a img
+                position: relative
+                top: 1px
+                left: 1px
+
+  .bottom
+    display flex
+    width 100%
+    background-color white
+    padding-left: 200px
+
+    .tabs
+      align-items: end
+
+
+
 .bookmaker-container
     max-width: 1440px
     width: 100%
     background-color: transparent
     margin-bottom: 30px
     padding: 0 15px
-    .tabs
-      padding-left: 200px
-      background-color: white
-
-    .bookmaker-head
-        background-image: linear-gradient(to top, #1d1e4e, #000000)
-        box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.5)
-        max-height: 160px
-        height: 160px
-        padding-top: 35px
-        padding-left: 180px
-        position: relative
-
-        .bookmaker-image
-            border-radius: 2px
-            display: block
-            position: absolute
-            left: 20px
-            bottom: -22px
-            width: 160px
-            height: 160px
-            overflow: hidden
-
-            img
-                max-width: none
-                width: 100%
-                height: auto
-                border-radius: 0
-                position: relative
-                top: 50%
-                transform: translateY(-50%)
-
-        button.visit
-            background-color: $blue
-            color: white
-            font-weight: 500
-            padding: 15px 47px
-            border: none
-            cursor: pointer
-            margin-top: 15px
-            margin-left: 20px
-            transition: all 0.3s ease
-
-            &:hover, &:focus, &:active
-                text-indent: 8px
-                padding-right: calc(47px - 8px)
-                color: white
-                text-decoration: none
-
-            a
-              color: white
-
-              img
-                  position: relative
-                  top: 1px
-                  left: 1px
-
-
-        .information
-
-            h1.bookmaker-name
-                font-size: 30px
-                font-weight: 500
-                color: white
-                display: inline-block
-                margin-left: 20px
-
-
-            .rating
-                display: inline-block
-                margin-left: 25px
-                margin-right: 10px
-
-            button.bookmaker-label
-                display: inline-block
-                color: white
-                font-size: 11px
-                font-weight: 600
-                border: none
-                padding: 5px 13px
-                text-transform: uppercase
-                position: relative
-                top: -2px
-                background-color: #893F98
-                background-image: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, .1) 0)
-                border-radius: 40px
-
-                img
-                    position: relative
-                    left: -4px
-                    top: 1px
-
 
     .bookmaker-content
-        padding: 0
         width: calc(80% - 30px)
         float: left
         margin-top: 10px
 
-        h3.heading
-            font-size: 22px
-            font-weight: 600
-            color: #2d3088
-            margin-bottom: 20px
+        .bonus
+            padding: 20px
+            display: flex
+            flex-direction: row
 
-            &:nth-child(n+2)
-                margin-top: 70px
+            h5
+                font-size: 23px
+                font-weight: 600
+                color: $dgray
+                margin-left: 15px
+                align-self: center
 
-        .about
+            .buttons
+                display: flex
+                flex-direction: row
+                margin-left: auto
 
-            .about-content, .details-content
-                background-color: white
-                padding: 25px 30px
-                margin-top: 15px
-                margin-right: 25px
+                button
+                    padding: 10px 55px
+                    outline: none
 
-                p
-                    line-height: 1.71
-                    color: #282828
-
-                    strong
-                        font-weight: bold
-                        color: #106bde
-
-                table
-                    border-collapse: separate
-                    border-spacing: 1px
-                    width: 100%
-
-                    tbody
-
-                        tr
-                            background-color: #f5f5f5
-                            height: 36px
-
-                            &:nth-of-type(2n)
-                                background-color: rgba(245, 245, 245, 0.5)
-
-                            td
-                                padding: 10px 15px
-                                margin: 1px
-                                font-size: 12px
-                                font-weight: 500
-                                color: $dgray
-
-                                &:first-child
-                                    white-space: nowrap
-
-
-        .bonuses
-            margin-top: 15px
-            margin-right: 25px
-
-            .bonus
-                padding: 20px
-                background-color: white
-                padding-bottom: 30px
-
-                img
-                    position: relative
-                    float: left
-
-                h5
-                    font-size: 23px
+                .button--code
+                    font-family: $font-dinpro
                     font-weight: 600
-                    color: $dgray
-                    display: inline-block
-                    margin-left: 15px
 
-                .buttons
-                    display: inline-block
-                    float: right
-
-                    button
-                        width: 200px
-                        height: 40px
-                        padding: 10px 0
-                        outline: none
-
-                    button.white-bg
-                        background-color: #fbfbfb
-                        border: 1px solid #e7e7e7
-                        font-family: $font-dinpro
-                        color: $mgray
-                        font-weight: 600
-
-                        span
-                            font-weight: 400
-
-                    button.blue-bg
-                        background-color: $blue
-                        color: white
-                        border: 1px solid $blue
-                        margin-left: 10px
+                    span
+                        font-weight: 400
 
 
         .reviews
-            margin-top: 15px
-            margin-right: 25px
 
-            .reviews-content
-                background-color: white
-                padding: 20px
-
-                header
-
-                    h3, .rating
-                        display: inline-block
-
-                    .rating
-                        margin-left: 15px
-                        position: relative
-                        top: 1px
-
-                .users-reviews
-
-                    .review
-                        margin-bottom: 10px
-
-                        img
-                            height: 50px
-                            width: 50px
-                            border-radius: 2px
-                            background-color: #d8d8d8
-                            float: left
-
-                        span.username
-                            font-size: 16px
-                            font-weight: 600
-                            color: #292929
-                            margin-left: 15px
-
-                        .rating
-                            margin-left: 65px
-                            margin-top: 5px
-
-                        span.date
-                            clear: both
-                            display: block
-                            text-align: right
-                            color: $lgray
-                            position: relative
-                            top: -20px
-
-                        p
-                            color: #484848
-                            max-width: 875px
-
-
-            .make-review
-                background-color: white
-                padding: 20px
-                margin-top: 5px
-
-                .select-rating, .write-review
-
-                    span
-                        color: $lgray
-                        position: relative
-                        top: -2px
-                        width: 75px
-                        display: inline-block
-
-
-                .select-rating
-
-                    .ratings
-                        display: inline-block
-                        margin-bottom: 25px
-
-
-                .write-review
-
-                    textarea
-                        border-radius: 5px
-                        border: 1px solid #d1d1d1
-                        background-color: white
-                        padding: 20px
-                        width: 80%
-                        max-width: 935px
-                        color: $lgray
-                        outline: none
-
-                    button.blue-bg
-                        border-radius: 4px
-                        background-color: $blue
-                        padding: 12px 35px
-                        border: none
-                        display: block
-                        clear: both
-                        margin-left: 75px
-                        color: white
-                        margin-top: 15px
-
-
-    .sportsbook-content
-        width: calc(20% + 30px)
-        float: left
-        background-color: white
-        padding: 0 15px
-        margin-top: 25px
-        padding-top: 15px
-
-        .sportsbooks
-            margin-top: 30px
-            margin-bottom: 15px
-
-            h4
-                font-family: $font-dinpro
-                font-size: 16px
-                color: black
-                margin-left: 15px
-                margin-bottom: 15px
-
-            .sportsbook
-                border-top: 1px solid $color-border
-                padding: 10px 0
-
-                img
-                    float: left
-                    width: 40px
-                    height: 40px
-                    margin-right: 15px
-                    border-radius: 100%
-
-                h6
-                    font-weight: 600
-                    color: $blue
+            header
+                display: flex
+                flex-direction: row
 
                 .rating
-                    display: inline-block
+                    align-self: center
+                    margin-top: -10px
+                    margin-left: 15px
 
-                button.bet
-                    float: right
-                    display: inline-block
-                    border-radius: 2px
-                    background-color: $purple
-                    border: none
-                    outline: none
-                    padding: 7px 30px
-                    color: white
+            .users-reviews
+                padding: 0
+                margin: 0
+
+                .review
+                    margin-top: 15px
+
+                    img
+                        height: 50px
+                        width: 50px
+                        border-radius: 2px
+                        background-color: #d8d8d8
+                        float: left
+
+                    span.username
+                        font-size: 16px
+                        font-weight: 600
+                        color: #292929
+                        margin-left: 15px
+
+                    .rating
+                        margin-left: 65px
+                        margin-top: 5px
+
+                    span.date
+                        color: $lgray
+                        position: relative
+                        top: -20px
+                        float: right
+
+                    p
+                        color: #484848
+                        padding-right: 15%
+                        clear: both
+
+
+            .select-rating, .write-review
+
+                span
+                    color: $lgray
                     position: relative
-                    top: -15px
-                    margin-right: 15px
-                    width: 80px
+                    top: -2px
+                    width: 75px
+                    display: inline-block
 
-                    &:hover, &:focus, &:active
-                        padding-right: 25px
 
-            h5.more
-                color: $blue
-                font-weight: bold
-                border-top: 1px solid $color-border
-                text-align: center
-                text-transform: uppercase
-                padding-top: 10px
-                cursor: pointer
+            .select-rating
+
+                .ratings
+                    display: inline-block
+                    margin-bottom: 25px
+
+
+            .write-review
+
+                .textbox
+                    border-radius: 5px
+                    width: 100%
+                    outline: none
+
+                .button--primary
+                    border-radius: 4px
+                    padding: 12px 35px
+                    margin: 15px 0 0 75px
+                    font-weight: 500
 
 </style>
