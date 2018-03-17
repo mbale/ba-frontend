@@ -1,40 +1,44 @@
 <template>
-  <div class="profile">
-    <div class="profile__details panel">
-      <!-- DETAILS -->
-      <div class="basic">
-        <!-- DATA -->
-        <div class="avatar">
-          <img class="image" v-bind:src="avatarURL" alt="">
-        </div>
-        <div class="info">
-          <span class="username">{{ username }}</span>
-          <!-- <span class="registered-on">{{ sinceDate(registeredOn) }}</span> -->
-          <span class="country">
-            <flag class="flag" :size="2" :iso="countryCode" />
+  <div class="profile-container">
+    <header class="profile-head">
+      <div class="profile-image">
+        <img class="avatar img-responsive" v-bind:src="avatarURL">
+      </div>
+      <div class="information">
+        <h1 class="profile-name">
+          {{ profile.username }} <img :src="SteamIcon" alt="">
+        </h1>
+        <div class="additional">
+          <span class="location">
+            <img :src="LocationIcon" alt=""> United Kingdom
+          </span>
+          <span class="registered-on">
+            <img :src="CalendarIcon" alt=""> Joined {{ profile.registeredOn.split('T')[0] }}
           </span>
         </div>
-        <!-- SETTINGS -->
-        <div class="settings">
-          <div class="change-avatar">
-            <icon name="upload" :scale="1"></icon>
-          </div>
-          <div class="change-basic">
-            <icon name="wrench"></icon>
-          </div>
-        </div>
+        <a href="" class="follow button--primary">Follow</a>
       </div>
-      <!-- STATISTICS -->
-      <!-- <div class="stat">
-      </div> -->
-    </div>
-    <div class="profile__predictions panel">
-      <div v-bind:key="p.id" v-for="p of predictions">
-        {{ p.text }}
-        {{ p.stake }}
-      </div>
-    </div>
+    </header>
+      <tabs>
+        <tab
+          v-for="(tab, key, index) in tabs"
+          :key="key"
+          :class="{'tab--active': currentTab === index}"
+          ref="upcoming"
+          @click.native="currentTab = index"
+        >
+          <!-- PREDICTIONS TAB -->
+          <span v-if="index === 0">{{ predictionsLength }} {{ tab }}</span>
+
+          <!-- FOLLOWERS TAB -->
+          <span v-if="index === 1">{{ predictionsLength }} {{ tab }}</span>
+
+          <!-- FOLLOWING TAB -->
+          <span v-if="index === 2">{{ predictionsLength }} {{ tab }}</span>
+        </tab>
+      </tabs>
   </div>
+
 </template>
 
 <script>
@@ -46,12 +50,35 @@ import 'vue-awesome/icons/wrench'
 import 'vue-awesome/icons/upload'
 import Icon from 'vue-awesome/components/Icon'
 
+import LocationIcon from '~/assets/images/misc/location.svg'
+import CalendarIcon from '~/assets/images/misc/calendar.svg'
+import SteamIcon from '~/assets/images/misc/steam.svg'
+
+// import noAvatarImage from '~/assets/images/no_avatar.png'
+import { Tabs, Tab } from '~/components/common/tabs'
+
 export default Vue.extend({
   name: 'Profile',
   mixins: [dateMixin],
+  data () {
+    return {
+      currentTab: 0,
+      tabs: {
+        first: 'Predictions',
+        second: 'Followers',
+        third: 'Following'
+      },
+      noAvatarImage,
+      LocationIcon,
+      CalendarIcon,
+      SteamIcon
+    }
+  },
   components: {
     Flag,
-    Icon
+    Icon,
+    Tabs,
+    Tab
   },
   computed: {
     user () {
@@ -77,6 +104,9 @@ export default Vue.extend({
     },
     predictions () {
       return this.user.predictions
+    },
+    predictionsLength () {
+      return this.user.predictions.length
     }
   },
   async asyncData (context) {
@@ -89,59 +119,80 @@ export default Vue.extend({
 
 <style lang="stylus">
 
-.profile
-  padding 40px
-  min-width 60%
 
-  &__details
-    display flex
-    flex-direction column
 
-    .basic
-      display flex
-      align-items center
-      padding 5px
+// Bookmaker content styles
+.profile-container
+    max-width: 1440px
+    width: 100%
+    background-color: transparent
+    margin-bottom: 30px
+    padding: 0 15px
 
-      .avatar
-        display flex
-        align-items flex-start
-        justify-content flex-start
-        flex-basis 15%
+    .tabs
+        padding-left: 200px
+        background-color: white
 
-        .image
-          min-width 100px
-          max-width 100%
-          border-radius 50%
+    .profile-head
+        background-color: #131541
+        box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.5)
+        max-height: 160px
+        height: 160px
+        padding-top: 30px
+        padding-left: 180px
+        position: relative
 
-      .info
-        display flex
-        flex-direction column
-        align-items flex-start
-        justify-content center
-        flex-basis 75%
-        padding-left 25px
+        .profile-image
+            border-radius: 2px
+            display: block
+            position: absolute
+            left: 20px
+            bottom: -22px
+            width: 160px
+            height: 160px
+            overflow: hidden
 
-        > *
-          margin-bottom 4px
+            img
+                max-width: none
+                width: 100%
+                height: auto
+                border-radius: 0
+                position: relative
+                top: 50%
+                transform: translateY(-50%)
 
-        .username
-          display flex
-          justify-content flex-start
-          font-size 2em
-          color #1F1F26
-          // margin-bottom 12px
+        .information
+            display: flex
+            flex-direction: column
+            flex-wrap: wrap
+            margin: 0 0 20px 20px
 
-        .country
-          font-size 1.2em
+            .additional
+                margin-top: 10px
 
-      .settings
-        display flex
-        flex-direction column
-        justify-content flex-end
-        align-items flex-end
-        flex-basis 10%
+                span
+                    color: white
+                    font-size: 14px
+                    font-weight: 500
 
-        > *
-          margin 8px 0px
+                    &:nth-child(2)
+                        margin-left: 15px
+
+            .profile-name
+                font-size: 20px
+                color: white
+                font-weight: bold
+
+                img
+                    margin-left: 5px
+
+            .follow
+                background-color: $blue
+                color: white
+                padding: 10px 50px
+                margin-top: 15px
+                border-radius: 4px
+                width: fit-content
+
 
 </style>
