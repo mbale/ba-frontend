@@ -57,15 +57,15 @@ import { format } from 'date-fns'
 
 export default {
   name: 'MatchItem',
-  props: ['gameSlug', 'homeTeam', 'awayTeam', 'date', 'id', 'odds', 'state', 'league', 'predictionCount'],
+  props: ['gameSlug', 'homeTeam', 'awayTeam', 'date', 'id', 'urlId', 'odds', 'state', 'league', 'predictionCount'],
   methods: {
     getMatchURLPath () {
       return {
-        path: `${this.id}/${this.buildMatchURLSegment(this.homeTeam, this.awayTeam)}`
+        path: `${this.gameSlug}/${this.buildMatchURLSegment(this.homeTeam, this.awayTeam)}/${this.urlId}`
       }
     },
     buildMatchURLSegment (homeTeam, awayTeam) {
-      return `${homeTeam.split(' ').join('_')}-${awayTeam.split(' ').join('_')}`
+      return `${homeTeam.toLowerCase().split(' ').join('_')}-vs-${awayTeam.toLowerCase().split(' ').join('_')}`
     },
     formattedDate (date) {
       return format(new Date(date), 'HH:mm')
