@@ -65,7 +65,8 @@ export default Vue.extend({
       const {
         homeTeam,
         awayTeam,
-        id: matchId
+        id: matchId,
+        urlId
       } = this.match
       const {
         _id: oddsId,
@@ -86,7 +87,8 @@ export default Vue.extend({
       })
 
       this.$store.commit('predictions/set_match_id', {
-        matchId
+        matchId,
+        urlId
       })
 
       this.$store.commit('predictions/set_teams', {

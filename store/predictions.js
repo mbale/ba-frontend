@@ -23,8 +23,9 @@ export const mutations = {
     state.homeOdds = homeOdds
     state.awayOdds = awayOdds
   },
-  [MUTATIONS.SET_MATCH_ID] (state, { matchId }) {
+  [MUTATIONS.SET_MATCH_ID] (state, { matchId, urlId }) {
     state.matchId = matchId
+    state.urlId = urlId
   },
   [MUTATIONS.RESET_STATE] (state) {
     state.boxState = false
@@ -47,6 +48,7 @@ export const state = () => ({
   homeOdds: null,
   awayOdds: null,
   matchId: null,
+  urlId: null,
   //
   prediction: {
     selectedTeam: null,
