@@ -13,8 +13,8 @@ export const state = () => ({
 })
 
 export const actions = {
-  async getById ({ commit }, { matchId }) {
-    const match = await this.$axios.$get(`v1/matches/${matchId}`)
+  async getByUrlId ({ commit }, { urlId }) {
+    const match = await this.$axios.$get(`v1/matches/${urlId}`)
 
     commit(MUTATIONS.SET_DATA, { match })
   }

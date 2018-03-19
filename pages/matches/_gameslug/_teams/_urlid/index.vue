@@ -101,8 +101,14 @@ export default Vue.extend({
   },
   async asyncData ({ store, params, error }) {
     try {
-      const matchId = params.id
-      await store.dispatch('match/getById', { matchId })
+      // /matches/vici-gaming-vs-jd-gaming/2hbMvsAD
+      console.log(params)
+      const {
+        // gameslug,
+        // teams,
+        urlid
+      } = params
+      await store.dispatch('match/getByUrlId', { urlId: urlid })
     } catch (e) {
       return error({ statusCode: 404 })
     }
