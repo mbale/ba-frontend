@@ -1,5 +1,5 @@
 <template>
-  <div class="widget top-boomakers">
+  <div class="widget top-bookmakers">
     <h4 class="widget-title">Top Sportbooks</h4>
     <div class="top-bookmakers__item" v-for="(bookmaker) in sportsbooks">
       <nuxt-link class="top-bookmakers__icon" :to="`/visit/${bookmaker.slug}`">
@@ -47,7 +47,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .top-boomakers
+  .top-bookmakers
     background #fff
     border 1px solid $color-border
 
@@ -89,4 +89,5 @@ export default {
     text-transform uppercase
     font-size 13px
     font-weight 700
+
 </style>

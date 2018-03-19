@@ -38,6 +38,7 @@ export default {
     color: #4d4d4d
     font-size: 20px
     font-weight: bold
+    margin-right: 15px
 
   .bonus-item__code
     margin-left: auto
@@ -51,4 +52,28 @@ export default {
     button($blue)
     padding 10px 30px
     margin-left 15px
+
+
+  // mobile styles.
+  @media (max-width: 767px)
+
+    // changing bonus look
+    .bonus-item
+      flex-direction: column
+
+      img
+        margin-left: 0
+
+      h5
+        text-align: center
+        margin-top: 10px
+
+      code
+        margin-left: 0
+        margin-top: 20px
+
+      .bonus-item__button
+        margin-left: 0
+        margin-top: 10px
+
 </style>

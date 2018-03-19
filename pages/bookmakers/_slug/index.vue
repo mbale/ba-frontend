@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="content bookmaker-container">
       <header class="content-header">
         <div class="content-header__hero">
           <figure class="content-header__image" v-bind:style="{ 'background-color': bookmaker.themeColor }">
@@ -161,6 +161,9 @@ export default {
 .item + .item:before
   content ", "
 
+.bookmaker-container
+  max-width: 1440px
+
 .bookmaker__header
   flex 0 0 100%
   background-color #1c1e4e
@@ -187,5 +190,75 @@ export default {
 
 .trophy--exclusive
   background-color #9C00C3
+
+
+
+// RESPONSIVENESS STYLES
+
+// to make the content boxes match the header width and look good on wide screens.
+@media (min-width: 1450px)
+
+  .content-body
+    padding-left: 0
+
+  .widget
+    margin-right: 0
+
+
+// mobile styles.
+@media (max-width: 767px)
+
+  .bookmaker-container
+    justify-content: center
+
+  // making sure header looks good
+  .content-header__hero
+    align-items: center
+    flex-direction: column
+    justify-content: center
+    height: 305px
+
+    .content-header__image
+      margin-bottom: 15px
+      margin-right: 0
+
+    .content-header__title
+      width: 100%
+      margin-right: 0
+      text-align: center
+
+    .bookmaker-header__meta
+      margin-top: 15px
+      width: 100%
+      align-items: center
+      justify-content: center
+
+    .content-header__actions
+      display: none
+
+  // centering tabs
+  .toolbar
+    padding-left: 0
+    justify-content: center
+
+    .tabs
+      margin-right: 0
+
+  // extending .content-body to be 100% width
+  .content-body
+    flex: 0 0 100%
+
+    // table won't stick out of its content & the page
+    table
+      table-layout: fixed
+      word-break: break-word
+
+
+  // changing widget margin so the spaces between wouldn't be so big.
+  .widget
+    margin: 10px auto
+
+    &:last-child
+      margin-bottom: 20px
 
 </style>

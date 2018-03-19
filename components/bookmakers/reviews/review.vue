@@ -46,7 +46,7 @@ export default {
 
 <style lang="stylus" scoped>
   .review
-    border-top 1px solid $color-border
+    border-bottom 1px solid $color-border
     padding 20px
     margin 0 -20px
 

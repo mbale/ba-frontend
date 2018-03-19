@@ -10,8 +10,8 @@
         </div>
       </header>
     </box>
-    <box>
-      <div class="new-review" v-show="userCanSubmitReview">
+    <box v-show="userCanSubmitReview">
+      <div class="new-review">
         <div class="form-field">
           <label class="form-label" for="rating">Rating</label>
           <div class="form-input">
@@ -41,7 +41,7 @@
         </div>
       </div>
     </box>
-    <box>
+    <box class="reviews-container">
       <review :key="index" v-for="(review, index) in reviews.items" :review="review" />
     </box>
   </div>
@@ -101,6 +101,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.reviews-container
+  padding-top: 0
+  padding-bottom: 0
+
 .review-header
   border-bottom 1px solid $color-border
   display: flex
