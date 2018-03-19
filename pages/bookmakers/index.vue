@@ -55,6 +55,12 @@
           </div>
         </card-box>
       </div>
+      <div class="content-body">
+        <h2 class="content-title">Esports Betting Sites</h2>
+        <p>Find the best esports betting sites for you. We curate all the bookmakers that offer esports betting.
+  We provide you with key facts about every bookmaker, including the best bonuses they currently offer and which payment methods they accept.
+  All bookmakers are reviewed independently by our community members and ranked accordingly. So the best bookmakers will always show on top.</p>
+      </div>
     </div>
   </section>
 </template>
@@ -86,7 +92,7 @@ export default Vue.extend({
   },
   beforeRouteUpdate ({name, query}, to, next) {
     if (name === 'bookmakers' && !query['deposit-method']) {
-      console.log('hi')
+      // console.log('hi')
       this.$store.commit('bookmakers/set_filter', {})
     }
     next()
@@ -112,6 +118,12 @@ export default Vue.extend({
 </script>
 
 <style lang="stylus" scoped>
+
+.content-body
+  margin: 25px 10px 40px 10px
+
+.content-title
+  color: $purple
 
 .card-box
   display flex

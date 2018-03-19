@@ -11,7 +11,7 @@
         <span class="row-item odds-team" v-text="o.home"></span>
         <span class="row-item odds-team" v-text="o.away"></span>
         <span class="row-item odds-date" v-text="sinceInWords(o.fetchedAt)"></span>
-        <div class="odds-btn button button--primary" @click="$emit('openPredictionBox', o)">Bet</div>
+        <div class="odds-btn button button--primary" @click="openPredictionBox(o)">Bet</div>
       </div>
     </div>
   </div>
@@ -24,7 +24,19 @@ import dateMixins from '~/mixins/date'
 export default Vue.extend({
   name: 'MatchOdds',
   props: ['odds'],
-  mixins: [dateMixins]
+  mixins: [dateMixins],
+  computed: {
+    loggedIn () {
+      return this.$store.state.user.profile
+    }
+  },
+  methods: {
+    openPredictionBox (o) {
+      if (this.loggedIn) {
+        this.$emit('openPredictionBox', o)
+      }
+    }
+  }
 })
 </script>
 

@@ -65,7 +65,8 @@ export default Vue.extend({
       const {
         homeTeam,
         awayTeam,
-        id: matchId
+        id: matchId,
+        urlId
       } = this.match
       const {
         _id: oddsId,
@@ -86,7 +87,8 @@ export default Vue.extend({
       })
 
       this.$store.commit('predictions/set_match_id', {
-        matchId
+        matchId,
+        urlId
       })
 
       this.$store.commit('predictions/set_teams', {
@@ -101,8 +103,14 @@ export default Vue.extend({
   },
   async asyncData ({ store, params, error }) {
     try {
-      const matchId = params.id
-      await store.dispatch('match/getById', { matchId })
+      // /matches/vici-gaming-vs-jd-gaming/2hbMvsAD
+      console.log(params)
+      const {
+        // gameslug,
+        // teams,
+        urlid
+      } = params
+      await store.dispatch('match/getByUrlId', { urlId: urlid })
     } catch (e) {
       return error({ statusCode: 404 })
     }

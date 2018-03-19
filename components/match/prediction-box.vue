@@ -174,8 +174,8 @@ export default Vue.extend({
         await this.$store.dispatch('predictions/postPrediction')
 
         // requery model
-        const matchId = this.$store.state.predictions.matchId
-        await this.$store.dispatch('match/getById', { matchId })
+        const urlId = this.$store.state.predictions.urlId
+        await this.$store.dispatch('match/getByUrlId', { urlId })
       }
     }
   },
