@@ -288,13 +288,13 @@ export default Vue.extend({
     },
     userCanSubmitReview () {
       const reviews = this.$store.state.bookmakers.bookmaker.reviews.items
-      const user = this.$store.state.user
+      const loggedIn = this.$store.state.user.profile
 
-      if (!user) {
+      if (!loggedIn) {
         return false
       }
 
-      const match = reviews.find((review) => review.user.id === user.profile.id)
+      const match = reviews.find((review) => review.user.id === loggedIn.id)
 
       if (match) {
         return false
