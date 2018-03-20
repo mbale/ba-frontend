@@ -1,5 +1,51 @@
 <template>
-  <div class="profile-container">
+
+  <div class="content">
+    <header class="content-header">
+      <div class="content-header__hero">
+        <figure class="content-header__image">
+          <img v-bind:src="avatarURL" />
+        </figure>
+        <div class="content-header__info">
+          <h1 class="content-header__title">bulshitas</h1>
+          <div class="bookmaker-header__meta">
+            <div class="trophy trophy--exclusive">
+              <img src="~/assets/images/bookmaker/esports-exclusive.svg" alt="Esports Exclusive"> Esports exclusive
+            </div>
+          </div>
+          <div class="content-header__actions">
+          </div>
+
+        </div>
+      </div>
+      <div class="toolbar toolbar--with-avatar">
+        <tabs>
+          <tab
+            v-for="(tab, key, index) in tabs"
+            :key="key"
+            :class="{'tab--active': currentTab === index}"
+            ref="upcoming"
+            @click.native="currentTab = index"
+          >
+            <!-- PREDICTIONS TAB -->
+            <span v-if="index === 0">{{ predictionsLength }} {{ tab }}</span>
+
+            <!-- FOLLOWERS TAB -->
+            <span v-if="index === 1">{{ predictionsLength }} {{ tab }}</span>
+
+            <!-- FOLLOWING TAB -->
+            <span v-if="index === 2">{{ predictionsLength }} {{ tab }}</span>
+          </tab>
+        </tabs>
+      </div>
+    </header>
+  </div>
+
+
+
+
+
+  <!-- <div class="profile-container">
     <header class="profile-head">
       <div class="profile-image">
         <img class="avatar img-responsive" v-bind:src="avatarURL">
@@ -27,17 +73,17 @@
           ref="upcoming"
           @click.native="currentTab = index"
         >
-          <!-- PREDICTIONS TAB -->
+          <!-- PREDICTIONS TAB
           <span v-if="index === 0">{{ predictionsLength }} {{ tab }}</span>
 
-          <!-- FOLLOWERS TAB -->
+          <!-- FOLLOWERS TAB
           <span v-if="index === 1">{{ predictionsLength }} {{ tab }}</span>
 
-          <!-- FOLLOWING TAB -->
+          <!-- FOLLOWING TAB
           <span v-if="index === 2">{{ predictionsLength }} {{ tab }}</span>
         </tab>
       </tabs>
-  </div>
+  </div> -->
 
 </template>
 
@@ -118,6 +164,37 @@ export default Vue.extend({
 </script>
 
 <style lang="stylus">
+
+
+.bookmaker__header
+  flex 0 0 100%
+  background-color #1c1e4e
+
+.bookmaker-header__meta
+  margin-top: 4px
+  display: inline-flex
+  vertical-align: middle
+  align-items: center
+
+.trophy
+  text-transform uppercase
+  color $white
+  font-size 11px
+  background-color #000
+  display inline-block
+  padding 5px 10px
+  font-weight bold
+  vertical-align middle
+  user-select none
+  margin 0 10px
+  border-radius 40px
+  background-image linear-gradient(to bottom, rgba(#000,0) 50%, rgba(#000,0.05) 50%);
+
+.trophy--exclusive
+  background-color #9C00C3
+
+
+
 
 
 
