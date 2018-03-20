@@ -16,7 +16,7 @@
             </no-ssr>
           </div>
         </div>
-        <time class="review-date">{{ review.date }}</time>
+        <time class="review-date">{{ formatDate(review.date, 'MMMM YYYY') }}</time>
       </div>
     </header>
     <div class="review-body">
@@ -28,10 +28,12 @@
 <script>
 import StarRating from 'vue-star-rating'
 import noAvatarImage from '~/assets/images/no_avatar.png'
+import moment from 'moment'
 
 export default {
   components: {
-    StarRating
+    StarRating,
+    moment
   },
   data () {
     return {
@@ -40,6 +42,11 @@ export default {
   },
   props: {
     review: Object
+  },
+  methods: {
+    formatDate (date, format) {
+      return moment().format(format)
+    }
   }
 }
 </script>
