@@ -41,9 +41,7 @@ export default {
   name: 'Matches',
   mixins: [matchMixins],
   data () {
-    return {
-      numberOfMatches: null
-    }
+    return {}
   },
   components: {
     Paginate,
@@ -61,6 +59,9 @@ export default {
   computed: {
     upcomingTabActive () {
       return this.$store.state.matches.active === 'upcoming'
+    },
+    numberOfMatches () {
+      return this.matchCount[this.$store.state.matches.active]
     },
     matchCount () {
       return {
