@@ -35,7 +35,7 @@ module.exports = {
       ssr: true
     }, {
       src: '~/plugins/vue-paginate',
-      ssr: false
+      ssr: true
     }, {
       src: '~/plugins/vue-numeric',
       ssr: true

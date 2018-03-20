@@ -20,6 +20,9 @@
             :changePage="changePage"
             />
         </no-ssr>
+        
+          <paginate ref="paginate" :pageCount="pageCount" :changePage="changePage" />
+        
       </div>
       <div class="blank-slate" v-else>
         <p>No matches were found related to your selected game. <img class="emoticon" src="~/assets/images/misc/sadface.png" alt="sadface emoji"></p>
