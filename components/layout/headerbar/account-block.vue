@@ -7,6 +7,8 @@
       <nav>
         <nuxt-link class="acc-dropdown__link" :to="{ path: '/profile' }">View Profile</nuxt-link>
         <hr class="acc-dropdown__seperator" />
+        <nuxt-link class="acc-dropdown__link" :to="{ path: '/profile/settings' }">Settings</nuxt-link>
+        <hr class="acc-dropdown__seperator" />
         <div class="acc-dropdown__link" @click="signout">Logout</div>
       </nav>
     </div>
