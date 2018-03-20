@@ -10,7 +10,7 @@
     <div class="bookmakers__list">
       <div class="top-three">
         <card-box v-bind:key="bookmaker.slug" v-for="bookmaker of getBookmakersByInterval(0, 3)">
-          <img class="image" slot="header" v-bind:src="bookmaker.logo">
+          <img class="image" slot="header" v-bind:src="bookmaker.logo" v-on:click="redirectToBookmaker(bookmaker.slug)">
           <h1 class="name" slot="body">
             {{ bookmaker.name }}
           </h1>
@@ -34,7 +34,7 @@
       </div>
       <div class="rest">
         <card-box class="card-box" v-bind:key="bookmaker.slug" v-for="bookmaker of getBookmakersByInterval(4)">
-          <img class="image" slot="header" v-bind:src="bookmaker.logo">
+          <img class="image" slot="header" v-bind:src="bookmaker.logo" v-on:click="redirectToBookmaker(bookmaker.slug)">
           <h1 class="name" slot="body">
             {{ bookmaker.name }}
           </h1>
@@ -86,6 +86,9 @@ export default Vue.extend({
     }
   },
   methods: {
+    redirectToBookmaker (slug) {
+      this.$router.push('bookmakers/' + slug)
+    },
     getBookmakersByInterval (from, to) {
       return this.bookmakers.slice(from, to)
     }
@@ -216,6 +219,9 @@ export default Vue.extend({
     flex-direction column
     margin 0 auto
     max-width 1180px
+
+    .image
+      cursor: pointer
 
     .top-three
       display flex
