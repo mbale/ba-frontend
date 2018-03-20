@@ -16,7 +16,7 @@
             </no-ssr>
           </div>
         </div>
-        <time class="review-date">October 2016</time>
+        <time class="review-date">{{ review.date }}</time>
       </div>
     </header>
     <div class="review-body">
