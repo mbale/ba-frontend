@@ -17,6 +17,11 @@ export default {
   name: 'LoginPage',
   components: {
     LoginForm
+  },
+  async asyncData (context) {
+    if (context.store.state.user.profile) {
+      context.redirect('/')
+    }
   }
 }
 </script>
