@@ -12,17 +12,9 @@
     <div class='matches wrapper'>
       <upcoming-matches v-if="upcomingTabActive" />
       <completed-matches v-else />
-      <div class="matches-pagination" v-if="numberOfMatches > 0">
+      <div class="matches-pagination" v-if="matchCount > 0">
         <!-- PAGINATION -->
-        <no-ssr>
-          <paginate
-            :pageCount="pageCount"
-            :changePage="changePage"
-            />
-        </no-ssr>
-        
-          <paginate ref="paginate" :pageCount="pageCount" :changePage="changePage" />
-        
+        <paginate ref="paginate" :force-page='page' :pageCount="pageCount" :changePage="changePage" />
       </div>
       <div class="blank-slate" v-else>
         <p>No matches were found related to your selected game. <img class="emoticon" src="~/assets/images/misc/sadface.png" alt="sadface emoji"></p>
@@ -67,13 +59,14 @@ export default {
       return this.matchCount[this.$store.state.matches.active]
     },
     matchCount () {
-      return {
-        upcoming: this.$store.state.matches.upcoming.count,
-        completed: this.$store.state.matches.completed.count
-      }
+      return this.$store.state.matches.matchCount
+    },
+    page () {
+      // vue-paginate force-page prop requires index - 1
+      return this.$store.state.matches.page > 1 ? this.$store.state.matches.page - 1 : 0
     },
     pageCount () {
-      return Math.ceil(this.matchCount[this.$store.state.matches.active] / 20)
+      return Math.ceil(this.$store.state.matches.matchCount / 20)
     }
   },
   methods: {
@@ -90,8 +83,7 @@ export default {
     formatDate (date) {
       return format(new Date(date), 'dddd, MMMM D')
     },
-    async changePage (page) {
-      const activeTab = this.$store.state.matches.active
+      this.$store.commit('matches/update_page', { page: 0 })
 
       // get active game filter first
       const activeGames = this.$store.state.games.list.filter(g => g.isActive && g.id)
@@ -100,12 +92,10 @@ export default {
       const gameIds = activeGames.map(g => {
         return g.id
       })
+    async changePage (page) {
+      this.$store.commit('matches/update_page', { page })
 
-      await this.$store.dispatch('matches/fetch', {
-        page,
-        gameIds,
-        statusType: activeTab
-      })
+      await this.$store.dispatch('matches/fetch')
     },
     async filterByGames () {
       // get active game filter first
