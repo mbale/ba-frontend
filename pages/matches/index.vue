@@ -86,22 +86,9 @@ export default {
     },
     async filterByGames () {
       // get active game filter first
-      const activeGames = this.$store.state.games.list.filter(g => g.isActive && g.id)
+      // const activeGames = this.$store.state.games.list.filter(g => g.isActive && g.id)
 
-      // get back ids
-      const gameIds = activeGames.map(g => {
-        return g.id
-      })
-
-      // console.log(this.$store.getters['matches/groupUMatchesByDay'])
-
-      await this.$store.dispatch('matches/fetch', {
-        statusType: this.$store.state.matches.active,
-        gameIds
-      })
-
-      // outputs number of matches to variable
-      this.numberOfMatches = Object.keys(this.$store.getters['matches/groupUMatchesByDay']).length
+      await this.$store.dispatch('matches/fetch')
     }
   },
   async asyncData ({ store, route }) {
@@ -138,7 +125,6 @@ export default {
   display flex
   justify-content center
   align-items center
-  padding 0 30px
 
 .matches-pagination
   display flex

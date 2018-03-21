@@ -2,7 +2,9 @@
   <dropdown class='filter-dropdown'>
     <dropdown-button class="filter-dropdown__button">Games</dropdown-button>
     <div slot="content" class="filter-dropdown__content">
-      <div class="filter-game" v-for="game in games" @click="toggleGame(game)" :class="{'is-active': game.isActive }">
+      <div class="filter-game"
+      v-for="game in gameFilters" v-bind:key="game.slug"
+      @click="toggleGame(game)" :class="{'is-active': game.active }">
         <span class="icon" :class="game.slug" /><span class="name">{{game.name}}</span>
       </div>
     </div>
@@ -11,30 +13,39 @@
 
 <script>
 import { Dropdown, DropdownButton } from '~/components/common/dropdown'
-import { every, map } from 'lodash'
+import { every } from 'lodash'
 
 export default {
   components: {
     Dropdown, DropdownButton
   },
   computed: {
-    games () {
-      return this.$store.state.games.list
+    gameFilters () {
+      return this.$store.getters['matches/gameFiltersToShow']
     }
   },
   methods: {
     toggleGame (game) {
       // If all games are active, set them all to inactive
-      if (every(this.games, 'isActive')) {
-        map(this.games, function (game) {
-          game.isActive = false
+      if (every(this.gameFilters, 'active')) {
+        this.gameFilters.forEach(filter => {
+          this.$store.commit('matches/update_game_filter', {
+            slug: filter.slug,
+            value: !filter.active
+          })
         })
       }
-      this.$set(game, 'isActive', !game.isActive)
+      this.$store.commit('matches/update_game_filter', {
+        slug: game.slug,
+        value: !game.active
+      })
       // If all games are inactive, set them all to active
-      if (every(this.games, ['isActive', false])) {
-        map(this.games, function (game) {
-          game.isActive = true
+      if (every(this.gameFilters, ['active', false])) {
+        this.gameFilters.forEach(filter => {
+          this.$store.commit('matches/update_game_filter', {
+            slug: filter.slug,
+            value: true
+          })
         })
       }
       this.$emit('selectedGamesChanged')
@@ -43,7 +54,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   .filter-game
     padding 5px 10px
     cursor pointer
