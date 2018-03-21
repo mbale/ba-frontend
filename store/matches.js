@@ -69,22 +69,23 @@ export const state = () => ({
   stateFilter: 'upcoming',
   // 'active' (we allow by default to query backend by) game filters
   gameFilters: [
-    // active shows whether we show in game filter or not
+    // active shows whether it's filtered
+    // hidden => it's showed in game filter as option
     // not listed games in filter
-    { slug: 'cod', name: 'Call of Duty', active: false },
-    { slug: 'pubg', name: 'PUBG', active: false },
-    { slug: 'rocket-league', name: 'Rocket League', active: false },
-    { slug: 'kog', name: 'KOG', active: false },
+    { slug: 'cod', name: 'Call of Duty', hidden: true, active: true },
+    { slug: 'pubg', name: 'PUBG', hidden: true, active: false },
+    { slug: 'rocket-league', name: 'Rocket League', hidden: true, active: false },
+    { slug: 'kog', name: 'KOG', hidden: true, active: false },
     // we list them
-    { slug: 'heroes-of-the-storm', name: 'Heroes of the storm', active: true },
-    { slug: 'hearthstone', name: 'Hearthstone', active: true },
-    { slug: 'starcraft-2', name: 'Starcraft 2', active: true },
-    { slug: 'overwatch', name: 'Overwatch', active: true },
-    { slug: 'sc-bw', name: 'Starcraft Broodwar', active: true },
-    { slug: 'wc3', name: 'Warcraft 3', active: true },
-    { slug: 'lol', name: 'League Of Legends', active: true },
-    { slug: 'csgo', name: 'Counter Strike GO', active: true },
-    { slug: 'dota-2', name: 'Dota 2', active: true }
+    { slug: 'heroes-of-the-storm', name: 'Heroes of the storm', hidden: false, active: true },
+    { slug: 'hearthstone', name: 'Hearthstone', hidden: false, active: true },
+    { slug: 'starcraft-2', name: 'Starcraft 2', hidden: false, active: true },
+    { slug: 'overwatch', name: 'Overwatch', hidden: false, active: true },
+    { slug: 'sc-bw', name: 'Starcraft Broodwar', hidden: false, active: true },
+    { slug: 'wc3', name: 'Warcraft 3', hidden: false, active: true },
+    { slug: 'lol', name: 'League Of Legends', hidden: false, active: true },
+    { slug: 'csgo', name: 'Counter Strike GO', hidden: false, active: true },
+    { slug: 'dota-2', name: 'Dota 2', hidden: false, active: true }
   ]
 })
 
