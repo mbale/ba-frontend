@@ -51,7 +51,7 @@
 <script>
 import StarRating from 'vue-star-rating'
 import Review from '~/components/bookmakers/reviews/review'
-import Box from '~/components/common/Box'
+import Box from '~/components/common/box'
 import TextArea from '~/components/common/form/textarea'
 
 export default {

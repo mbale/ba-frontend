@@ -110,7 +110,7 @@ import { Tabs, Tab } from '~/components/common/tabs'
 import TopSportsbooks from '~/components/bookmakers/top-sportsbooks'
 import Reviews from '~/components/bookmakers/reviews/reviews'
 import Bonus from '~/components/bookmakers/bonus'
-import Box from '~/components/common/Box'
+import Box from '~/components/common/box'
 
 export default {
   name: 'Bookmaker',
