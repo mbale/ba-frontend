@@ -75,7 +75,7 @@ export default {
   computed: {
     userCanSubmitReview () {
       const reviews = this.$store.state.bookmakers.bookmaker.reviews.items
-      const user = this.$store.state.user
+      const user = this.$store.state.user.profile
 
       if (!user) { return false }
 

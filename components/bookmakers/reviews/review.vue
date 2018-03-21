@@ -28,12 +28,12 @@
 <script>
 import StarRating from 'vue-star-rating'
 import noAvatarImage from '~/assets/images/no_avatar.png'
-import moment from 'moment'
+import dateMixin from '~/mixins/date'
 
 export default {
+  mixins: [dateMixin],
   components: {
-    StarRating,
-    moment
+    StarRating
   },
   data () {
     return {
@@ -42,11 +42,6 @@ export default {
   },
   props: {
     review: Object
-  },
-  methods: {
-    formatDate (date, format) {
-      return moment().format(format)
-    }
   }
 }
 </script>
