@@ -75,11 +75,11 @@ export default {
   computed: {
     userCanSubmitReview () {
       const reviews = this.$store.state.bookmakers.bookmaker.reviews.items
-      const user = this.$store.state.user.profile
+      const profile = this.$store.state.user.profile
 
-      if (!user) { return false }
+      if (!profile) { return false }
 
-      const match = reviews.find((review) => review.user.id === user.profile.id)
+      const match = reviews.find((review) => review.user.id === profile.id)
 
       if (match) { return false }
       return true
