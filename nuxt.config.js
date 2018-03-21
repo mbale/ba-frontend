@@ -6,12 +6,17 @@ const nodeExternals = require('webpack-node-externals')
 dotenv.config()
 
 const BACKEND_URL = process.env.BACKEND_URL
-const FRONTEND_URL = process.env.FRONTEND_URL
 
 process.env.DEBUG = 'nuxt:*'
 
 module.exports = {
   debug: true,
+  // due to bug
+  modulesDir: ['node_modules'],
+  modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy'
+  ],
   // Vue
   plugins: [
     {
@@ -41,10 +46,6 @@ module.exports = {
       ssr: true
     }
   ],
-  modules: [
-    '@nuxtjs/axios',
-    '@nuxtjs/proxy'
-  ],
   axios: {
     // baseURL: `0.0.0.0:3010`,
     credentials: false
@@ -52,8 +53,6 @@ module.exports = {
   proxy: [
     ['/api', { target: BACKEND_URL, pathRewrite: { '^/api': '' } }]
   ],
-  // due to bug
-  modulesDir: ['node_modules'],
   /*
   ** Headers of the page
   */
