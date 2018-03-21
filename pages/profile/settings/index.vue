@@ -76,11 +76,35 @@
       </div>
     </div>
 
-
-
     <!-- SECURITY TAB -->
     <div v-show="currentTab === 1" class="security content-tab">
       <h2 class="content-title">Security</h2>
+
+      <!-- PASSWORD -->
+      <div class="form-field">
+        <label class="form-label" for="password">Password</label>
+        <div class="form-input">
+          <text-input
+            v-model="password"
+            placeholder="Your new password"
+            type="password"
+            :validation="'required|password'" />
+          <span class="input-desc-text">Just type in your new password.</span>
+        </div>
+      </div>
+
+      <!-- EMAIL -->
+      <div class="form-field">
+        <label class="form-label" for="confirmpassword">Confirm Password</label>
+        <div class="form-input">
+          <text-input
+            v-model="confirmpassword"
+            placeholder="Confirm new password"
+            type="password"
+            :validation="'required|password'" />
+          <span class="input-desc-text">Write it again to confirm it.</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -100,6 +124,8 @@ export default Vue.extend({
     return {
       email: '',
       username: '',
+      password: '',
+      confirmpassword: '',
       currentTab: 0,
       tabs: {
         first: 'Account',
