@@ -85,29 +85,32 @@ export default {
       await this.$store.dispatch('matches/fetch')
     },
     async filterByGames () {
-      // get active game filter first
-      // const activeGames = this.$store.state.games.list.filter(g => g.isActive && g.id)
-
       await this.$store.dispatch('matches/fetch')
     }
   },
-  async asyncData ({ store, route }) {
-    // const queryParams = route.query
+  async asyncData ({ store, route, redirect }) {
+    const queryParams = route.query
     await store.dispatch('matches/fetchGameIds')
     await store.dispatch('matches/fetch')
 
     // based on query params switch tab
-    // if (queryParams['status-type']) {
-    //   if (queryParams['status-type'] === 'upcoming') {
-    //     store.commit('matches/set_active_list', {
-    //       active: 'upcoming'
-    //     })
-    //   } else {
-    //     store.commit('matches/set_active_list', {
-    //       active: 'completed'
-    //     })
-    //   }
-    // }
+    if (queryParams['status-type']) {
+      switch (queryParams['status-type']) {
+        case 'upcoming':
+          store.commit('matches/update_state_filter', {
+            filter: 'upcoming'
+          })
+          break
+        case 'completed':
+          store.commit('matches/update_state_filter', {
+            filter: 'completed'
+          })
+          break
+        default:
+          redirect('/matches')
+          break
+      }
+    }
   }
 }
 </script>
