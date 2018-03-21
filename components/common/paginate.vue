@@ -2,6 +2,7 @@
   <div class="paginate">
     <paginate
       :page-count="pageCount"
+      :force-page="forcePage"
       :click-handler="changePage"
       :container-class="'pagination'"
       :page-class="'pagination__item'"
@@ -30,6 +31,10 @@ export default {
     changePage: {
       type: Function,
       required: true
+    },
+    forcePage: {
+      type: Number,
+      required: false
     }
   }
 }
