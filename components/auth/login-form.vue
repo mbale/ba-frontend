@@ -26,7 +26,7 @@
         <password-input
           v-model="password"
           placeholder="Minimum 6 characters"
-          :validation="{ required: true, min: 6, alpha: true }" />
+          :validation="{ required: true, min: 6, alpha_num: true }" />
       </div>
     </div>
     <!-- LOGIN -->
