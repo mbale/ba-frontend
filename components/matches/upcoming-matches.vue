@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     groupedMatches () {
-      return this.$store.getters['matches/groupUMatchesByDay']
+      return this.$store.getters['matches/groupMatchesByDate']
     }
   }
 }

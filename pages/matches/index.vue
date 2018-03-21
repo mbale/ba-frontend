@@ -2,15 +2,15 @@
   <div class='matches-container'>
     <div class="toolbar">
       <tabs>
-        <tab :class="{'tab--active': upcomingTabActive }" ref="upcoming" @click.native="changeTab('upcoming')">Upcoming</tab>
-        <tab :class="{'tab--active': !upcomingTabActive }" ref="completed" @click.native="changeTab('completed')">Completed</tab>
+        <tab :class="{'tab--active': tabActive === 'upcoming' }" @click.native="changeTab('upcoming')">Upcoming</tab>
+        <tab :class="{'tab--active': tabActive === 'completed' }" @click.native="changeTab('completed')">Completed</tab>
       </tabs>
       <div class="filters">
         <games-filter @selectedGamesChanged="filterByGames" />
       </div>
     </div>
     <div class='matches wrapper'>
-      <upcoming-matches v-if="upcomingTabActive" />
+      <upcoming-matches v-if="tabActive === 'upcoming'" />
       <completed-matches v-else />
       <div class="matches-pagination" v-if="matchCount > 0">
         <!-- PAGINATION -->
@@ -25,7 +25,6 @@
 
 <script>
 import matchMixins from '~/mixins/match'
-import { format } from 'date-fns'
 import Paginate from '~/components/common/paginate'
 import { Tabs, Tab } from '~/components/common/tabs'
 import UpcomingMatches from '~/components/matches/upcoming-matches'
@@ -52,11 +51,8 @@ export default {
     }
   },
   computed: {
-    upcomingTabActive () {
-      return this.$store.state.matches.active === 'upcoming'
-    },
-    numberOfMatches () {
-      return this.matchCount[this.$store.state.matches.active]
+    tabActive () {
+      return this.$store.state.matches.stateFilter
     },
     matchCount () {
       return this.$store.state.matches.matchCount
@@ -66,32 +62,23 @@ export default {
       return this.$store.state.matches.page > 1 ? this.$store.state.matches.page - 1 : 0
     },
     pageCount () {
-      return Math.ceil(this.$store.state.matches.matchCount / 20)
+      return Math.ceil(this.$store.state.matches.matchCount / this.$store.state.matches.matchPerPage)
     }
   },
   methods: {
-    async changeTab (tab) {
+    async changeTab (toTab) {
       this.$router.push({
         query: {
-          'status-type': tab
+          'status-type': toTab
         }
       })
-      await this.$store.commit('matches/set_active_list', {
-        active: tab
+      this.$store.commit('matches/update_state_filter', {
+        filter: toTab
       })
-    },
-    formatDate (date) {
-      return format(new Date(date), 'dddd, MMMM D')
-    },
       this.$store.commit('matches/update_page', { page: 0 })
 
-      // get active game filter first
-      const activeGames = this.$store.state.games.list.filter(g => g.isActive && g.id)
-
-      // get back ids
-      const gameIds = activeGames.map(g => {
-        return g.id
-      })
+      await this.$store.dispatch('matches/fetch')
+    },
     async changePage (page) {
       this.$store.commit('matches/update_page', { page })
 
@@ -118,33 +105,22 @@ export default {
     }
   },
   async asyncData ({ store, route }) {
-    const queryParams = route.query
-
-    // get game types
-    // needs due to gamefilter
-    // and get all matches
-    await Promise.all([
-      store.dispatch('games/fetchAll'),
-      store.dispatch('matches/fetch', {
-        statusType: 'upcoming'
-      }),
-      store.dispatch('matches/fetch', {
-        statusType: 'completed'
-      })
-    ])
+    // const queryParams = route.query
+    await store.dispatch('matches/fetchGameIds')
+    await store.dispatch('matches/fetch')
 
     // based on query params switch tab
-    if (queryParams['status-type']) {
-      if (queryParams['status-type'] === 'upcoming') {
-        store.commit('matches/set_active_list', {
-          active: 'upcoming'
-        })
-      } else {
-        store.commit('matches/set_active_list', {
-          active: 'completed'
-        })
-      }
-    }
+    // if (queryParams['status-type']) {
+    //   if (queryParams['status-type'] === 'upcoming') {
+    //     store.commit('matches/set_active_list', {
+    //       active: 'upcoming'
+    //     })
+    //   } else {
+    //     store.commit('matches/set_active_list', {
+    //       active: 'completed'
+    //     })
+    //   }
+    // }
   }
 }
 </script>
