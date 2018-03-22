@@ -18,9 +18,9 @@
               </div>
             </div>
             <div class="content-header__actions">
-              <a class="content-header__button content-header__button--primary" target="_blank" v-bind:href="bookmaker.affiliateUrl">
+              <nuxt-link class="content-header__button content-header__button--primary" :to="`/visit/${bookmaker.slug}`">
                 Visit Sportsbook
-              </a>
+              </nuxt-link>
             </div>
 
           </div>
@@ -50,7 +50,7 @@
                 <tr v-if="bookmaker.url">
                   <td>Official Website</td>
                   <td>
-                    <a v-bind:href="bookmaker.url" target="_blank">{{ bookmaker.url }}</a>
+                    <nuxt-link :to="{ path: '../' + bookmaker.slug }" append>{{ bookmaker.url }}</nuxt-link>
                   </td>
                 </tr>
                 <!-- Support Email -->
@@ -86,7 +86,7 @@
         <!-- BONUSES TAB -->
         <div v-show="currentTab === 1" class="bonuses">
           <box title="Bonuses">
-            <bonus :key="index" v-for="(bonus, index) in bookmaker.bonuses" :affiliate-url="bookmaker.affiliateUrl" :bonus="bonus" :slug="bookmaker.slug"></bonus>
+            <bonus :key="index" v-for="(bonus, index) in bookmaker.bonuses" :bonus="bonus" :slug="bookmaker.slug"></bonus>
           </box>
         </div>
         <!-- REVIEWS TAB -->
