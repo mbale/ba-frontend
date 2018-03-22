@@ -25,7 +25,7 @@
               Read review
             </nuxt-link>
             <div class="bet">
-              <nuxt-link :to="{ path: bookmaker.slug + '/visit' }" class="text" append>
+              <nuxt-link :to="{ path: `/visit/${bookmaker.slug}` }" class="text" append>
                 Bet now
               </nuxt-link>
             </div>

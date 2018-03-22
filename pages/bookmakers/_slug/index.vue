@@ -50,7 +50,7 @@
                 <tr v-if="bookmaker.url">
                   <td>Official Website</td>
                   <td>
-                    <nuxt-link :to="{ path: '../' + bookmaker.slug }" append>{{ bookmaker.url }}</nuxt-link>
+                    <nuxt-link :to="{ path: `/visit/${bookmaker.slug}` }">{{ bookmaker.url }}</nuxt-link>
                   </td>
                 </tr>
                 <!-- Support Email -->
