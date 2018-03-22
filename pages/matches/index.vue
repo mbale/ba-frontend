@@ -30,6 +30,9 @@ import { Tabs, Tab } from '~/components/common/tabs'
 import UpcomingMatches from '~/components/matches/upcoming-matches'
 import CompletedMatches from '~/components/matches/completed-matches'
 import GamesFilter from '~/components/matches/games-filter'
+import { createNamespacedHelpers } from 'vuex'
+
+const { mapState, mapMutations, mapActions } = createNamespacedHelpers('matches')
 
 export default {
   name: 'Matches',
@@ -51,45 +54,51 @@ export default {
     }
   },
   computed: {
-    tabActive () {
-      return this.$store.state.matches.stateFilter
-    },
-    matchCount () {
-      return this.$store.state.matches.matchCount
-    },
+    ...mapState({
+      'tabActive': 'stateFilter',
+      'matchCount': 'matchCount',
+      'matchPerPage': 'matchPerPage'
+    }),
     page () {
       // vue-paginate force-page prop requires index - 1
       return this.$store.state.matches.page > 1 ? this.$store.state.matches.page - 1 : 0
     },
     pageCount () {
-      return Math.ceil(this.$store.state.matches.matchCount / this.$store.state.matches.matchPerPage)
+      return Math.ceil(this.matchCount / this.matchPerPage)
     }
   },
   methods: {
+    ...mapMutations([
+      'update_state_filter',
+      'update_page'
+    ]),
+    ...mapActions([
+      'fetch',
+      'fetchGameIds'
+    ]),
     async changeTab (toTab) {
       this.$router.push({
         query: {
           'status-type': toTab
         }
       })
-      this.$store.commit('matches/update_state_filter', {
-        filter: toTab
-      })
-      this.$store.commit('matches/update_page', { page: 0 })
 
-      await this.$store.dispatch('matches/fetch')
+      this.update_state_filter({ filter: toTab })
+      this.update_page({ page: 0 })
+
+      await this.fetch()
     },
     async changePage (page) {
-      this.$store.commit('matches/update_page', { page })
-
-      await this.$store.dispatch('matches/fetch')
+      this.update_page({ page })
+      this.fetch()
     },
     async filterByGames () {
-      await this.$store.dispatch('matches/fetch')
+      this.fetch()
     }
   },
   async asyncData ({ store, route, redirect }) {
     const queryParams = route.query
+
     await store.dispatch('matches/fetchGameIds')
     await store.dispatch('matches/fetch')
 
@@ -97,14 +106,10 @@ export default {
     if (queryParams['status-type']) {
       switch (queryParams['status-type']) {
         case 'upcoming':
-          store.commit('matches/update_state_filter', {
-            filter: 'upcoming'
-          })
+          store.commit('update_state_filter', { filter: 'upcoming' })
           break
         case 'completed':
-          store.commit('matches/update_state_filter', {
-            filter: 'completed'
-          })
+          store.commit('update_state_filter', { filter: 'completed' })
           break
         default:
           redirect('/matches')

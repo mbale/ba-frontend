@@ -1,11 +1,6 @@
 import { groupBy } from 'lodash'
 
 const MUTATIONS = {
-  UPDATE_LIST: 'update_list',
-  SET_ACTIVE_LIST: 'set_active_list',
-  SET_MATCH: 'set_match',
-  SET_GAME_FILTER: 'set_game_filter',
-  //
   UPDATE_GAME_IDS: 'update_game_ids',
   UPDATE_MATCHES_LIST: 'update_matches_list',
   UPDATE_STATE_FILTER: 'update_state_filter',
