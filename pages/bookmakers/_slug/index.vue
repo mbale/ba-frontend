@@ -149,7 +149,6 @@ export default {
   async asyncData ({ store, params }) {
     const slug = params.slug
     // getting bookmakers data
-    await store.dispatch('bookmakers/fetchAll')
     await store.dispatch('bookmakers/getBySlug', {
       slug
     })
