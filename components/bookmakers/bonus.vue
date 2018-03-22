@@ -4,7 +4,7 @@
     <h5 class="bonus-item__title">{{ bonus.title }}</h5>
     <code class="bonus-item__code" v-if="bonus.code" >{{ bonus.code }}CODE <span>FREE25</span></code>
     <code class="bonus-item__code" v-else>No Code Required</code>
-    <nuxt-link class="bonus-item__button ":to="`/visit/${slug}`">Claim Bonus</nuxt-link>
+    <a class="bonus-item__button" target="_blank" v-bind:href="affiliateUrl">Claim Bonus</a>
   </div>
 </template>
 
@@ -12,6 +12,7 @@
 export default {
   name: 'Bonus',
   props: {
+    affiliateUrl: String,
     bonus: Object,
     slug: String
   }
