@@ -28,8 +28,8 @@
             <text-area
               v-model="review.text"
               name="review-field"
-              cols="30"
-              rows="10"
+              :cols="30"
+              :rows="10"
               :validation="{ required: true, min: 6 }"
               />
           </div>
