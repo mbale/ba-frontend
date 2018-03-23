@@ -59,7 +59,7 @@
         </div>
 
         <!-- SAVE CHANGES -->
-        <button class="form-btn button--primary" @click="submitChanges">
+        <button class="form-btn button--primary">
           Save Changes
         </button>
       </div>
@@ -80,29 +80,42 @@
     <div v-show="currentTab === 1" class="security content-tab">
       <h2 class="content-title">Security</h2>
 
-      <!-- PASSWORD -->
-      <div class="form-field">
-        <label class="form-label" for="password">Password</label>
-        <div class="form-input">
-          <text-input
-            v-model="password"
-            placeholder="Your new password"
-            type="password"
-            :validation="'required|password'" />
-          <span class="input-desc-text">Just type in your new password.</span>
-        </div>
-      </div>
+      <div class="form--horizontal">
 
-      <!-- EMAIL -->
-      <div class="form-field">
-        <label class="form-label" for="confirmpassword">Confirm Password</label>
-        <div class="form-input">
-          <text-input
-            v-model="confirmpassword"
-            placeholder="Confirm new password"
-            type="password"
-            :validation="'required|password'" />
-          <span class="input-desc-text">Write it again to confirm it.</span>
+        <!-- PASSWORD -->
+        <div class="form-field">
+          <label class="form-label" for="password">Password</label>
+          <div class="form-input">
+            <text-input
+              v-model="password"
+              placeholder="Your new password"
+              type="password"
+              :validation="'required|password'" />
+            <span class="input-desc-text">Just type in your new password.</span>
+          </div>
+        </div>
+
+        <!-- CONFIRM PASSWORD -->
+        <div class="form-field">
+          <label class="form-label" for="confirmpassword">Confirm Password</label>
+          <div class="form-input">
+            <text-input
+              v-model="confirmpassword"
+              placeholder="Confirm new password"
+              type="password"
+              :validation="'required|password'" />
+            <span class="input-desc-text">Write it again to confirm it.</span>
+          </div>
+        </div>
+
+        <!-- LOGIN -->
+        <div class="form-field form-field--actions">
+          <button class="form-btn" @click="changePassword">
+            Change Password
+          </button>
+          <button class="form-btn form-btn--disabled">
+            <icon name="spinner" pulse></icon>
+          </button>
         </div>
       </div>
     </div>
@@ -140,34 +153,13 @@ export default Vue.extend({
     Tab
   },
   computed: {
-    user () {
-      return this.$store.state.user
-    },
-    profile () {
-      return this.user.profile
-    },
-    username () {
-      return this.profile.username
-    },
-    email () {
-      return this.profile.email
-    },
-    registeredOn () {
-      return this.profile.registeredOn
-    },
-    countryCode () {
-      return this.profile.countryCode
-    },
-    avatarURL () {
-      return this.profile.avatar || noAvatarImage
-    },
-    predictions () {
-      return this.user.predictions
-    }
+
   },
   methods: {
-    submitChanges () {
-
+    async changePassword () {
+      await this.$store.dispatch('user/changePassword', {
+        password: this.password
+      })
     }
   },
   async asyncData (context) {
