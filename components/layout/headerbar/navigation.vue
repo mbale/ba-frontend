@@ -5,6 +5,9 @@
         <nuxt-link class="site-nav__link" active-class="site-nav__link--active" to="/matches">Matches</nuxt-link>
       </li>
       <li class="site-nav__item">
+        <nuxt-link class="site-nav__link" active-class="site-nav__link--active" to="/rankings">Rankings</nuxt-link>
+      </li>
+      <li class="site-nav__item">
         <nuxt-link class="site-nav__link" active-class="site-nav__link--active" to="/bookmakers">Bookmakers</nuxt-link>
       </li>
       <li class="site-nav__item">
