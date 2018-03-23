@@ -109,9 +109,7 @@ export const actions = {
       console.log(payload)
       commit(MUTATIONS.CHANGE_PASSWORD_IN_PROGRESS)
 
-      const {
-        accessToken
-      } = await this.$axios.$put('v1/users/me', payload)
+      await this.$axios.$put('v1/users/me', payload)
 
       // await dispatch('updateToken', {
       //   accessToken
