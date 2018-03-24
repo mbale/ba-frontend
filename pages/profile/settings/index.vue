@@ -58,10 +58,15 @@
           </div>
         </div>
 
-        <!-- SAVE CHANGES -->
-        <button class="form-btn button--primary">
-          Save Changes
-        </button>
+        <!-- BUTTON SAVE CHANGES -->
+        <div class="form-field form-field--actions">
+          <button class="form-btn button--primary"  v-show="!isChangeInProgress('usernameEmail')" v-bind:class="{'form-btn--disabled': isChangeDisabled('usernameEmail')}" @click="change('usernameEmail')">
+            Save Changes
+          </button>
+          <button class="form-btn form-btn--disabled" v-show="isChangeInProgress('usernameEmail')">
+            <icon name="spinner" pulse></icon>
+          </button>
+        </div>
       </div>
 
       <div class="connections">
@@ -104,19 +109,36 @@
               placeholder="Confirm new password"
               type="password"
               :validation="'required|password'" />
-            <span class="input-desc-text">Write it again to confirm it.</span>
+            <span class="input-desc-text">Write it again to confirm it matches.</span>
           </div>
         </div>
 
-        <!-- LOGIN -->
+        <!-- BUTTON CHANGE PASSWORD -->
         <div class="form-field form-field--actions">
-          <button class="form-btn" @click="changePassword">
+          <button class="form-btn button--primary"  v-show="!isChangeInProgress('password')" v-bind:class="{'form-btn--disabled': isChangeDisabled('password')}" @click="change('password')">
             Change Password
           </button>
-          <button class="form-btn form-btn--disabled">
+          <button class="form-btn form-btn--disabled" v-show="isChangeInProgress('password')">
             <icon name="spinner" pulse></icon>
           </button>
         </div>
+
+        <!-- ERRORS -->
+        <div class="form-errors">
+          <span v-if="changeError('password').response">
+            Sorry, it was not possible to change your password. Try again later.
+          </span>
+          <span v-else-if="changeError('password').request">
+            We're experiencing technical difficulties.
+          </span>
+          <span v-else-if="changeError('password').message">
+            You're not connected to the network
+          </span>
+          <span v-else-if="this.passwordsMatch === false">
+            Both passwords should match!
+          </span>
+        </div>
+
       </div>
     </div>
   </div>
@@ -139,6 +161,7 @@ export default Vue.extend({
       username: '',
       password: '',
       confirmpassword: '',
+      passwordsMatch: null,
       currentTab: 0,
       tabs: {
         first: 'Account',
@@ -156,10 +179,73 @@ export default Vue.extend({
 
   },
   methods: {
-    async changePassword () {
-      await this.$store.dispatch('user/changePassword', {
-        password: this.password
-      })
+    isChangeInProgress (thing) {
+      if (thing === 'password') { // PASSWORD
+        return this.$store.state.user.changePasswordInProgress
+      } else if (thing === 'username') { // USERNAME
+        return this.$store.state.user.changeUsernameInProgress
+      } else if (thing === 'email') { // EMAIL
+        return this.$store.state.user.changeEmailInProgress
+      } else if (thing === 'usernameEmail') {
+        return this.$store.state.user.changeUsernameEmailInProgress
+      }
+    },
+    isChangeDisabled (thing) {
+      if (this.errors.any()) {
+        if (thing === 'password' && (this.password === '' || this.confirmpassword === '')) { // PASSWORD
+          return true
+        } else if (thing === 'username' && this.username === '') { // USERNAME
+          return true
+        } else if (thing === 'email' && this.email === '') { // EMAIL
+          return true
+        }
+      }
+      return false
+    },
+    changeError (thing) {
+      if (thing === 'password') { // PASSWORD
+        return this.$store.state.user.changePasswordError || {}
+      } else if (thing === 'username') { // USERNAME
+        return this.$store.state.user.changeUsernameError || {}
+      } else if (thing === 'email') { // EMAIL
+        return this.$store.state.user.changeEmailError || {}
+      }
+    },
+
+    async change (thing) {
+      // CHANGING PASSWORD
+      if (thing === 'password') {
+        if (this.password !== '' && this.confirmpassword !== '' && this.password === this.confirmpassword) {
+          this.passwordsMatch = true
+
+          // if passwords match, change the password
+          await this.$store.dispatch('user/changePassword', {
+            password: this.password
+          })
+
+          // resetting passwords value
+          this.password = null
+          this.confirmpassword = null
+        } else {
+          this.passwordsMatch = false
+        }
+
+      // CHANGING USERNAME AND EMAIL
+      } else if (thing === 'usernameEmail') {
+        if (this.username !== '' && this.email !== '') {
+          await this.$store.dispatch('user/changeUsername', {
+            username: this.username
+          })
+
+          await this.$store.dispatch('user/changeEmail', {
+            email: this.email
+          })
+
+          // resetting username AND email value
+          this.username = null
+          this.email = null
+        }
+      }
     }
   },
   async asyncData (context) {
@@ -221,6 +307,7 @@ export default Vue.extend({
             border-radius: 4px
             outline: none
             margin-left: 150px
+            width: fit-content
 
         .form-field
             display: flex

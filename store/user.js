@@ -106,48 +106,49 @@ export const actions = {
   */
   async changePassword ({ commit, dispatch }, payload) {
     try {
-      console.log(payload)
       commit(MUTATIONS.CHANGE_PASSWORD_IN_PROGRESS)
 
       await this.$axios.$put('v1/users/me', payload)
 
-      // await dispatch('updateToken', {
-      //   accessToken
-      // })
-      console.log(accessToken)
-
       commit(MUTATIONS.CHANGE_PASSWORD_SUCCESS)
-
-      // await dispatch('getProfile', {}, { root: true })
     } catch (error) {
       commit(MUTATIONS.CHANGE_PASSWORD_FAIL, {
         error
       })
     }
+  },
+  /*
+  **  Change Username
+  */
+  async changeUsername ({ commit, dispatch }, payload) {
+    try {
+      console.log(payload)
+      commit(MUTATIONS.CHANGE_USERNAME_IN_PROGRESS)
+
+      await this.$axios.$put('v1/users/me', payload)
+
+      commit(MUTATIONS.CHANGE_USERNAME_SUCCESS)
+    } catch (error) {
+      commit(MUTATIONS.CHANGE_USERNAME_FAIL, {
+        error
+      })
+    }
+  },
+  /*
+  **  Change Email
+  */
+  async changeEmail ({ commit, dispatch }, payload) {
+    try {
+      console.log(payload)
+      commit(MUTATIONS.CHANGE_EMAIL_IN_PROGRESS)
+
+      await this.$axios.$put('v1/users/me', payload)
+
+      commit(MUTATIONS.CHANGE_EMAIL_SUCCESS)
+    } catch (error) {
+      commit(MUTATIONS.CHANGE_EMAIL_FAIL, {
+        error
+      })
+    }
   }
-  // /*
-  // ** Tokens
-  // */
-  // async getToken (context) {
-  //   let accessToken
-  //
-  //   // check in what environment we are in
-  //   // prio to localstorage
-  //   if (process.browser && localStorage) {
-  //     accessToken = localStorage.getItem('accessToken')
-  //   }
-  //
-  //   // get from cookies
-  //   if (!accessToken) {
-  //     const cookiesString = process.browser ? document.cookie : this.app.context.req.headers.cookie
-  //     const cookiesJSON = Cookie.parse(cookiesString || '') || {}
-  //     accessToken = cookiesJSON.accessToken
-  //   }
-  //
-  //   if (accessToken) {
-  //     await context.dispatch('updateToken', {
-  //       accessToken
-  //     })
-  //   }
-  // }
 }

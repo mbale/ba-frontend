@@ -7,7 +7,7 @@
           <img v-bind:src="avatarURL" />
         </figure>
         <div class="content-header__info">
-          <h1 class="content-header__title">bulshitas</h1>
+          <h1 class="content-header__title">{{ profile.username }}</h1>
           <div class="bookmaker-header__meta">
             <div class="trophy trophy--exclusive">
               <img src="~/assets/images/bookmaker/esports-exclusive.svg" alt="Esports Exclusive"> Esports exclusive
