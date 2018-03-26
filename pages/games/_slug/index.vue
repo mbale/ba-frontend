@@ -54,6 +54,10 @@ export default Vue.extend({
 .game
   width 100%
 
+  .content-header__hero
+    width fit-content
+    margin 0 auto
+
   .game__header
     display block
     margin-bottom 35px
@@ -104,6 +108,7 @@ export default Vue.extend({
     background-color #fff
     padding 50px
     margin-bottom 30px
+    margin 0 auto
 
     .title
       margin-bottom 20px
