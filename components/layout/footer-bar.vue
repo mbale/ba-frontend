@@ -20,6 +20,7 @@
           <h4 class='footer-nav__title'>Help</h4>
           <ul class='footer-nav__list'>
             <li class='footer-nav__item'><a href='mailto:hello@betacle.com' class='footer-nav__link'>Contact</a></li>
+            <li class='footer-nav__item'><nuxt-link to='/faq' class='footer-nav__link'>FAQ</nuxt-link></li>
           </ul>
         </nav>
       </div>

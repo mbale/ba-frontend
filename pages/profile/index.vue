@@ -128,9 +128,11 @@ export default Vue.extend({
   },
   computed: {
     user () {
+      console.log(this.$store.state.user)
       return this.$store.state.user
     },
     profile () {
+      console.log(this.user.profile)
       return this.user.profile
     },
     username () {
