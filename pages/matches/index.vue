@@ -100,7 +100,6 @@ export default {
     const queryParams = route.query
 
     await store.dispatch('matches/fetchGameIds')
-    await store.dispatch('matches/fetch')
 
     // based on query params switch tab
     if (queryParams['status-type']) {
@@ -116,6 +115,7 @@ export default {
           break
       }
     }
+    await store.dispatch('matches/fetch')
   }
 }
 </script>
