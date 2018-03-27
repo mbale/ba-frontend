@@ -2,7 +2,7 @@
   <div>
     <box>
       <header class="content-section__header review-header">
-        <h2 class="content-section__title">{{ predictions.length }} Predictions</h2>
+        <h2 class="content-section__title">{{ countPredictions }}</h2>
       </header>
     </box>
     <box class="reviews-container">
@@ -29,6 +29,17 @@ export default {
       review: {
         rating: null,
         text: null
+      }
+    }
+  },
+  computed: {
+    countPredictions () {
+      if (this.predictions.length === 0) {
+        return 'No Predictions'
+      } else if (this.predictions.length === 1) {
+        return '1 Prediction'
+      } else {
+        return this.predictions.length + ' Predictions'
       }
     }
   }

@@ -66,10 +66,12 @@ import SteamIcon from '~/assets/images/misc/steam.svg'
 import { Tabs, Tab } from '~/components/common/tabs'
 import Box from '~/components/common/box'
 import Predictions from '~/components/profile/predictions/predictions'
+import countryMixin from '~/mixins/country'
+// import dateMixin from '~/mixins/date'
 
 export default Vue.extend({
   name: 'Profile',
-  mixins: [dateMixin],
+  mixins: [dateMixin, countryMixin],
   data () {
     return {
       currentTab: 0,

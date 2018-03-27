@@ -11,13 +11,13 @@
           </h1>
           <div class="additional">
             <span class="location">
-              <img :src="LocationIcon" alt=""> {{ showCountry(profile.countryCode) }}
+              <img :src="LocationIcon" alt=""> {{ convertCountryCode(profile.countryCode) }}
             </span>
             <span class="registered-on">
               <img :src="CalendarIcon" alt=""> Joined {{ formatDate(profile.registeredOn, 'DD MMMM YYYY') }}
             </span>
           </div>
-          <a href="" class="follow button--primary">Follow</a>
+          <!-- <a href="" class="follow button--primary">Follow</a> -->
         </div>
       </div>
       <div class="toolbar toolbar--with-avatar">
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+
 import Vue from 'vue'
 import { createNamespacedHelpers } from 'vuex'
 import dateMixin from '~/mixins/date'
@@ -59,22 +60,20 @@ import Flag from 'vue-flag-icon/components/icon/Flag.vue'
 import 'vue-awesome/icons/wrench'
 import 'vue-awesome/icons/upload'
 import Icon from 'vue-awesome/components/Icon'
+
 import LocationIcon from '~/assets/images/misc/location.svg'
 import CalendarIcon from '~/assets/images/misc/calendar.svg'
 import SteamIcon from '~/assets/images/misc/steam.svg'
-<<<<<<< HEAD:pages/profile/index.vue
 
-=======
->>>>>>> 20662cbc90a038c5a5c33f3669d6ed1303128897:pages/users/_username.vue
 import { Tabs, Tab } from '~/components/common/tabs'
 import Box from '~/components/common/box'
 import Predictions from '~/components/profile/predictions/predictions'
-
+import countryMixin from '~/mixins/country'
 const { mapState } = createNamespacedHelpers('users')
 
 export default Vue.extend({
   name: 'PublicProfile',
-  mixins: [dateMixin],
+  mixins: [dateMixin, countryMixin],
   data () {
     return {
       currentTab: 0,
@@ -98,50 +97,6 @@ export default Vue.extend({
     Predictions
   },
   computed: {
-<<<<<<< HEAD:pages/profile/index.vue
-    user () {
-      console.log(this.$store.state.user)
-      return this.$store.state.user
-    },
-    profile () {
-      return this.user.profile
-    },
-    username () {
-      return this.profile.username
-    },
-    email () {
-      return this.profile.email
-    },
-    registeredOn () {
-      return this.profile.registeredOn
-    },
-    countryCode () {
-      return this.profile.countryCode
-    },
-    avatarURL () {
-      return this.profile.avatar || noAvatarImage
-    },
-    predictions () {
-      return this.user.predictions
-    },
-    predictionsLength () {
-      return this.user.predictions.length
-    }
-  },
-  methods: {
-    showCountry (countryCode) {
-      if (countryCode !== '') {
-        return countryCode
-      } else {
-        return 'Unknown'
-      }
-    }
-  },
-  async asyncData (context) {
-    if (!context.store.state.user.profile) {
-      context.redirect('/')
-    }
-=======
     ...mapState({
       user: 'userToView',
       profile: state => state.userToView.profile,
@@ -149,16 +104,14 @@ export default Vue.extend({
       email: state => state.userToView.profile.email,
       registeredOn: state => state.userToView.profile.registeredOn,
       countryCode: state => state.userToView.profile.countryCode,
-      avatarURL: state => state.userToView.profile.avatarURL,
+      avatarURL: state => state.userToView.profile.avatarURL || noAvatarImage,
       predictions: state => state.userToView.predictions,
       predictionsLength: state => state.userToView.predictions.length
     })
   },
   async asyncData ({ store, params, error }) {
     const { username } = params
-
     await store.dispatch('users/fetchByUsername', { username })
->>>>>>> 20662cbc90a038c5a5c33f3669d6ed1303128897:pages/users/_username.vue
   }
 })
 </script>
@@ -241,6 +194,4 @@ export default Vue.extend({
         margin-top: 15px
         border-radius: 4px
         width: fit-content
-
-
 </style>

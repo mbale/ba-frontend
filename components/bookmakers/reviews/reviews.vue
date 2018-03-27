@@ -2,7 +2,7 @@
   <div>
     <box>
       <header class="content-section__header review-header">
-        <h2 class="content-section__title">{{ reviews.items.length }} Reviews</h2>
+        <h2 class="content-section__title">{{ countReviews }}</h2>
         <div class="rating">
           <no-ssr>
             <star-rating active-color="#ffcd02" :rating="reviews.avg" :star-size="18" :show-rating="false" :read-only="true" :inline="true"></star-rating>
@@ -83,6 +83,15 @@ export default {
 
       if (match) { return false }
       return true
+    },
+    countReviews () {
+      if (this.reviews.items.length === 0) {
+        return 'No Reviews'
+      } else if (this.reviews.items.length === 1) {
+        return '1 Review'
+      } else {
+        return this.reviews.items.length + ' Reviews'
+      }
     }
   },
   methods: {
