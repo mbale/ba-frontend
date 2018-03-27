@@ -67,6 +67,12 @@ export const mutations = {
   }
 }
 
+export const getters = {
+  isLoggedIn ({ profile }) {
+    return !!profile
+  }
+}
+
 export const state = () => ({
   profile: null,
   predictions: null,

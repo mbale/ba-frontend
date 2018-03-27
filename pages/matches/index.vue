@@ -100,22 +100,22 @@ export default {
     const queryParams = route.query
 
     await store.dispatch('matches/fetchGameIds')
-    await store.dispatch('matches/fetch')
 
     // based on query params switch tab
     if (queryParams['status-type']) {
       switch (queryParams['status-type']) {
         case 'upcoming':
-          store.commit('update_state_filter', { filter: 'upcoming' })
+          store.commit('matches/update_state_filter', { filter: 'upcoming' })
           break
         case 'completed':
-          store.commit('update_state_filter', { filter: 'completed' })
+          store.commit('matches/update_state_filter', { filter: 'completed' })
           break
         default:
           redirect('/matches')
           break
       }
     }
+    await store.dispatch('matches/fetch')
   }
 }
 </script>

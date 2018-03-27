@@ -5,9 +5,9 @@
     </dropdown-button>
     <div slot="content" class="acc-dropdown">
       <nav>
-        <nuxt-link class="acc-dropdown__link" :to="{ path: '/profile' }">View Profile</nuxt-link>
+        <nuxt-link class="acc-dropdown__link" :to="{ path: `/users/${username}` }">View Profile</nuxt-link>
         <hr class="acc-dropdown__seperator" />
-        <nuxt-link class="acc-dropdown__link" :to="{ path: '/profile/settings' }">Settings</nuxt-link>
+        <nuxt-link class="acc-dropdown__link" :to="{ path: '/settings' }">Settings</nuxt-link>
         <hr class="acc-dropdown__seperator" />
         <div class="acc-dropdown__link" @click="signout">Logout</div>
       </nav>
