@@ -20,7 +20,7 @@
 import { includes } from 'lodash'
 
 // Valid input Types
-const TYPES = ['text', 'email', 'number', 'url']
+const TYPES = ['password', 'text', 'email', 'number', 'url']
 
 export default {
   name: 'TextInput',
