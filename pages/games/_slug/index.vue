@@ -1,7 +1,7 @@
 <template>
   <section class="game content-panel">
     <header class="content-header">
-      <div class="content-header__hero">
+      <div class="content-header__hero games-header">
         <figure class="content-header__image" v-bind:style="{ 'background-color': game.color }">
           <img v-bind:src="game.logo" />
         </figure>
@@ -54,7 +54,7 @@ export default Vue.extend({
 .game
   width 100%
 
-  .content-header__hero
+  .games-header
     width fit-content
     margin 0 auto
 

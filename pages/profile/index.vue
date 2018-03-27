@@ -1,21 +1,23 @@
 <template>
-
-  <div class="content">
-    <header class="content-header">
+  <div class="content profile-content">
+    <header class="content-header profile-header">
       <div class="content-header__hero">
         <figure class="content-header__image">
           <img v-bind:src="avatarURL" />
         </figure>
         <div class="content-header__info">
-          <h1 class="content-header__title">{{ profile.username }}</h1>
-          <div class="bookmaker-header__meta">
-            <div class="trophy trophy--exclusive">
-              <img src="~/assets/images/bookmaker/esports-exclusive.svg" alt="Esports Exclusive"> Esports exclusive
-            </div>
+          <h1 class="profile-name">
+            {{ profile.username }} <img :src="SteamIcon" alt="">
+          </h1>
+          <div class="additional">
+            <span class="location">
+              <img :src="LocationIcon" alt=""> {{ showCountry(profile.countryCode) }}
+            </span>
+            <span class="registered-on">
+              <img :src="CalendarIcon" alt=""> Joined {{ formatDate(profile.registeredOn, 'DD MMMM YYYY') }}
+            </span>
           </div>
-          <div class="content-header__actions">
-          </div>
-
+          <a href="" class="follow button--primary">Follow</a>
         </div>
       </div>
       <div class="toolbar toolbar--with-avatar">
@@ -28,63 +30,24 @@
             @click.native="currentTab = index"
           >
             <!-- PREDICTIONS TAB -->
-            <span v-if="index === 0">{{ predictionsLength }} {{ tab }}</span>
+            <span v-if="index === 0">{{ tab }}</span>
 
             <!-- FOLLOWERS TAB -->
-            <span v-if="index === 1">{{ predictionsLength }} {{ tab }}</span>
+            <!-- <span v-if="index === 1">{{ predictionsLength }} {{ tab }}</span> -->
 
             <!-- FOLLOWING TAB -->
-            <span v-if="index === 2">{{ predictionsLength }} {{ tab }}</span>
+            <!-- <span v-if="index === 2">{{ predictionsLength }} {{ tab }}</span> -->
           </tab>
         </tabs>
       </div>
     </header>
+
+    <div class="content-body profile-body">
+      <div v-show="currentTab === 0" class="predictions">
+        <predictions :predictions="user.predictions" />
+      </div>
+    </div>
   </div>
-
-
-
-
-
-  <!-- <div class="profile-container">
-    <header class="profile-head">
-      <div class="profile-image">
-        <img class="avatar img-responsive" v-bind:src="avatarURL">
-      </div>
-      <div class="information">
-        <h1 class="profile-name">
-          {{ profile.username }} <img :src="SteamIcon" alt="">
-        </h1>
-        <div class="additional">
-          <span class="location">
-            <img :src="LocationIcon" alt=""> United Kingdom
-          </span>
-          <span class="registered-on">
-            <img :src="CalendarIcon" alt=""> Joined {{ profile.registeredOn.split('T')[0] }}
-          </span>
-        </div>
-        <a href="" class="follow button--primary">Follow</a>
-      </div>
-    </header>
-      <tabs>
-        <tab
-          v-for="(tab, key, index) in tabs"
-          :key="key"
-          :class="{'tab--active': currentTab === index}"
-          ref="upcoming"
-          @click.native="currentTab = index"
-        >
-          <!-- PREDICTIONS TAB
-          <span v-if="index === 0">{{ predictionsLength }} {{ tab }}</span>
-
-          <!-- FOLLOWERS TAB
-          <span v-if="index === 1">{{ predictionsLength }} {{ tab }}</span>
-
-          <!-- FOLLOWING TAB
-          <span v-if="index === 2">{{ predictionsLength }} {{ tab }}</span>
-        </tab>
-      </tabs>
-  </div> -->
-
 </template>
 
 <script>
@@ -100,8 +63,9 @@ import LocationIcon from '~/assets/images/misc/location.svg'
 import CalendarIcon from '~/assets/images/misc/calendar.svg'
 import SteamIcon from '~/assets/images/misc/steam.svg'
 
-// import noAvatarImage from '~/assets/images/no_avatar.png'
 import { Tabs, Tab } from '~/components/common/tabs'
+import Box from '~/components/common/box'
+import Predictions from '~/components/profile/predictions/predictions'
 
 export default Vue.extend({
   name: 'Profile',
@@ -124,7 +88,9 @@ export default Vue.extend({
     Flag,
     Icon,
     Tabs,
-    Tab
+    Tab,
+    Box,
+    Predictions
   },
   computed: {
     user () {
@@ -132,7 +98,6 @@ export default Vue.extend({
       return this.$store.state.user
     },
     profile () {
-      console.log(this.user.profile)
       return this.user.profile
     },
     username () {
@@ -157,6 +122,15 @@ export default Vue.extend({
       return this.user.predictions.length
     }
   },
+  methods: {
+    showCountry (countryCode) {
+      if (countryCode !== '') {
+        return countryCode
+      } else {
+        return 'Unknown'
+      }
+    }
+  },
   async asyncData (context) {
     if (!context.store.state.user.profile) {
       context.redirect('/')
@@ -167,40 +141,11 @@ export default Vue.extend({
 
 <style lang="stylus">
 
+.content-header__hero
+  background-color: #1c1e4e
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0) 0%, #000 100%)
 
-.bookmaker__header
-  flex 0 0 100%
-  background-color #1c1e4e
-
-.bookmaker-header__meta
-  margin-top: 4px
-  display: inline-flex
-  vertical-align: middle
-  align-items: center
-
-.trophy
-  text-transform uppercase
-  color $white
-  font-size 11px
-  background-color #000
-  display inline-block
-  padding 5px 10px
-  font-weight bold
-  vertical-align middle
-  user-select none
-  margin 0 10px
-  border-radius 40px
-  background-image linear-gradient(to bottom, rgba(#000,0) 50%, rgba(#000,0.05) 50%);
-
-.trophy--exclusive
-  background-color #9C00C3
-
-
-
-
-
-
-// Bookmaker content styles
+// profile content styles
 .profile-container
     max-width: 1440px
     width: 100%
@@ -240,38 +185,38 @@ export default Vue.extend({
                 top: 50%
                 transform: translateY(-50%)
 
-        .information
-            display: flex
-            flex-direction: column
-            flex-wrap: wrap
-            margin: 0 0 20px 20px
+.content-header__info
+    display: flex
+    flex-direction: column
+    flex-wrap: wrap
+    margin: 0 0 0 20px
 
-            .additional
-                margin-top: 10px
+    .additional
+        margin-top: 10px
 
-                span
-                    color: white
-                    font-size: 14px
-                    font-weight: 500
+        span
+            color: white
+            font-size: 14px
+            font-weight: 500
 
-                    &:nth-child(2)
-                        margin-left: 15px
+            &:nth-child(2)
+                margin-left: 15px
 
-            .profile-name
-                font-size: 20px
-                color: white
-                font-weight: bold
+    .profile-name
+        font-size: 20px
+        color: white
+        font-weight: bold
 
-                img
-                    margin-left: 5px
+        img
+            margin-left: 5px
 
-            .follow
-                background-color: $blue
-                color: white
-                padding: 10px 50px
-                margin-top: 15px
-                border-radius: 4px
-                width: fit-content
+    .follow
+        background-color: $blue
+        color: white
+        padding: 10px 50px
+        margin-top: 15px
+        border-radius: 4px
+        width: fit-content
 
 
 </style>
