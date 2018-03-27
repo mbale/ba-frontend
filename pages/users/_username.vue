@@ -89,22 +89,22 @@
 
 <script>
 import Vue from 'vue'
+import { createNamespacedHelpers } from 'vuex'
 import dateMixin from '~/mixins/date'
 import noAvatarImage from '~/assets/images/no_avatar.png'
 import Flag from 'vue-flag-icon/components/icon/Flag.vue'
 import 'vue-awesome/icons/wrench'
 import 'vue-awesome/icons/upload'
 import Icon from 'vue-awesome/components/Icon'
-
 import LocationIcon from '~/assets/images/misc/location.svg'
 import CalendarIcon from '~/assets/images/misc/calendar.svg'
 import SteamIcon from '~/assets/images/misc/steam.svg'
-
-// import noAvatarImage from '~/assets/images/no_avatar.png'
 import { Tabs, Tab } from '~/components/common/tabs'
 
+const { mapState } = createNamespacedHelpers('users')
+
 export default Vue.extend({
-  name: 'Profile',
+  name: 'PublicProfile',
   mixins: [dateMixin],
   data () {
     return {
@@ -127,43 +127,27 @@ export default Vue.extend({
     Tab
   },
   computed: {
-    user () {
-      return this.$store.state.user
-    },
-    profile () {
-      return this.user.profile
-    },
-    username () {
-      return this.profile.username
-    },
-    email () {
-      return this.profile.email
-    },
-    registeredOn () {
-      return this.profile.registeredOn
-    },
-    countryCode () {
-      return this.profile.countryCode
-    },
-    avatarURL () {
-      return this.profile.avatar || noAvatarImage
-    },
-    predictions () {
-      return this.user.predictions
-    },
-    predictionsLength () {
-      return this.user.predictions.length
-    }
+    ...mapState({
+      user: 'userToView',
+      profile: state => state.userToView.profile,
+      username: state => state.userToView.profile.username,
+      email: state => state.userToView.profile.email,
+      registeredOn: state => state.userToView.profile.registeredOn,
+      countryCode: state => state.userToView.profile.countryCode,
+      avatarURL: state => state.userToView.profile.avatarURL,
+      predictions: state => state.userToView.predictions,
+      predictionsLength: state => state.userToView.predictions.length
+    })
   },
-  async asyncData (context) {
-    if (!context.store.state.user.profile) {
-      context.redirect('/')
-    }
+  async asyncData ({ store, params, error }) {
+    const { username } = params
+
+    await store.dispatch('users/fetchByUsername', { username })
   }
 })
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 
 
 .bookmaker__header
