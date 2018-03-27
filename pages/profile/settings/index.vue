@@ -154,6 +154,7 @@ import noAvatarImage from '~/assets/images/no_avatar.png'
 
 export default Vue.extend({
   name: 'Profile',
+  middleware: ['check-auth'],
   mixins: [dateMixin],
   data () {
     return {
@@ -247,12 +248,12 @@ export default Vue.extend({
         }
       }
     }
-  },
-  async asyncData (context) {
-    if (!context.store.state.user.profile) {
-      context.redirect('/')
-    }
   }
+  // async asyncData (context) {
+  //   if (!context.store.state.user.profile) {
+  //     context.redirect('/')
+  //   }
+  // }
 })
 </script>
 
