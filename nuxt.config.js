@@ -11,6 +11,10 @@ process.env.DEBUG = 'nuxt:*'
 
 module.exports = {
   debug: true,
+  // needs to sync cookie & jwt token on client site
+  router: {
+    middleware: ['sync-auth-ssr-client']
+  },
   // due to bug
   modulesDir: ['node_modules'],
   modules: [
@@ -19,6 +23,10 @@ module.exports = {
   ],
   // Vue
   plugins: [
+    {
+      src: '~/plugins/axios',
+      ssr: true
+    },
     {
       src: '~/plugins/pretty-checkbox-vue',
       ssr: true
@@ -36,9 +44,6 @@ module.exports = {
       src: '~/plugins/vue-awesome',
       ssr: true
     }, {
-      src: '~/plugins/sync-auth-ssr-client',
-      ssr: true
-    }, {
       src: '~/plugins/vue-paginate',
       ssr: true
     }, {
@@ -47,7 +52,7 @@ module.exports = {
     }
   ],
   axios: {
-    // baseURL: `0.0.0.0:3010`,
+    prefix: '/api',
     credentials: false
   },
   proxy: [

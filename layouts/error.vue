@@ -22,7 +22,7 @@ export default {
       return this.error.statusCode || 500
     },
     message () {
-      return this.error.message || `The page you're looking for has moved or doesn't exist.`
+      return this.error.message || `Something terrible happened`
     }
   }
 }
