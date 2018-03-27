@@ -109,7 +109,7 @@ export default Vue.extend({
       predictionsLength: state => state.userToView.predictions.length
     })
   },
-  async asyncData ({ store, params, error }) {
+  async fetch ({ store, params, error }) {
     const { username } = params
     await store.dispatch('users/fetchByUsername', { username })
   }
