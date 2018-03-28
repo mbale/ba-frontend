@@ -44,7 +44,11 @@
 
     <div class="content-body profile-body">
       <div v-show="currentTab === 0" class="predictions">
-        <predictions :predictions="user.predictions" />
+        <predictions :predictions="predictions" />
+        <div class="predictions-pagination" v-if="predictionsCount > 0">
+          <!-- PAGINATION -->
+          <paginate ref="paginate" :force-page='page' :pageCount="pageCount" :changePage="changePage" />
+        </div>
       </div>
     </div>
   </div>
@@ -59,12 +63,13 @@ import noAvatarImage from '~/assets/images/no_avatar.png'
 import Flag from 'vue-flag-icon/components/icon/Flag.vue'
 import 'vue-awesome/icons/wrench'
 import 'vue-awesome/icons/upload'
-import Icon from 'vue-awesome/components/Icon'
 
+import Icon from 'vue-awesome/components/Icon'
 import LocationIcon from '~/assets/images/misc/location.svg'
 import CalendarIcon from '~/assets/images/misc/calendar.svg'
 import SteamIcon from '~/assets/images/misc/steam.svg'
 
+import Paginate from '~/components/common/paginate'
 import { Tabs, Tab } from '~/components/common/tabs'
 import Box from '~/components/common/box'
 import Predictions from '~/components/profile/predictions/predictions'
@@ -76,6 +81,8 @@ export default Vue.extend({
   mixins: [dateMixin, countryMixin],
   data () {
     return {
+      lastPredictionsToShow: 0,
+      predictionsToShow: [],
       currentTab: 0,
       tabs: {
         first: 'Predictions',
@@ -94,7 +101,8 @@ export default Vue.extend({
     Tabs,
     Tab,
     Box,
-    Predictions
+    Predictions,
+    Paginate
   },
   computed: {
     ...mapState({
@@ -107,12 +115,46 @@ export default Vue.extend({
       avatarURL: state => state.userToView.profile.avatarURL || noAvatarImage,
       predictions: state => state.userToView.predictions,
       predictionsLength: state => state.userToView.predictions.length
-    })
+    }),
+    predictionsPerPage () {
+      return this.$store.state.predictions.predictionsPerPage
+    },
+    predictionsCount () {
+      // // var allPredictions = this.predictionsToShow.length
+      //
+      // this.predictionsToShow.slice(this.lastPredictionsToShow, this.predictionsPerPage)
+      // console.log(this.predictionsToShow)
+
+      return this.predictionsLength
+    },
+    page () {
+      // vue-paginate force-page prop requires index - 1
+      return this.$store.state.predictions.page > 1 ? this.$store.state.predictions.page - 1 : 0
+    },
+    pageCount () {
+      return Math.ceil(this.predictionsLength / this.predictionsPerPage)
+    }
+  },
+  methods: {
+    // ...mapMutations([
+    //   'update_page'
+    // ]),
+    async changePage (page) {
+      this.$store.commit('predictions/update_page', { page: page })
+      // this.predictionsToShow = this.predictionsToShow + this.predictionsToShow
+
+      // await this.$store.dispatch('predictions/fetch')
+    }
   },
   async fetch ({ store, params, error }) {
     const { username } = params
     await store.dispatch('users/fetchByUsername', { username })
   }
+  // async asyncData ({ store, route, redirect }) {
+  //   store.commit
+  //   store.commit('predictions/update_page', { page: page })
+  //   await store.dispatch('matches/fetchGameIds')
+  // }
 })
 </script>
 

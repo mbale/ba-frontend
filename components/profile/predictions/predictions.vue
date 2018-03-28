@@ -2,7 +2,7 @@
   <div>
     <box>
       <header class="content-section__header review-header">
-        <h2 class="content-section__title">{{ countPredictions }}</h2>
+        <h2 class="content-section__title">{{ showPredictionsLength }}</h2>
       </header>
     </box>
     <box class="reviews-container">
@@ -33,13 +33,16 @@ export default {
     }
   },
   computed: {
-    countPredictions () {
-      if (this.predictions.length === 0) {
+    predictionsLength () {
+      return this.predictions.length
+    },
+    showPredictionsLength () {
+      if (this.predictionsLength === 0) {
         return 'No Predictions'
-      } else if (this.predictions.length === 1) {
+      } else if (this.predictionsLength === 1) {
         return '1 Prediction'
       } else {
-        return this.predictions.length + ' Predictions'
+        return this.predictionsLength + ' Predictions'
       }
     }
   }
