@@ -54,7 +54,7 @@ module.exports = {
   axios: {
     proxy: true,
     prefix: '/api',
-    credentials: false
+    credentials: true
   },
   proxy: [
     ['/api', { target: BACKEND_URL, pathRewrite: { '^/api': '' } }]

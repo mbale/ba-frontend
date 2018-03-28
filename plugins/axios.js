@@ -1,4 +1,10 @@
-export default ({ $axios, error }) => {
+export default async ({ $axios, error, store }) => {
+  // if we extend
+  // we need to set up additionals here
+  $axios.setHeader('Authorization', store.state.auth.accessToken)
+
+  // global error handler that will redirect user to error page of any error code
+  // now only 404, 500
   $axios.onError(err => {
     if (err.response) {
       const { status } = err.response

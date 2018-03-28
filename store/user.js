@@ -1,83 +1,56 @@
+import noAvatarImage from '~/assets/images/no_avatar.png'
+
 const MUTATIONS = {
-  SET_DATA: 'set_data',
-  RESET_DATA: 'reset_data',
-  //
-  CHANGE_PASSWORD_FAIL: 'change_password_fail',
-  CHANGE_PASSWORD_IN_PROGRESS: 'change_password_in_progress',
-  CHANGE_PASSWORD_SUCCESS: 'change_password_success',
-  //
-  CHANGE_EMAIL_FAIL: 'change_email_fail',
-  CHANGE_EMAIL_IN_PROGRESS: 'change_email_in_progress',
-  CHANGE_EMAIL_SUCCESS: 'change_email_success',
-  //
-  CHANGE_USERNAME_FAIL: 'change_username_fail',
-  CHANGE_USERNAME_IN_PROGRESS: 'change_username_in_progress',
-  CHANGE_USERNAME_SUCCESS: 'change_username_success'
+  UPDATE_LOGGED_USER_DATA: 'update_logged_user_data',
+  UPDATE_ACCOUNT_DETAILS: 'update_account_details'
 }
 
 export const mutations = {
-  //
-  [MUTATIONS.SET_DATA] (state, { profile, predictions }) {
+  [MUTATIONS.UPDATE_LOGGED_USER_DATA] (state, { profile, prediction }) {
     state.profile = profile
-    state.predictions = predictions
+    state.prediction = prediction
   },
-  [MUTATIONS.RESET_DATA] (state) {
-    state.profile = null
-    state.predictions = null
-  },
-  // PASSWORD
-  [MUTATIONS.CHANGE_PASSWORD_IN_PROGRESS] (state) {
-    state.changePasswordInProgress = true
-  },
-  [MUTATIONS.CHANGE_PASSWORD_FAIL] (state, payload) {
-    state.changePasswordError = payload.error
-    state.changePasswordInProgress = false
-  },
-  [MUTATIONS.CHANGE_PASSWORD_SUCCESS] (state) {
-    state.changePasswordError = false
-    state.changePasswordInProgress = false
-  },
-  // EMAIL
-  [MUTATIONS.CHANGE_EMAIL_IN_PROGRESS] (state) {
-    state.changeEmailInProgress = true
-  },
-  [MUTATIONS.CHANGE_EMAIL_FAIL] (state, payload) {
-    state.changeEmailError = payload.error
-    state.changeEmailInProgress = false
-  },
-  [MUTATIONS.CHANGE_EMAIL_SUCCESS] (state) {
-    state.changeEmailError = false
-    state.changeEmailInProgress = false
-  },
-  // USERNAME
-  [MUTATIONS.CHANGE_USERNAME_IN_PROGRESS] (state) {
-    state.changeUsernameInProgress = true
-  },
-  [MUTATIONS.CHANGE_USERNAME_FAIL] (state, payload) {
-    state.changeUsernameError = payload.error
-    state.changeUsernameInProgress = false
-  },
-  [MUTATIONS.CHANGE_USERNAME_SUCCESS] (state) {
-    state.changeUsernameError = false
-    state.changeUsernameInProgress = false
-  },
-  //
-  [MUTATIONS.SET_TOKEN] (state, payload) {
-    state.accessToken = payload.accessToken
+  [MUTATIONS.UPDATE_ACCOUNT_DETAILS] (state, { field, value }) {
+    if (state.profile[field] !== value) {
+      state.profileChanges[field] = value
+    } else {
+      state.profileChanges[field] = null
+    }
   }
 }
 
 export const getters = {
+  // is he logged in?
   isLoggedIn ({ profile }) {
     return !!profile
+  },
+  // get back avatar or no avatar image based on actual user
+  avatarURL ({ profile }, { isLoggedIn }) {
+    if (isLoggedIn) {
+      return profile.avatar === '' ? noAvatarImage : profile.avatar
+    }
+    return null
+  },
+  // shows whether user changed something (not yet on backend)
+  // and it's different than the original
+  userChangedProfile ({ profileChanges, profile }) {
+    return Object.keys(profileChanges)
+      .filter(key => profileChanges[key] && profileChanges[key] !== profile[key])
+      .length > 0
   }
 }
 
 export const state = () => ({
+  // profile & predictions always show the default saved state from backend
   profile: null,
   predictions: null,
-  // user: null,
-  // accessToken: null,
+  // contains the proposed changes on frontend
+  profileChanges: {
+    username: null,
+    password: null,
+    email: null,
+    avatar: null
+  },
   //
   changePasswordInProgress: false,
   changePasswordError: null,
@@ -97,15 +70,16 @@ export const actions = {
         predictions
       } = await this.$axios.$get('v1/users/me')
 
-      context.commit('user/set_data', {
-        profile,
-        predictions
-      }, { root: true })
+      context.commit(MUTATIONS.UPDATE_LOGGED_USER_DATA, { profile, predictions })
     } catch (error) {
       await context.dispatch('auth/updateToken', {}, {
         root: true
       })
     }
+  },
+  async deleteAvatar ({ dispatch }) {
+    await this.$axios.$delete('v1/users/me/avatar')
+    await dispatch('getProfile')
   },
   /*
   **  Change Password

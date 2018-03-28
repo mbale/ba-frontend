@@ -22,10 +22,10 @@
           <label class="form-label" for="username">Username</label>
           <div class="form-input">
             <text-input
-              v-model="username"
+              v-model="account.username"
               placeholder="Your Username"
               :validation="{ required: true, min: 4, alpha: true }" />
-            <span class="input-desc-text">https://esportsinsights.com/users/{{username}}</span>
+            <span class="input-desc-text">https://betacle.com/users/{{ account.username }}</span>
           </div>
         </div>
 
@@ -34,7 +34,7 @@
           <label class="form-label" for="email">Email</label>
           <div class="form-input">
             <text-input
-              v-model="email"
+              v-model="account.email"
               placeholder="Your Email"
               type="email"
               :validation="'required|email'" />
@@ -46,12 +46,13 @@
         <div class="form-field">
           <label class="form-label" for="email">Profile Picture</label>
           <div class="form-input form-input--avatar">
-            <img class="avatar img-responsive" v-bind:src="noAvatarImage">
+            <img class="avatar img-responsive" v-bind:src="account.avatar">
 
             <div class="info">
               <div class="buttons">
+                <input id="image" @change="onAvatarChange" type="file">
                 <a class="upload-btn">Upload Photo</a>
-                <a class="delete-btn">Delete Photo</a>
+                <a class="delete-btn" @click="removeAvatar">Delete Photo</a>
               </div>
               <span>Max 3mb GIF, JPG or PNG.</span>
             </div>
@@ -60,7 +61,9 @@
 
         <!-- BUTTON SAVE CHANGES -->
         <div class="form-field form-field--actions">
-          <button class="form-btn button--primary"  v-show="!isChangeInProgress('usernameEmail')" v-bind:class="{'form-btn--disabled': isChangeDisabled('usernameEmail')}" @click="change('usernameEmail')">
+          <button class="form-btn button--primary"  v-show="!isChangeInProgress('usernameEmail')"
+          v-bind:class="{'form-btn--disabled': !canUpdateProfile }"
+          @click="updateProfile">
             Save Changes
           </button>
           <button class="form-btn form-btn--disabled" v-show="isChangeInProgress('usernameEmail')">
@@ -146,18 +149,27 @@
 
 <script>
 import Vue from 'vue'
+import { createNamespacedHelpers } from 'vuex'
 import { Tabs, Tab } from '~/components/common/tabs'
 import TextInput from '~/components/common/form/text'
 
 import dateMixin from '~/mixins/date'
-import noAvatarImage from '~/assets/images/no_avatar.png'
+
+const { mapGetters, mapMutations, mapState, mapActions } = createNamespacedHelpers('user')
 
 export default Vue.extend({
-  name: 'Profile',
+  name: 'Settings',
   middleware: ['check-auth'],
   mixins: [dateMixin],
   data () {
     return {
+      // contains default user data from server
+      // then it's the model of changes
+      account: {
+        username: null,
+        email: null,
+        avatar: null
+      },
       email: '',
       username: '',
       password: '',
@@ -167,8 +179,7 @@ export default Vue.extend({
       tabs: {
         first: 'Account',
         second: 'Security'
-      },
-      noAvatarImage
+      }
     }
   },
   components: {
@@ -177,9 +188,34 @@ export default Vue.extend({
     Tab
   },
   computed: {
+    ...mapGetters({
+      userChangedProfile: 'userChangedProfile'
+    }),
+    ...mapState({
+      profileChanges: 'profileChanges',
+      userProfile: 'profile'
+    }),
+    // check if user really changed something to make button available to send
+    canUpdateProfile () {
+      const fields = this.account
 
+      // if he wants to revert the changes to original
+      if (this.userChangedProfile) {
+        return true
+      }
+
+      return Object.keys(fields)
+        .filter(field => fields[field] && this.userProfile[field] !== fields[field])
+        .length > 0
+    }
   },
   methods: {
+    ...mapMutations({
+      updateAccountDetails: 'update_account_details'
+    }),
+    ...mapActions({
+      deleteAvatar: 'deleteAvatar'
+    }),
     isChangeInProgress (thing) {
       if (thing === 'password') { // PASSWORD
         return this.$store.state.user.changePasswordInProgress
@@ -247,13 +283,55 @@ export default Vue.extend({
           this.email = null
         }
       }
+    },
+    async removeAvatar () {
+      // console.log(this.$axios.defaults.headers)
+      await this.deleteAvatar()
+    },
+    // when he selected new avatar
+    onAvatarChange (e) {
+      const files = e.target.files || e.dataTransfer.files
+
+      if (files.length) {
+        const avatar = files[0]
+        const reader = new FileReader()
+
+        reader.onload = (e) => {
+          this.account.avatar = e.target.result
+        }
+
+        reader.readAsDataURL(avatar)
+      }
+    },
+    // send updated fields to store and save it
+    async updateProfile () {
+      // needs it if he clicks on it anyway
+      if (this.canUpdateProfile) {
+        const fields = this.account
+
+        Object.keys(fields).forEach(field => {
+          const value = fields[field]
+          this.updateAccountDetails({ field, value })
+        })
+
+        if (this.userChangedProfile) {
+          // dispatch
+        }
+      }
+    }
+  },
+  async asyncData ({ store, $axios }) {
+    await store.dispatch('user/getProfile')
+
+    // return the original user data
+    return {
+      account: {
+        username: store.state.user.profile.username,
+        email: store.state.user.profile.email,
+        avatar: store.getters['user/avatarURL']
+      }
     }
   }
-  // async asyncData (context) {
-  //   if (!context.store.state.user.profile) {
-  //     context.redirect('/')
-  //   }
-  // }
 })
 </script>
 
