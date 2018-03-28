@@ -27,16 +27,18 @@
       <div class="row row__error" v-show="errors.has('select-team')">
         <span>You need to select a team</span>
       </div>
-      <div class="row">
-        <h3 class="header-text header-text--three">Stake</h3>
-      </div>
-      <div class="row">
-        <div class="row" v-bind:key="allowed.stake" v-for="allowed of allowedStakes">
-          <p-radio class="p-default p-curve" :value="allowed.stake" v-model="stake"
-          name="stake" color="primary-o" :disabled="isStakeDisabled(allowed)"
-          v-validate="{ rules: `required|in:0.5,1,2,3`, arg: 'stake' }">
-            {{ allowed.stake }}
-          </p-radio>
+      <div class="stake-container" v-show="selectedTeam">
+        <div class="row">
+          <h3 class="header-text header-text--three">Stake</h3>
+        </div>
+        <div class="row">
+          <div class="row" v-bind:key="allowed.stake" v-for="allowed of allowedStakes">
+            <p-radio class="p-default p-curve" :value="allowed.stake" v-model="stake"
+            name="stake" color="primary-o" :disabled="isStakeDisabled(allowed)"
+            v-validate="{ rules: `required|in:0.5,1,2,3`, arg: 'stake' }">
+              {{ allowed.stake }}
+            </p-radio>
+          </div>
         </div>
       </div>
       <div class="row row__error" v-show="errors.has('stake')">
