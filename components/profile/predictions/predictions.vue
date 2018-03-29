@@ -37,15 +37,17 @@ export default {
   computed: {
     ...mapState({
       user: 'userToView',
-      predictionsLength: state => state.userToView.predictions.length
+      allPredictionsLength: state => state.userToView.predictions.length
     }),
     showPredictionsLength () {
-      if (this.predictionsLength === 0) {
+      if (this.allPredictionsLength === 0) {
         return 'No Predictions'
-      } else if (this.predictionsLength === 1) {
+      } else if (this.allPredictionsLength === 1) {
         return '1 Prediction'
+      } else if (this.allPredictionsLength > 20) {
+        return this.predictions.length + ' Predictions (out of ' + this.allPredictionsLength + ')'
       } else {
-        return this.predictionsLength + ' Predictions'
+        return this.predictions.length + ' Predictions'
       }
     }
   },

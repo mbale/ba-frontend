@@ -74,7 +74,7 @@ import { Tabs, Tab } from '~/components/common/tabs'
 import Box from '~/components/common/box'
 import Predictions from '~/components/profile/predictions/predictions'
 import countryMixin from '~/mixins/country'
-const { mapState } = createNamespacedHelpers('users')
+const { mapState, mapMutations } = createNamespacedHelpers('users')
 
 export default Vue.extend({
   name: 'PublicProfile',
@@ -111,33 +111,35 @@ export default Vue.extend({
       registeredOn: state => state.userToView.profile.registeredOn,
       countryCode: state => state.userToView.profile.countryCode,
       avatarURL: state => state.userToView.profile.avatarURL || noAvatarImage,
-      // predictions (state) {
+      predictionsLength: state => state.userToView.predictions.length
+      // predictions (state) { // <- this syntax also works
       //   return state.userToView.predictions
       // },
-      predictionsLength: state => state.userToView.predictions.length
     }),
     predictionsPerPage () {
-      return this.$store.state.predictions.predictionsPerPage
+      return this.$store.state.users.predictionsPerPage
     },
     page () {
       // vue-paginate force-page prop requires index - 1
-      return this.$store.state.predictions.page > 1 ? this.$store.state.predictions.page - 1 : 0
+      return this.$store.state.users.page > 1 ? this.$store.state.users.page - 1 : 0
     },
     pageCount () {
       return Math.ceil(this.predictionsLength / this.predictionsPerPage)
     },
     predictionsToShow () {
-      return this.$store.getters['predictions/predictionsToShow']
+      return this.$store.getters['users/predictionsToShow']
     }
   },
   methods: {
+    ...mapMutations([
+      'update_page'
+    ]),
     async changePage (page) {
-      this.$store.commit('predictions/update_page', { page: page })
+      this.update_page({ page: page })
     }
   },
   async fetch ({ store, params, error }) {
     const { username } = params
-    await store.dispatch('predictions/fetchByUsername', { username })
     await store.dispatch('users/fetchByUsername', { username })
   }
 })

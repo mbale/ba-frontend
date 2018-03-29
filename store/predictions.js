@@ -4,9 +4,6 @@ const MUTATIONS = {
   SET_TEAMS: 'set_teams',
   SET_ODDS: 'set_odds',
   SET_MATCH_ID: 'set_match_id',
-  UPDATE_PREDICTIONS_COUNT: 'update_predictions_count',
-  UPDATE_USER_INFO: 'update_user_info',
-  UPDATE_PAGE: 'update_page',
   RESET_STATE: 'reset_state'
 }
 
@@ -29,23 +26,6 @@ export const mutations = {
   [MUTATIONS.SET_MATCH_ID] (state, { matchId, urlId }) {
     state.matchId = matchId
     state.urlId = urlId
-  },
-  [MUTATIONS.UPDATE_PREDICTIONS_COUNT] (state, { count }) {
-    state.predictionsCount = count
-  },
-  [MUTATIONS.UPDATE_PAGE] (state, { page }) {
-    state.page = page
-
-    if (state.lastPage < page) {
-      state.lastPage = page
-      state.lastPredictionsToShow += state.predictionsPerPage
-    } else if (state.lastPage > page) {
-      state.lastPage = page
-      state.lastPredictionsToShow -= state.predictionsPerPage
-    }
-  },
-  [MUTATIONS.UPDATE_USER_INFO] (state, { user }) {
-    state.userPredictions = user.predictions
   },
   [MUTATIONS.RESET_STATE] (state) {
     state.boxState = false
@@ -74,24 +54,8 @@ export const state = () => ({
     selectedTeam: null,
     stake: null,
     text: null
-  },
-  //
-  userPredictions: [],
-  slicedPredictionsShow: [],
-  lastPredictionsToShow: 0,
-  predictionsPerPage: 20,
-  lastPage: 1,
-  page: 0,
-  predictionsCount: null
-})
-
-export const getters = {
-  predictionsToShow ({ userPredictions, lastPredictionsToShow, predictionsPerPage }) {
-    const slicedPredictions = userPredictions.slice(lastPredictionsToShow, lastPredictionsToShow + predictionsPerPage)
-    state.slicedPredictionsShow = slicedPredictions // changing variable
-    return slicedPredictions
   }
-}
+})
 
 export const actions = {
   async postPrediction ({ state, commit }) {
@@ -133,46 +97,5 @@ export const actions = {
     } catch (error) {
       console.log(error)
     }
-  },
-  async fetchByUsername ({ commit }, { username }) {
-    const user = await this.$axios.$get(`/v1/users/${username}`)
-    commit(MUTATIONS.UPDATE_USER_INFO, { user })
   }
-  // async fetch ({ commit, state, getters }) {
-  //   const {
-  //     predictionsPerPage: limit,
-  //     page
-  //     // stateFilter: statusType,
-  //     // gameIds: allGameIds
-  //   } = state
-  //
-  //   // const gameIds = []
-  //   // const activeGameFilters = getters.activeGameFilters
-  //
-  //   // get current active gameids
-  //   // allGameIds.forEach(g => {
-  //   //   if (activeGameFilters.find(f => f.slug === g.slug)) {
-  //   //     gameIds.push(g.id)
-  //   //   }
-  //   // })
-  //
-  //   const params = {
-  //     limit,
-  //     page
-  //     // statusType,
-  //     // gameIds
-  //   }
-  //
-  //   const { data: matches, headers } = await this.$axios.get('v1/matches', {
-  //     params
-  //   })
-  //
-  //   commit(MUTATIONS.UPDATE_MATCHES_LIST, {
-  //     list: matches
-  //   })
-  //
-  //   commit(MUTATIONS.UPDATE_MATCH_COUNT, {
-  //     count: headers.count
-  //   })
-  // }
 }
