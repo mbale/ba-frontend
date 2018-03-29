@@ -2,15 +2,7 @@
   <div class="rankings">
     <div class="toolbar">
       <div class="filters">
-        <div class="month"></div>
-        <dropdown class="filter-dropdown">
-          <dropdown-button class="filter-dropdown__button">Month</dropdown-button>
-          <div slot="content" class="filter-dropdown__content">
-            <!-- <div class="filter-option" v-for="date of differenceInMonths())">
-              <span class="icon" :class="game.slug" /><span class="name">{{game.name}}</span>
-            </div> -->
-          </div>
-        </dropdown>
+        <months-filter @selectedMonthsChanged="filterByMonths" />
       </div>
     </div>
     <div class="list">
@@ -27,10 +19,10 @@
         <div class="list-item-row position">{{ position + 1 }}</div>
         <div class="list-item-row user">{{ ranking.user.username }}</div>
         <div class="list-item-row tips">{{ ranking.stats.betCount }}</div>
-        <div class="list-item-row profit">{{ ranking.stats.profit.toFixed(2) }}</div>
+        <!-- <div class="list-item-row profit">{{ ranking.stats.profit.toFixed(2) }}</div> -->
         <div class="list-item-row yield">{{ ranking.stats.yield }}%</div>
         <div class="list-item-row in">{{ ranking.stats.in }}</div>
-        <div class="list-item-row out">{{ ranking.stats.overall.toFixed(2) }}</div>
+        <!-- <div class="list-item-row out">{{ ranking.stats.overall.toFixed(2) }}</div> -->
       </div>
     </div>
   </div>
@@ -38,16 +30,17 @@
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-import { Dropdown, DropdownButton } from '~/components/common/dropdown'
+// import { Dropdown, DropdownButton } from '~/components/common/dropdown'
+import MonthsFilter from '~/components/rankings/months-filter'
 import dateMixins from '~/mixins/date'
 
-const { mapGetters } = createNamespacedHelpers('rankings')
+const { mapGetters, mapActions } = createNamespacedHelpers('rankings')
 
 export default {
   name: 'Ranking',
   mixins: [dateMixins],
   components: {
-    Dropdown, DropdownButton
+    MonthsFilter
   },
   head () {
     return {
@@ -58,6 +51,15 @@ export default {
     ...mapGetters({
       rankings: 'sortedRankings'
     })
+  },
+  methods: {
+    ...mapActions([
+      'fetch'
+    ]),
+    async filterByMonths () {
+      this.fetch()
+      // console.log('filter by months')
+    }
   },
   async asyncData ({ store }) {
     await store.dispatch('rankings/fetch')
