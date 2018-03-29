@@ -56,10 +56,10 @@ export default {
   justify-content center
   align-items center
   margin 0 6px
-  padding 2px 5px
 
 .pagination__link
   color $lgray
+  padding 2px 5px
   &:hover
     color $mgray
   &:active
@@ -76,7 +76,7 @@ export default {
   color white
   font-weight 600
   border-radius 4px
-  padding 0px 12px
+  padding 0px 7px
 
 .pagination__item--disabled
   a
