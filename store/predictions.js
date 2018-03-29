@@ -35,6 +35,14 @@ export const mutations = {
   },
   [MUTATIONS.UPDATE_PAGE] (state, { page }) {
     state.page = page
+
+    if (state.lastPage < page) {
+      state.lastPage = page
+      state.lastPredictionsToShow += state.predictionsPerPage
+    } else if (state.lastPage > page) {
+      state.lastPage = page
+      state.lastPredictionsToShow -= state.predictionsPerPage
+    }
   },
   [MUTATIONS.UPDATE_USER_INFO] (state, { user }) {
     state.userPredictions = user.predictions
@@ -69,10 +77,21 @@ export const state = () => ({
   },
   //
   userPredictions: [],
+  slicedPredictionsShow: [],
+  lastPredictionsToShow: 0,
   predictionsPerPage: 20,
+  lastPage: 1,
   page: 0,
   predictionsCount: null
 })
+
+export const getters = {
+  predictionsToShow ({ userPredictions, lastPredictionsToShow, predictionsPerPage }) {
+    const slicedPredictions = userPredictions.slice(lastPredictionsToShow, lastPredictionsToShow + predictionsPerPage)
+    state.slicedPredictionsShow = slicedPredictions // changing variable
+    return slicedPredictions
+  }
+}
 
 export const actions = {
   async postPrediction ({ state, commit }) {

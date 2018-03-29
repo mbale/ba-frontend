@@ -44,8 +44,8 @@
 
     <div class="content-body profile-body">
       <div v-show="currentTab === 0" class="predictions">
-        <predictions :predictions="predictions" />
-        <div class="predictions-pagination" v-if="predictionsCount > 0">
+        <predictions :predictions="predictionsToShow" />
+        <div class="predictions-pagination" v-if="predictionsLength > 0">
           <!-- PAGINATION -->
           <paginate ref="paginate" :force-page='page' :pageCount="pageCount" :changePage="changePage" />
         </div>
@@ -81,8 +81,6 @@ export default Vue.extend({
   mixins: [dateMixin, countryMixin],
   data () {
     return {
-      lastPredictionsToShow: 0,
-      predictionsToShow: [],
       currentTab: 0,
       tabs: {
         first: 'Predictions',
@@ -113,19 +111,13 @@ export default Vue.extend({
       registeredOn: state => state.userToView.profile.registeredOn,
       countryCode: state => state.userToView.profile.countryCode,
       avatarURL: state => state.userToView.profile.avatarURL || noAvatarImage,
-      predictions: state => state.userToView.predictions,
+      // predictions (state) {
+      //   return state.userToView.predictions
+      // },
       predictionsLength: state => state.userToView.predictions.length
     }),
     predictionsPerPage () {
       return this.$store.state.predictions.predictionsPerPage
-    },
-    predictionsCount () {
-      // // var allPredictions = this.predictionsToShow.length
-      //
-      // this.predictionsToShow.slice(this.lastPredictionsToShow, this.predictionsPerPage)
-      // console.log(this.predictionsToShow)
-
-      return this.predictionsLength
     },
     page () {
       // vue-paginate force-page prop requires index - 1
@@ -133,28 +125,21 @@ export default Vue.extend({
     },
     pageCount () {
       return Math.ceil(this.predictionsLength / this.predictionsPerPage)
+    },
+    predictionsToShow () {
+      return this.$store.getters['predictions/predictionsToShow']
     }
   },
   methods: {
-    // ...mapMutations([
-    //   'update_page'
-    // ]),
     async changePage (page) {
       this.$store.commit('predictions/update_page', { page: page })
-      // this.predictionsToShow = this.predictionsToShow + this.predictionsToShow
-
-      // await this.$store.dispatch('predictions/fetch')
     }
   },
   async fetch ({ store, params, error }) {
     const { username } = params
+    await store.dispatch('predictions/fetchByUsername', { username })
     await store.dispatch('users/fetchByUsername', { username })
   }
-  // async asyncData ({ store, route, redirect }) {
-  //   store.commit
-  //   store.commit('predictions/update_page', { page: page })
-  //   await store.dispatch('matches/fetchGameIds')
-  // }
 })
 </script>
 

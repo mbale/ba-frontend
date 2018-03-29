@@ -13,8 +13,10 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from 'vuex'
 import Prediction from '~/components/profile/predictions/prediction'
 import Box from '~/components/common/box'
+const { mapState } = createNamespacedHelpers('users')
 
 export default {
   components: {
@@ -33,9 +35,10 @@ export default {
     }
   },
   computed: {
-    predictionsLength () {
-      return this.predictions.length
-    },
+    ...mapState({
+      user: 'userToView',
+      predictionsLength: state => state.userToView.predictions.length
+    }),
     showPredictionsLength () {
       if (this.predictionsLength === 0) {
         return 'No Predictions'
@@ -45,6 +48,10 @@ export default {
         return this.predictionsLength + ' Predictions'
       }
     }
+  },
+  async fetch ({ store, params, error }) {
+    const { username } = params
+    await store.dispatch('users/fetchByUsername', { username })
   }
 }
 </script>
