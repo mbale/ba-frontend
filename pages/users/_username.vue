@@ -127,7 +127,6 @@ export default Vue.extend({
       return Math.ceil(this.predictionsLength / this.predictionsPerPage)
     },
     predictionsToShow () {
-      // console.log(this.$store.getters['users/predictionsToShow'])
       return this.$store.getters['users/predictionsToShow']
     }
   },
@@ -184,9 +183,4 @@ export default Vue.extend({
         margin-top: 15px
         border-radius: 4px
         width: fit-content
-
-.profile-body
-
-  ul.pagination
-    margin-left: 0
 </style>
