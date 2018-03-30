@@ -43,6 +43,7 @@ export const getters = {
 export const actions = {
   async fetchByUsername ({ commit }, { username }) {
     const user = await this.$axios.$get(`/v1/users/${username}`)
+    // console.log(user)
     commit(MUTATIONS.UPDATE_USER_INFO, { user })
   }
 }

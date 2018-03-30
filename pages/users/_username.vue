@@ -127,6 +127,7 @@ export default Vue.extend({
       return Math.ceil(this.predictionsLength / this.predictionsPerPage)
     },
     predictionsToShow () {
+      // console.log(this.$store.getters['users/predictionsToShow'])
       return this.$store.getters['users/predictionsToShow']
     }
   },
@@ -150,46 +151,6 @@ export default Vue.extend({
 .content-header__hero
   background-color: #1c1e4e
   background-image: linear-gradient(to top, rgba(0, 0, 0, 0) 0%, #000 100%)
-
-// profile content styles
-.profile-container
-    max-width: 1440px
-    width: 100%
-    background-color: transparent
-    margin-bottom: 30px
-    padding: 0 15px
-
-    .tabs
-        padding-left: 200px
-        background-color: white
-
-    .profile-head
-        background-color: #131541
-        box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.5)
-        max-height: 160px
-        height: 160px
-        padding-top: 30px
-        padding-left: 180px
-        position: relative
-
-        .profile-image
-            border-radius: 2px
-            display: block
-            position: absolute
-            left: 20px
-            bottom: -22px
-            width: 160px
-            height: 160px
-            overflow: hidden
-
-            img
-                max-width: none
-                width: 100%
-                height: auto
-                border-radius: 0
-                position: relative
-                top: 50%
-                transform: translateY(-50%)
 
 .content-header__info
     display: flex
@@ -223,4 +184,9 @@ export default Vue.extend({
         margin-top: 15px
         border-radius: 4px
         width: fit-content
+
+.profile-body
+
+  ul.pagination
+    margin-left: 0
 </style>

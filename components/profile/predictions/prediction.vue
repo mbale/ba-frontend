@@ -2,6 +2,9 @@
   <article class="prediction" >
     <header class="prediction-header">
       <div class="prediction-header__info">
+        <!-- <div class="leftCorner">
+          <img :src="prediction.gameSlug" alt="">
+        </div> -->
         <div>
           <span class="prediction-author">{{ prediction.match.awayTeam }} - VS - {{ prediction.match.homeTeam }}</span>
         </div>
