@@ -28,6 +28,7 @@
     "qs": "^6.5.1",
     "remove": "^0.1.5",
     "vee-validate": "^2.0.6",
+    "vue-avatar-cropper": "0.0.26",
     "vue-awesome": "^2.3.4",
     "vue-clickaway": "^2.1.0",
     "vue-flag-icon": "^1.0.6",

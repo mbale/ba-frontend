@@ -51,7 +51,12 @@
             <div class="info">
               <div class="buttons">
                 <input id="image" @change="onAvatarChange" type="file">
-                <a class="upload-btn">Upload Photo</a>
+                <a
+                  class="upload-btn"
+                  onclick="document.getElementById('image').click()"
+                >
+                  Upload Photo
+                </a>
                 <a class="delete-btn" @click="removeAvatar">Delete Photo</a>
               </div>
               <span>Max 3mb GIF, JPG or PNG.</span>
@@ -152,6 +157,7 @@ import Vue from 'vue'
 import { createNamespacedHelpers } from 'vuex'
 import { Tabs, Tab } from '~/components/common/tabs'
 import TextInput from '~/components/common/form/text'
+import AvatarCropper from 'vue-avatar-cropper'
 
 import dateMixin from '~/mixins/date'
 
@@ -170,6 +176,7 @@ export default Vue.extend({
         email: null,
         avatar: null
       },
+      userAvatar: undefined,
       email: '',
       username: '',
       password: '',
@@ -185,7 +192,8 @@ export default Vue.extend({
   components: {
     TextInput,
     Tabs,
-    Tab
+    Tab,
+    AvatarCropper
   },
   computed: {
     ...mapGetters({
@@ -216,6 +224,10 @@ export default Vue.extend({
     ...mapActions({
       deleteAvatar: 'deleteAvatar'
     }),
+    handleUploaded (resp) {
+      console.log(resp)
+      this.userAvatar = resp.relative_url
+    },
     isChangeInProgress (thing) {
       if (thing === 'password') { // PASSWORD
         return this.$store.state.user.changePasswordInProgress
@@ -417,6 +429,9 @@ export default Vue.extend({
                         display: flex
                         flex-direction: row
 
+                        input#image
+                          display: none
+
                         a
                             border-radius: 2px
                             padding: 6px 15px
@@ -424,6 +439,7 @@ export default Vue.extend({
                             height: fit-content
                             color: white
                             margin-left: 15px
+                            cursor: pointer
 
                             &:nth-child(2)
                                 margin-left: 10px
@@ -450,6 +466,7 @@ export default Vue.extend({
 
         .connections
             margin-top: 90px
+
 
 
 </style>
