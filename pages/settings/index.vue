@@ -46,7 +46,7 @@
         <div class="form-field">
           <label class="form-label" for="email">Profile Picture</label>
           <div class="form-input form-input--avatar">
-            <img class="avatar img-responsive" v-bind:src="account.avatar">
+            <img class="avatar img-responsive" v-bind:src="avatarURL">
 
             <div class="info">
               <div class="buttons">
@@ -157,7 +157,7 @@ import Vue from 'vue'
 import { createNamespacedHelpers } from 'vuex'
 import { Tabs, Tab } from '~/components/common/tabs'
 import TextInput from '~/components/common/form/text'
-import AvatarCropper from 'vue-avatar-cropper'
+// import AvatarCropper from 'vue-avatar-cropper'
 
 import dateMixin from '~/mixins/date'
 
@@ -192,17 +192,21 @@ export default Vue.extend({
   components: {
     TextInput,
     Tabs,
-    Tab,
-    AvatarCropper
+    Tab
+    // AvatarCropper
   },
   computed: {
     ...mapGetters({
-      userChangedProfile: 'userChangedProfile'
+      userChangedProfile: 'userChangedProfile',
+      avatarURLInStore: 'avatarURL'
     }),
     ...mapState({
       profileChanges: 'profileChanges',
       userProfile: 'profile'
     }),
+    avatarURL () {
+      return this.account.avatar !== '' ? this.account.avatar : this.avatarURLInStore
+    },
     // check if user really changed something to make button available to send
     canUpdateProfile () {
       const fields = this.account
@@ -297,8 +301,7 @@ export default Vue.extend({
       }
     },
     async removeAvatar () {
-      // console.log(this.$axios.defaults.headers)
-      await this.deleteAvatar()
+      this.account.avatar = ''
     },
     // when he selected new avatar
     onAvatarChange (e) {
