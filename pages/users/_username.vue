@@ -183,4 +183,9 @@ export default Vue.extend({
         margin-top: 15px
         border-radius: 4px
         width: fit-content
+
+.predictions-pagination .paginate .pagination
+  width: fit-content
+  margin-top: 15px
+  padding-bottom: 0
 </style>

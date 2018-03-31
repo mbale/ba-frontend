@@ -44,20 +44,32 @@
 
         <!-- PROFILE PICTURE -->
         <div class="form-field">
+
           <label class="form-label" for="email">Profile Picture</label>
           <div class="form-input form-input--avatar">
-            <img class="avatar img-responsive" v-bind:src="avatarURL">
+            <croppa v-model="myCroppa"
+                    :width="160"
+                    :height="160"
+                    placeholder="Choose an image"
+                    :placeholder-font-size="14"
+                    :disabled="false"
+                    :prevent-white-space="false"
+                    :show-remove-button="true"
+                    :file-size-limit="300 * 1024"
+                    accept=".jpeg,.png"
+                    >
+            </croppa>
 
             <div class="info">
               <div class="buttons">
                 <input id="image" @change="onAvatarChange" type="file">
                 <a
                   class="upload-btn"
-                  onclick="document.getElementById('image').click()"
+                  @click="myCroppa.chooseFile()"
                 >
                   Upload Photo
                 </a>
-                <a class="delete-btn" @click="removeAvatar">Delete Photo</a>
+                <a class="delete-btn" @click="myCroppa.remove()">Delete Photo</a>
               </div>
               <span>Max 3mb GIF, JPG or PNG.</span>
             </div>
@@ -158,10 +170,16 @@ import { createNamespacedHelpers } from 'vuex'
 import { Tabs, Tab } from '~/components/common/tabs'
 import TextInput from '~/components/common/form/text'
 // import AvatarCropper from 'vue-avatar-cropper'
+// import myUpload from 'vue-image-crop-upload'
+import Croppa from 'vue-croppa'
+
+import 'vue-croppa/dist/vue-croppa.css'
 
 import dateMixin from '~/mixins/date'
 
 const { mapGetters, mapMutations, mapState, mapActions } = createNamespacedHelpers('user')
+
+Vue.component('croppa', Croppa.component)
 
 export default Vue.extend({
   name: 'Settings',
@@ -186,13 +204,15 @@ export default Vue.extend({
       tabs: {
         first: 'Account',
         second: 'Security'
-      }
+      },
+      myCroppa: {}
     }
   },
   components: {
     TextInput,
     Tabs,
-    Tab
+    Tab,
+    croppa: Croppa.component
     // AvatarCropper
   },
   computed: {
@@ -229,9 +249,12 @@ export default Vue.extend({
       deleteAvatar: 'deleteAvatar',
       editProfile: 'editProfile'
     }),
-    handleUploaded (resp) {
-      console.log(resp)
-      this.userAvatar = resp.relative_url
+    uploadCroppedImage () {
+      this.myCroppa.generateBlob((blob) => {
+        // write code to upload the cropped image file (a file is a blob)
+        console.log(blob)
+        this.updateAccountDetails('avatar', { blob })
+      }, 'image/jpeg', 0.8) // 80% compressed jpeg file
     },
     isChangeInProgress (thing) {
       if (thing === 'password') { // PASSWORD
@@ -301,9 +324,9 @@ export default Vue.extend({
         }
       }
     },
-    removeAvatar () {
-      this.account.avatar = ''
-    },
+    // removeAvatar () {
+    //   this.account.avatar = ''
+    // },
     // when he selected new avatar
     onAvatarChange (e) {
       const files = e.target.files || e.dataTransfer.files
@@ -325,12 +348,21 @@ export default Vue.extend({
       if (this.canUpdateProfile) {
         const fields = this.account
 
+        this.uploadCroppedImage()
+
         Object.keys(fields).forEach(field => {
           const value = fields[field]
           if (field === 'avatar') {
-            if (value !== this.avatarURLInStore) {
-              this.updateAccountDetails({ field, value })
-            }
+            // this.uploadCroppedImage()
+            // console.log(value)
+            // console.log(myCroppa.generateDataUrl())
+            // this.updateAccountDetails('avatar', { myCroppa })
+            // console.log('done')
+            // if (value !== this.avatarURLInStore) {
+            //   this.updateAccountDetails({ field, value })
+            // } else {
+            //
+            // }
           } else {
             this.updateAccountDetails({ field, value })
           }

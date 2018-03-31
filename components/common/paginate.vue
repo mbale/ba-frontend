@@ -92,4 +92,9 @@ export default {
   &:last-child
     padding 0 0 0 15px
     border-left 1px solid #dbdbdb
+
+.predictions-pagination .paginate .pagination
+  width: fit-content
+  margin-top: 15px
+  padding-bottom: 0
 </style>

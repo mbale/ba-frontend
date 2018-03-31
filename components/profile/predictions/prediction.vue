@@ -7,7 +7,7 @@
         </div>
         <div class="content-prediction">
           <div class="teams">
-            <h3 class="content-title">League of Legends</h3>
+            <h3 class="content-title">{{ gameName(prediction.gameSlug) }}</h3>
             <span class="away">{{ prediction.match.awayTeam }}</span> - VS - <span class="home">{{ prediction.match.homeTeam }}</span>
           </div>
           <div class="stake">
@@ -58,6 +58,18 @@ export default {
         case 'overwatch': return owLogo
         case 'rocket-league': return rocketLeagueLogo
         case 'starcraft-2': return sc2Logo
+      }
+    },
+    gameName (gameSlug) {
+      switch (gameSlug) {
+        case 'csgo': return 'Counter Strike: Global Offensive'
+        case 'dota-2': return 'Dota 2'
+        case 'heroes-of-the-storm': return 'Heroes of the Storm'
+        case 'hearthstone': return 'Hearthstone'
+        case 'lol': return 'League of Legends'
+        case 'overwatch': return 'Overwatch'
+        case 'rocket-league': return 'Rocket League'
+        case 'starcraft-2': return 'Starcraft 2'
       }
     }
   }
