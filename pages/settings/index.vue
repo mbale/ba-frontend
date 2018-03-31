@@ -326,7 +326,13 @@ export default Vue.extend({
 
         Object.keys(fields).forEach(field => {
           const value = fields[field]
-          this.updateAccountDetails({ field, value })
+          if (field === 'avatar') {
+            if (value !== this.avatarURLInStore) {
+              this.updateAccountDetails({ field, value })
+            }
+          } else {
+            this.updateAccountDetails({ field, value })
+          }
         })
 
         if (this.userChangedProfile) {
