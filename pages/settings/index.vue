@@ -226,7 +226,8 @@ export default Vue.extend({
       updateAccountDetails: 'update_account_details'
     }),
     ...mapActions({
-      deleteAvatar: 'deleteAvatar'
+      deleteAvatar: 'deleteAvatar',
+      editProfile: 'editProfile'
     }),
     handleUploaded (resp) {
       console.log(resp)
@@ -300,7 +301,7 @@ export default Vue.extend({
         }
       }
     },
-    async removeAvatar () {
+    removeAvatar () {
       this.account.avatar = ''
     },
     // when he selected new avatar
@@ -315,7 +316,7 @@ export default Vue.extend({
           this.account.avatar = e.target.result
         }
 
-        reader.readAsDataURL(avatar)
+        reader.readAsBinaryString(avatar)
       }
     },
     // send updated fields to store and save it
@@ -336,7 +337,7 @@ export default Vue.extend({
         })
 
         if (this.userChangedProfile) {
-          // dispatch
+          await this.editProfile()
         }
       }
     }

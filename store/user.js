@@ -2,7 +2,8 @@ import noAvatarImage from '~/assets/images/no_avatar.png'
 
 const MUTATIONS = {
   UPDATE_LOGGED_USER_DATA: 'update_logged_user_data',
-  UPDATE_ACCOUNT_DETAILS: 'update_account_details'
+  UPDATE_ACCOUNT_DETAILS: 'update_account_details',
+  UPDATE_ACCOUNT_DETAILS_ERROR: 'update_account_details_error'
 }
 
 export const mutations = {
@@ -16,6 +17,9 @@ export const mutations = {
     } else {
       state.profileChanges[field] = null
     }
+  },
+  [MUTATIONS.UPDATE_ACCOUNT_DETAILS_ERROR] (state, { error }) {
+    state.profileChangesError = error
   }
 }
 
@@ -30,6 +34,19 @@ export const getters = {
       return profile.avatar === '' ? noAvatarImage : profile.avatar
     }
     return null
+  },
+  // gets back the changes user really made (we parse out null)
+  // it's helper for sending data in the best shape to backend
+  changedFields ({ profileChanges }) {
+    const fieldsObj = {}
+
+    Object.keys(profileChanges)
+      .filter(key => profileChanges[key])
+      .forEach(k => {
+        fieldsObj[k] = profileChanges[k]
+      })
+
+    return fieldsObj
   },
   // shows whether user changed something (not yet on backend)
   // and it's different than the original
@@ -51,6 +68,8 @@ export const state = () => ({
     email: null,
     avatar: null
   },
+  // will contain the error user got during the change
+  profileChangesError: null,
   //
   changePasswordInProgress: false,
   changePasswordError: null,
@@ -80,6 +99,34 @@ export const actions = {
   async deleteAvatar ({ dispatch }) {
     await this.$axios.$delete('v1/users/me/avatar')
     await dispatch('getProfile')
+  },
+  async editProfile ({ commit, getters }) {
+    try {
+      const { changedFields } = getters
+
+      const pBuffer = []
+      // if we need to update avatar too
+      // it needs different endpoint
+      if (changedFields.avatar) {
+        const formData = new FormData()
+        formData.append('avatar', changedFields.avatar)
+
+        pBuffer.push(
+          this.$axios.$post('v1/users/me/avatar', formData, {
+            'content-type': 'multipart/form-data'
+          })
+        )
+      }
+
+      pBuffer.push(
+        this.$axios.$put('v1/users/me', changedFields)
+      )
+
+      await Promise.all(pBuffer)
+    } catch (error) {
+      commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_ERROR, { error })
+      console.log(state.profileChangesError)
+    }
   },
   /*
   **  Change Password
