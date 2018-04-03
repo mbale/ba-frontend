@@ -1,5 +1,6 @@
 <template>
   <header class="page-header">
+    <mobile-navigation class="page-mobile-header__nav"></mobile-navigation>
     <nuxt-link to="/" exact>
       <logo class="page-header__logo"></logo>
     </nuxt-link>
@@ -14,6 +15,7 @@
 
 <script>
 import Navigation from '~/components/layout/headerbar/navigation'
+import MobileNavigation from '~/components/layout/headerbar/mobile-navigation'
 import Logo from '~/components/common/logo'
 import AccountBlock from '~/components/layout/headerbar/account-block'
 
@@ -21,6 +23,7 @@ export default {
   name: 'Header',
   components: {
     Navigation,
+    MobileNavigation,
     Logo,
     AccountBlock
   },

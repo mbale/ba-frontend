@@ -56,7 +56,9 @@
                     :prevent-white-space="false"
                     :show-remove-button="true"
                     :file-size-limit="300 * 1024"
+                    :remove-button-size="20"
                     accept=".jpeg,.png"
+                    :initial-image="account.avatar"
                     >
             </croppa>
 
@@ -252,8 +254,10 @@ export default Vue.extend({
     uploadCroppedImage () {
       this.myCroppa.generateBlob((blob) => {
         // write code to upload the cropped image file (a file is a blob)
-        console.log(blob)
-        this.updateAccountDetails('avatar', { blob })
+        var field = 'avatar'
+        var value = this.myCroppa.generateDataUrl()
+
+        this.updateAccountDetails({ field, value })
       }, 'image/jpeg', 0.8) // 80% compressed jpeg file
     },
     isChangeInProgress (thing) {
@@ -324,9 +328,9 @@ export default Vue.extend({
         }
       }
     },
-    // removeAvatar () {
-    //   this.account.avatar = ''
-    // },
+    removeAvatar () {
+      this.account.avatar = ''
+    },
     // when he selected new avatar
     onAvatarChange (e) {
       const files = e.target.files || e.dataTransfer.files
@@ -346,27 +350,28 @@ export default Vue.extend({
     async updateProfile () {
       // needs it if he clicks on it anyway
       if (this.canUpdateProfile) {
-        const fields = this.account
-
+        // const fields = this.account
+        //
         this.uploadCroppedImage()
-
-        Object.keys(fields).forEach(field => {
-          const value = fields[field]
-          if (field === 'avatar') {
-            // this.uploadCroppedImage()
-            // console.log(value)
-            // console.log(myCroppa.generateDataUrl())
-            // this.updateAccountDetails('avatar', { myCroppa })
-            // console.log('done')
-            // if (value !== this.avatarURLInStore) {
-            //   this.updateAccountDetails({ field, value })
-            // } else {
-            //
-            // }
-          } else {
-            this.updateAccountDetails({ field, value })
-          }
-        })
+        //
+        // Object.keys(fields).forEach(field => {
+        //   const value = fields[field]
+        //   if (field === 'avatar') {
+        //     // this.uploadCroppedImage()
+        //     // console.log(value)
+        //     // console.log(myCroppa.generateDataUrl())
+        //     // this.updateAccountDetails('avatar', { myCroppa })
+        //     // console.log('done')
+        //     // if (value !== this.avatarURLInStore) {
+        //     //   this.updateAccountDetails({ field, value })
+        //     // } else {
+        //     //
+        //     // }
+        //   } else {
+        //     // console.log(this.updateAccountDetails({ field, value }))
+        //     // this.updateAccountDetails({ field, value })
+        //   }
+        // })
 
         if (this.userChangedProfile) {
           await this.editProfile()
