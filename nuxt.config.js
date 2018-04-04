@@ -24,6 +24,10 @@ module.exports = {
   // Vue
   plugins: [
     {
+      src: '~/plugins/vue-croppa',
+      ssr: true
+    },
+    {
       src: '~/plugins/axios',
       ssr: true
     },

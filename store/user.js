@@ -17,6 +17,9 @@ export const mutations = {
     } else {
       state.profileChanges[field] = null
     }
+  },
+  [MUTATIONS.UPDATE_ACCOUNT_DETAILS_ERROR] (state, { error }) {
+    state.profileChangesError = error
   }
 }
 
@@ -69,8 +72,13 @@ export const state = () => ({
   profileChangesError: null,
   //
   changePasswordInProgress: false,
+  changePasswordError: null,
   //
-  changeDetailsInProgress: false
+  changeEmailInProgress: false,
+  changeEmailError: null,
+  //
+  changeUsernameInProgress: false,
+  changeUsernameError: null
 })
 
 export const actions = {
@@ -99,27 +107,33 @@ export const actions = {
       const pBuffer = []
       // if we need to update avatar too
       // it needs different endpoint
-
-      console.log(changedFields)
-
-      if (changedFields.avatar) {
+      if (changedFields.avatar !== null) {
         const formData = new FormData()
         formData.append('avatar', changedFields.avatar)
 
-        pBuffer.push(
-          this.$axios.$post('v1/users/me/avatar', formData, {
-            'content-type': 'multipart/form-data'
-          })
-        )
+        // if it's empty then delete
+        if (changedFields.avatar === '') {
+          pBuffer.push(this.$axios.$delete('v1/users/me/avatar'))
+        } else {
+          // upload new one
+          pBuffer.push(
+            this.$axios.$post('v1/users/me/avatar', formData, {
+              'content-type': 'multipart/form-data'
+            })
+          )
+        }
 
         const fieldsToSend = {}
 
+        // checking what field we need to send
         Object.keys(changedFields).forEach(key => {
+          // avatar is on different endpoint
           if (key !== 'avatar') {
             fieldsToSend[key] = changedFields[key]
           }
         })
 
+        // if we still need to update other than avatar
         if (Object.keys(fieldsToSend).length > 0) {
           pBuffer.push(
             this.$axios.$put('v1/users/me', fieldsToSend)
@@ -132,11 +146,65 @@ export const actions = {
       }
 
       await Promise.all(pBuffer)
+      // update user state
       await dispatch('getProfile')
+      // reset state
+      Object.keys(changedFields).forEach(key => {
+        commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS, { field: key, value: null })
+      })
     } catch (error) {
-      // defining statusText from error response and changing it.
-      const statusText = error.response.statusText
-      this.profileChangesError = statusText
+      commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_ERROR, { error })
+      console.log(state.profileChangesError)
+    }
+  },
+  /*
+  **  Change Password
+  */
+  async changePassword ({ commit, dispatch }, payload) {
+    try {
+      commit(MUTATIONS.CHANGE_PASSWORD_IN_PROGRESS)
+
+      await this.$axios.$put('v1/users/me', payload)
+
+      commit(MUTATIONS.CHANGE_PASSWORD_SUCCESS)
+    } catch (error) {
+      commit(MUTATIONS.CHANGE_PASSWORD_FAIL, {
+        error
+      })
+    }
+  },
+  /*
+  **  Change Username
+  */
+  async changeUsername ({ commit, dispatch }, payload) {
+    try {
+      console.log(payload)
+      commit(MUTATIONS.CHANGE_USERNAME_IN_PROGRESS)
+
+      await this.$axios.$put('v1/users/me', payload)
+
+      commit(MUTATIONS.CHANGE_USERNAME_SUCCESS)
+    } catch (error) {
+      commit(MUTATIONS.CHANGE_USERNAME_FAIL, {
+        error
+      })
+    }
+  },
+  /*
+  **  Change Email
+  */
+  async changeEmail ({ commit, dispatch }, payload) {
+    try {
+      console.log(payload)
+      commit(MUTATIONS.CHANGE_EMAIL_IN_PROGRESS)
+
+      await this.$axios.$put('v1/users/me', payload)
+
+      commit(MUTATIONS.CHANGE_EMAIL_SUCCESS)
+    } catch (error) {
+      commit(MUTATIONS.CHANGE_EMAIL_FAIL, {
+        error
+      })
     }
   }
 }
