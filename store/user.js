@@ -41,7 +41,7 @@ export const getters = {
     const fieldsObj = {}
 
     Object.keys(profileChanges)
-      .filter(key => profileChanges[key])
+      .filter(key => profileChanges[key] !== null)
       .forEach(k => {
         fieldsObj[k] = profileChanges[k]
       })
@@ -52,7 +52,7 @@ export const getters = {
   // and it's different than the original
   userChangedProfile ({ profileChanges, profile }) {
     return Object.keys(profileChanges)
-      .filter(key => profileChanges[key] && profileChanges[key] !== profile[key])
+      .filter((key) => profileChanges[key] !== null)
       .length > 0
   }
 }
@@ -116,11 +116,25 @@ export const actions = {
             'content-type': 'multipart/form-data'
           })
         )
-      }
 
-      pBuffer.push(
-        this.$axios.$put('v1/users/me', changedFields)
-      )
+        const fieldsToSend = {}
+
+        Object.keys(changedFields).forEach(key => {
+          if (key !== 'avatar') {
+            fieldsToSend[key] = changedFields[key]
+          }
+        })
+
+        if (Object.keys(fieldsToSend).length > 0) {
+          pBuffer.push(
+            this.$axios.$put('v1/users/me', fieldsToSend)
+          )
+        }
+      } else {
+        pBuffer.push(
+          this.$axios.$put('v1/users/me', changedFields)
+        )
+      }
 
       await Promise.all(pBuffer)
     } catch (error) {
