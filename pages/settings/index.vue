@@ -39,7 +39,7 @@
             <text-input
               v-model="account.username"
               placeholder="Your Username"
-              :validation="{ required: true, min: 4 }" />
+              :validation="{ required: true, min: 4, alpha: true }" />
             <span class="input-desc-text">https://betacle.com/users/{{ account.username }}</span>
           </div>
         </div>
@@ -70,7 +70,7 @@
                     :disabled="false"
                     :disable-drag-to-move="false"
                     :prevent-white-space="true"
-                    :disable-scroll-to-zoom="true"
+                    :show-remove-button="!isDefaultAvatar"
                     :show-remove-button="false"
                     :file-size-limit="300 * 1024"
                     :remove-button-size="20"
@@ -90,7 +90,7 @@
                 >
                   Upload Avatar
                 </a>
-                <a class="delete-btn" @click="myCroppa.remove()">Delete Avatar</a>
+                <a class="delete-btn" v-show="!isDefaultAvatar" @click="myCroppa.remove()">Delete Photo</a>
               </div>
               <span>Max 3mb GIF, JPG or PNG.</span>
             </div>
@@ -194,15 +194,13 @@ import { createNamespacedHelpers } from 'vuex'
 import MessageBox from '~/components/common/message-box'
 import { Tabs, Tab } from '~/components/common/tabs'
 import TextInput from '~/components/common/form/text'
-import Croppa from 'vue-croppa'
+// import AvatarCropper from 'vue-avatar-cropper'
 
-import 'vue-croppa/dist/vue-croppa.css'
+// import myUpload from 'vue-image-crop-upload'
 
 import dateMixin from '~/mixins/date'
 
 const { mapGetters, mapMutations, mapState, mapActions } = createNamespacedHelpers('user')
-
-Vue.component('croppa', Croppa.component)
 
 export default Vue.extend({
   name: 'Settings',
@@ -235,13 +233,14 @@ export default Vue.extend({
   components: {
     TextInput,
     Tabs,
-    Tab,
+    Tab
     MessageBox,
     croppa: Croppa.component
     // AvatarCropper
   },
   computed: {
     ...mapGetters({
+      isDefaultAvatar: 'defaultAvatar',
       userChangedProfile: 'userChangedProfile',
       avatarURLInStore: 'avatarURL'
     }),
@@ -285,11 +284,14 @@ export default Vue.extend({
     uploadCroppedImage () {
       this.myCroppa.generateBlob((blob) => {
         // write code to upload the cropped image file (a file is a blob)
+      } else if (thing === 'username') { // USERNAME
+        return this.$store.state.user.changeUsernameInProgress
         var field = 'avatar'
         var value = this.myCroppa.generateDataUrl()
 
         this.updateAccountDetails({ field, value })
       }, 'image/jpeg', 0.8) // 80% compressed jpeg file
+      }
     },
     isChangeDisabled (thing) {
       if (this.errors.any()) {
@@ -297,9 +299,56 @@ export default Vue.extend({
           return true
         } else if (thing === 'usernameEmail' && (this.username === '' || this.email === '')) { // USERNAME & EMAIL
           return true
+        } else if (thing === 'email' && this.email === '') { // EMAIL
+          return true
         }
       }
       return false
+    },
+    changeError (thing) {
+      if (thing === 'password') { // PASSWORD
+        return this.$store.state.user.changePasswordError || {}
+      } else if (thing === 'username') { // USERNAME
+        return this.$store.state.user.changeUsernameError || {}
+      } else if (thing === 'email') { // EMAIL
+        return this.$store.state.user.changeEmailError || {}
+      }
+    },
+
+    async change (thing) {
+      // CHANGING PASSWORD
+      if (thing === 'password') {
+        if (this.password !== '' && this.confirmpassword !== '' && this.password === this.confirmpassword) {
+          this.passwordsMatch = true
+
+          // if passwords match, change the password
+          await this.$store.dispatch('user/changePassword', {
+            password: this.password
+          })
+
+          // resetting passwords value
+          this.password = null
+          this.confirmpassword = null
+        } else {
+          this.passwordsMatch = false
+        }
+
+      // CHANGING USERNAME AND EMAIL
+      } else if (thing === 'usernameEmail') {
+        if (this.username !== '' && this.email !== '') {
+          await this.$store.dispatch('user/changeUsername', {
+            username: this.username
+          })
+
+          await this.$store.dispatch('user/changeEmail', {
+            email: this.email
+          })
+
+          // resetting username AND email value
+          this.username = null
+          this.email = null
+        }
+      }
     },
     // when he selected new avatar
     async onAvatarChange (canvas, remove) {
@@ -404,7 +453,7 @@ export default Vue.extend({
             padding: 13px 35px
             border-radius: 4px
             outline: none
-            margin-left: 150px
+            margin-left: 142px
             width: fit-content
 
         .form-field

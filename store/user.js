@@ -28,6 +28,9 @@ export const getters = {
   isLoggedIn ({ profile }) {
     return !!profile
   },
+  defaultAvatar (state, { avatarURL }) {
+    return avatarURL === noAvatarImage
+  },
   // get back avatar or no avatar image based on actual user
   avatarURL ({ profile }, { isLoggedIn }) {
     if (isLoggedIn) {
