@@ -92,7 +92,7 @@ export const actions = {
     await this.$axios.$delete('v1/users/me/avatar')
     await dispatch('getProfile')
   },
-  async editProfile ({ commit, getters }) {
+  async editProfile ({ commit, dispatch, getters }) {
     try {
       const { changedFields } = getters
 
@@ -132,6 +132,7 @@ export const actions = {
       }
 
       await Promise.all(pBuffer)
+      await dispatch('getProfile')
     } catch (error) {
       // defining statusText from error response and changing it.
       const statusText = error.response.statusText

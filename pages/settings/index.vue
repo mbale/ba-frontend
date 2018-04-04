@@ -354,7 +354,7 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 
 .settings-container
     max-width: 1440px
