@@ -73,7 +73,7 @@
                     :show-remove-button="!isDefaultAvatar"
                     :show-remove-button="false"
                     :file-size-limit="300 * 1024"
-                    :remove-button-size="20"
+                    :remove-button-size="20"  
                     accept=".jpeg,.jpg,.png"
                     @draw="onAvatarChange"
                     @image-remove="onAvatarChange(null, true)"
