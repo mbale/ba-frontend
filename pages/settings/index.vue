@@ -258,6 +258,7 @@ export default Vue.extend({
       const fields = this.account
 
       // if he wants to revert the changes to original
+      // or did he upload image
       if (this.userChangedProfile) {
         return true
       }
