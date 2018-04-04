@@ -86,7 +86,7 @@
                 <input id="image" @change="onAvatarChange" type="file">
                 <a
                   class="upload-btn"
-                  @click="myCroppa.chooseFile()"
+                  @click="uploadPhoto"
                 >
                   Upload Avatar
                 </a>
@@ -215,6 +215,7 @@ export default Vue.extend({
         email: null,
         avatar: null
       },
+      canSelectImage: null,
       userAvatar: undefined,
       email: '',
       username: '',
@@ -283,6 +284,9 @@ export default Vue.extend({
     }),
     uploadCroppedImage () {
       this.myCroppa.generateBlob((blob) => {
+      return this.myCroppa.chooseFile()
+    },
+    isChangeInProgress (thing) {
         // write code to upload the cropped image file (a file is a blob)
       } else if (thing === 'username') { // USERNAME
         return this.$store.state.user.changeUsernameInProgress
