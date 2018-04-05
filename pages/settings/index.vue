@@ -54,7 +54,7 @@
                     :placeholder-font-size="14"
                     :disabled="false"
                     :prevent-white-space="false"
-                    :show-remove-button="true"
+                    :show-remove-button="false"
                     :file-size-limit="300 * 1024"
                     :remove-button-size="20"
                     accept=".jpeg,.jpg,.png"
@@ -173,8 +173,6 @@ import Vue from 'vue'
 import { createNamespacedHelpers } from 'vuex'
 import { Tabs, Tab } from '~/components/common/tabs'
 import TextInput from '~/components/common/form/text'
-// import AvatarCropper from 'vue-avatar-cropper'
-// import myUpload from 'vue-image-crop-upload'
 import Croppa from 'vue-croppa'
 
 import 'vue-croppa/dist/vue-croppa.css'

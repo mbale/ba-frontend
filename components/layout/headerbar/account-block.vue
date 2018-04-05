@@ -1,7 +1,7 @@
 <template>
   <dropdown>
     <dropdown-button class="acc-profile">
-      <img src='~/assets/images/no_avatar.png' class="acc-profile__avatar" />
+      <img :src='avatar' class="acc-profile__avatar" />
     </dropdown-button>
     <div slot="content" class="acc-dropdown">
       <nav>
@@ -16,22 +16,30 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from 'vuex'
 import { Dropdown, DropdownButton } from '~/components/common/dropdown'
+import noAvatarImage from '~/assets/images/no_avatar.png'
+
+const { mapState } = createNamespacedHelpers('user')
 
 export default {
   name: 'AccountBlock',
   components: {
-    Dropdown, DropdownButton
+    Dropdown, DropdownButton, noAvatarImage
   },
   computed: {
-    username () {
-      return this.$store.state.user.profile.username
-    }
+    ...mapState({
+      username: state => state.profile.username,
+      avatar: state => state.profile.avatar
+    })
   },
   methods: {
     async signout () {
       await this.$store.dispatch('auth/logout', {})
       this.$router.push('/loggedout')
+    },
+    async asyncData ({ store, $axios }) {
+      await store.dispatch('user/getProfile')
     }
   }
 }
