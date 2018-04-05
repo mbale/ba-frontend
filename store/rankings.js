@@ -83,6 +83,8 @@ export const actions = {
       params
     })
 
+    console.log(rankings)
+
     commit(MUTATIONS.UPDATE_RANKINGS_LIST, { rankings })
   }
 }

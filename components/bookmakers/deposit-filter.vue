@@ -31,22 +31,22 @@ export default {
   data () {
     return {
       depositMethods: [
-        { type: 'bitcoin', name: 'Bitcoin', imageURL: BitcoinImage },
-        { type: 'credit-card', name: 'Credit card', imageURL: CreditCardImage },
-        { type: 'paypal', name: 'Paypal', imageURL: PaypalImage },
-        { type: 'skin', name: 'Skin', imageURL: SkinImage }
+        { type: 'bitcoin', name: 'Bitcoin', imageURL: BitcoinImage, isActive: false },
+        { type: 'credit-card', name: 'Credit card', imageURL: CreditCardImage, isActive: false },
+        { type: 'paypal', name: 'Paypal', imageURL: PaypalImage, isActive: false },
+        { type: 'skin', name: 'Skin', imageURL: SkinImage, isActive: false }
       ]
     }
   },
   methods: {
     toggleDepositMethod (depositMethod) {
       const newRoute = Object.assign({}, this.$route.query, { 'deposit-method': depositMethod.type })
-      // console.log('this.$route.query', this.$route.query)
-      console.log('route', newRoute)
       this.$router.push({ name: 'bookmakers', query: newRoute })
       this.$store.commit('bookmakers/set_filter', {
         filter: depositMethod.type
       })
+
+      depositMethod.isActive = !depositMethod.isActive
     }
   },
   watch: {
@@ -75,9 +75,9 @@ export default {
     user-select none
     color #aaa
   &.is-active
-    .icon
-      color $blue
+    // .icon
+    //   background-color red
     .name
-      color $blue
+      color $dgray
 
 </style>

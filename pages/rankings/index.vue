@@ -6,33 +6,42 @@
       </div>
     </div>
     <div class="list">
-      <div class="list-header">
-        <div class="list-header-row position">Position</div>
-        <div class="list-header-row user">User</div>
-        <div class="list-header-row tips">Tips</div>
-        <div class="list-header-row profit">Profit</div>
-        <div class="list-header-row yield">Yield</div>
-        <div class="list-header-row in">In</div>
-        <div class="list-header-row out">Out</div>
-      </div>
-      <div class="list-item" v-for="( ranking, position ) in rankings" v-bind:key="position">
-        <div class="list-item-row position">{{ position + 1 }}</div>
-        <div class="list-item-row user">{{ ranking.user.username }}</div>
-        <div class="list-item-row tips">{{ ranking.stats.betCount }}</div>
-        <!-- <div class="list-item-row profit">{{ ranking.stats.profit.toFixed(2) }}</div> -->
-        <div class="list-item-row yield">{{ ranking.stats.yield }}%</div>
-        <div class="list-item-row in">{{ ranking.stats.in }}</div>
-        <!-- <div class="list-item-row out">{{ ranking.stats.overall.toFixed(2) }}</div> -->
-      </div>
+      <table class="content__table">
+        <thead>
+          <tr>
+            <th>Position</th>
+            <th>User</th>
+            <th>Tips</th>
+            <th>Profit</th>
+            <th>Yield</th>
+            <th>In</th>
+            <th>Out</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="rankings.length > 0" v-for="(ranking, position) in rankings" :key="position">
+            <td>{{ position + 1 }}</td>
+            <td class="user" @click="redirectToUser(ranking.user.username)">
+              <img class="user-avatar" :src="showUserAvatar(ranking.user.avatar)" alt="">
+              <span class="username">{{ ranking.user.username }}</span>
+            </td>
+            <td v-if="ranking.stats.betCount !== null">{{ ranking.stats.betCount }}</td>
+            <td v-if="ranking.stats.profit !== null">{{ ranking.stats.profit.toFixed(2) }}</td>
+            <td v-if="ranking.stats.yield !== null">{{ ranking.stats.yield }}%</td>
+            <td v-if="ranking.stats.in !== null">{{ ranking.stats.in }}</td>
+            <td v-if="ranking.stats.overall !== null">{{ ranking.stats.overall.toFixed(2) }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex'
-// import { Dropdown, DropdownButton } from '~/components/common/dropdown'
 import MonthsFilter from '~/components/rankings/months-filter'
 import dateMixins from '~/mixins/date'
+import noAvatarImage from '~/assets/images/no_avatar.png'
 
 const { mapGetters, mapActions } = createNamespacedHelpers('rankings')
 
@@ -56,9 +65,18 @@ export default {
     ...mapActions([
       'fetch'
     ]),
+    showUserAvatar (avatar) {
+      if (avatar === '') {
+        return noAvatarImage
+      } else {
+        return avatar
+      }
+    },
+    redirectToUser (username) {
+      this.$router.push('/users/' + username)
+    },
     async filterByMonths () {
       this.fetch()
-      // console.log('filter by months')
     }
   },
   async asyncData ({ store }) {
@@ -72,45 +90,36 @@ export default {
 .rankings
   display flex
   flex-direction column
+  max-width 800px
+  margin 0 auto
 
   .list
     display flex
     flex-direction column
 
-    .list-header
-      display flex
-      justify-content space-between
-      padding 15px 8px
-      font-family: "DINPro", Helvetica, sans-serif;
-      color #383e40
-      font-size 16px
-      font-weight 500
+    // table won't stick out of its content & the page
+    table
+      table-layout fixed
+      word-break break-word
+      background white
+      border-spacing 0
 
-      .list-header-row
-        flex 1
-        padding 0 35px
+      tr:nth-child(odd)
+        background white
 
-        &:first-child
-          padding-left 0px
+      td.user
+        display flex
+        flex-direction row
+        align-items center
+        cursor pointer
 
-        &:last-child
-          margin-right 5px
+        .user-avatar
+          width 25px
 
-    .list-item
-      display flex
-      justify-content space-between
-      background #fff
-      margin-bottom 1px
-      padding 15px
+        span.username
+          margin-left 10px
+          white-space nowrap
 
-      .list-item-row
-        flex 1
-        margin 0 25px
 
-        &:first-child
-          margin-left 0px
-
-        &:last-child
-          margin-right 0px
 
 </style>
