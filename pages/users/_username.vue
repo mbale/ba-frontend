@@ -17,6 +17,35 @@
               <img :src="CalendarIcon" alt=""> Joined {{ formatDate(profile.registeredOn, 'DD MMMM YYYY') }}
             </span>
           </div>
+          <div class="stats">
+            <!-- <table class="content__table">
+              <thead>
+                <tr>
+                  <th>Position</th>
+                  <th>User</th>
+                  <th>Tips</th>
+                  <th>Profit</th>
+                  <th>Yield</th>
+                  <th>In</th>
+                  <th>Out</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-if="rankings.length > 0" v-for="(ranking, position) in rankings" :key="position">
+                  <td>{{ position + 1 }}</td>
+                  <td class="user" @click="redirectToUser(ranking.user.username)">
+                    <img class="user-avatar" :src="showUserAvatar(ranking.user.avatar)" alt="">
+                    <span class="username">{{ ranking.user.username }}</span>
+                  </td>
+                  <td v-if="ranking.stats.betCount !== null">{{ ranking.stats.betCount }}</td>
+                  <td v-if="ranking.stats.profit !== null">{{ ranking.stats.profit.toFixed(2) }}</td>
+                  <td v-if="ranking.stats.yield !== null">{{ ranking.stats.yield }}%</td>
+                  <td v-if="ranking.stats.in !== null">{{ ranking.stats.in }}</td>
+                  <td v-if="ranking.stats.overall !== null">{{ ranking.stats.overall.toFixed(2) }}</td>
+                </tr>
+              </tbody>
+            </table> -->
+          </div>
           <!-- <a href="" class="follow button--primary">Follow</a> -->
         </div>
       </div>
