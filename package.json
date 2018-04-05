@@ -24,6 +24,8 @@
     "marked": "^0.3.7",
     "nuxt": "^1.4.0",
     "oddslib": "^1.0.3",
+    "openid": "^2.0.6",
+    "openid-client": "^1.20.0",
     "pretty-checkbox-vue": "^1.1.8",
     "qs": "^6.5.1",
     "remove": "^0.1.5",

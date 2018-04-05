@@ -73,7 +73,7 @@
                     :show-remove-button="!isDefaultAvatar"
                     :show-remove-button="false"
                     :file-size-limit="300 * 1024"
-                    :remove-button-size="20"  
+                    :remove-button-size="20"
                     accept=".jpeg,.jpg,.png"
                     @draw="onAvatarChange"
                     @image-remove="onAvatarChange(null, true)"
@@ -90,7 +90,7 @@
                 >
                   Upload Avatar
                 </a>
-                <a class="delete-btn" v-show="!isDefaultAvatar" @click="myCroppa.remove()">Delete Photo</a>
+                <a class="delete-btn" v-show="!isDefaultAvatar" @click="onAvatarChange(null, true)">Delete Photo</a>
               </div>
               <span>Max 3mb GIF, JPG or PNG.</span>
             </div>
@@ -110,11 +110,31 @@
         </div>
       </div>
 
+      <!-- STATUS -->
+      <!-- <div class="form-success">
+        <span>Successfully saved</span>
+      </div>
+      <!-- ERRORS -->
+      <div class="form-errors">
+        <span v-if="profileChangeError === 409">
+          Sorry, your entered data may conflict with others
+        </span>
+        <!-- <span v-else-if="changeError('password').request">
+          We're experiencing technical difficulties.
+        </span>
+        <span v-else-if="changeError('password').message">
+          You're not connected to the network
+        </span>
+        <span v-else-if="this.passwordsMatch === false">
+          Both passwords should match!
+        </span> -->
+      </div> -->
+
       <div class="connections">
         <h2 class="content-title">Connections</h2>
         <!-- STEAM -->
         <div class="auth-connect">
-          <nuxt-link class="auth-connect__button auth-connect__button--steam" :to="{ path: 'auth/steam' }">
+          <nuxt-link class="auth-connect__button auth-connect__button--steam" :to="{ path: '/settings/attach/steam' }" append>
             <icon class="auth-connect__button__icon" name="steam-square" scale="1.2" />
             <span>Connect with Steam</span>
           </nuxt-link>
@@ -132,8 +152,8 @@
         <div class="form-field">
           <label class="form-label" for="password">Password</label>
           <div class="form-input">
-            <text-input
-              v-model="password"
+            <text-input ref="firstPassword"
+              v-model="password.first"
               placeholder="Your new password"
               type="password"
               :validation="'required|password'" />
@@ -145,8 +165,8 @@
         <div class="form-field">
           <label class="form-label" for="confirmpassword">Confirm Password</label>
           <div class="form-input">
-            <text-input
-              v-model="confirmpassword"
+            <text-input ref="secondPassword"
+              v-model="password.second"
               placeholder="Confirm new password"
               type="password"
               :validation="'required|password'" />
@@ -162,17 +182,17 @@
           >
             Change Password
           </button>
-          <!-- <button class="form-btn form-btn--disabled" v-show="isChangeInProgress()">
+          <button class="form-btn form-btn--disabled" v-show="profileChangeInProgress">
             <icon name="spinner" pulse></icon>
           </button> -->
         </div>
 
         <!-- ERRORS -->
-        <!-- <div class="form-errors">
-          <span v-if="changeError('password').response">
-            Sorry, it was not possible to change your password. Try again later.
+        <div class="form-errors">
+          <span v-if="profileChangeError === 409">
+            Sorry, your entered data may conflict with others
           </span>
-          <span v-else-if="changeError('password').request">
+          <!-- <span v-else-if="changeError('password').request">
             We're experiencing technical difficulties.
           </span>
           <span v-else-if="changeError('password').message">
@@ -180,9 +200,8 @@
           </span>
           <span v-else-if="this.passwordsMatch === false">
             Both passwords should match!
-          </span>
-        </div> -->
-
+          </span> -->
+        </div>
       </div>
     </div>
   </div>
@@ -194,10 +213,6 @@ import { createNamespacedHelpers } from 'vuex'
 import MessageBox from '~/components/common/message-box'
 import { Tabs, Tab } from '~/components/common/tabs'
 import TextInput from '~/components/common/form/text'
-// import AvatarCropper from 'vue-avatar-cropper'
-
-// import myUpload from 'vue-image-crop-upload'
-
 import dateMixin from '~/mixins/date'
 
 const { mapGetters, mapMutations, mapState, mapActions } = createNamespacedHelpers('user')
@@ -215,11 +230,13 @@ export default Vue.extend({
         email: null,
         avatar: null
       },
-      canSelectImage: null,
-      userAvatar: undefined,
-      email: '',
-      username: '',
-      password: '',
+      password: {
+        first: '',
+        second: ''
+      },
+      // providersRedirectURLs: {
+      //   steam: `response_type=code&scope=openid&client_id&`
+      // },
       confirmpassword: '',
       passwordsMatch: null,
       successMessage: '',
@@ -246,6 +263,8 @@ export default Vue.extend({
       avatarURLInStore: 'avatarURL'
     }),
     ...mapState({
+      profileChangeError: 'profileChangeError',
+      profileChangeInProgress: 'profileChangeInProgress',
       profileChanges: 'profileChanges',
       profileChangesError: 'profileChangesError',
       userProfile: 'profile'
@@ -280,7 +299,6 @@ export default Vue.extend({
       updateAccountDetails: 'update_account_details'
     }),
     ...mapActions({
-      deleteAvatar: 'deleteAvatar',
       editProfile: 'editProfile'
     }),
     uploadCroppedImage () {
@@ -288,72 +306,9 @@ export default Vue.extend({
       return this.myCroppa.chooseFile()
     },
     isChangeInProgress (thing) {
-        // write code to upload the cropped image file (a file is a blob)
-      } else if (thing === 'username') { // USERNAME
-        return this.$store.state.user.changeUsernameInProgress
-        var field = 'avatar'
-        var value = this.myCroppa.generateDataUrl()
-
-        this.updateAccountDetails({ field, value })
-      }, 'image/jpeg', 0.8) // 80% compressed jpeg file
-      }
-    },
-    isChangeDisabled (thing) {
-      if (this.errors.any()) {
-        if (thing === 'password' && (this.password === '' || this.confirmpassword === '')) { // PASSWORD
-          return true
-        } else if (thing === 'usernameEmail' && (this.username === '' || this.email === '')) { // USERNAME & EMAIL
-          return true
-        } else if (thing === 'email' && this.email === '') { // EMAIL
-          return true
-        }
-      }
-      return false
-    },
-    changeError (thing) {
-      if (thing === 'password') { // PASSWORD
-        return this.$store.state.user.changePasswordError || {}
-      } else if (thing === 'username') { // USERNAME
-        return this.$store.state.user.changeUsernameError || {}
-      } else if (thing === 'email') { // EMAIL
-        return this.$store.state.user.changeEmailError || {}
-      }
-    },
-
-    async change (thing) {
-      // CHANGING PASSWORD
-      if (thing === 'password') {
-        if (this.password !== '' && this.confirmpassword !== '' && this.password === this.confirmpassword) {
-          this.passwordsMatch = true
-
-          // if passwords match, change the password
-          await this.$store.dispatch('user/changePassword', {
-            password: this.password
-          })
-
-          // resetting passwords value
-          this.password = null
-          this.confirmpassword = null
-        } else {
-          this.passwordsMatch = false
-        }
-
-      // CHANGING USERNAME AND EMAIL
-      } else if (thing === 'usernameEmail') {
-        if (this.username !== '' && this.email !== '') {
-          await this.$store.dispatch('user/changeUsername', {
-            username: this.username
-          })
-
-          await this.$store.dispatch('user/changeEmail', {
-            email: this.email
-          })
-
-          // resetting username AND email value
-          this.username = null
-          this.email = null
-        }
-      }
+    // toggle file select window
+    uploadPhoto () {
+      this.myCroppa.chooseFile()
     },
     // when he selected new avatar
     async onAvatarChange (canvas, remove) {

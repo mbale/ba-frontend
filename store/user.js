@@ -3,7 +3,8 @@ import noAvatarImage from '~/assets/images/no_avatar.png'
 const MUTATIONS = {
   UPDATE_LOGGED_USER_DATA: 'update_logged_user_data',
   UPDATE_ACCOUNT_DETAILS: 'update_account_details',
-  UPDATE_ACCOUNT_DETAILS_ERROR: 'update_account_details_error'
+  UPDATE_ACCOUNT_DETAILS_ERROR: 'update_account_details_error',
+  UPDATE_ACCOUNT_DETAILS_SUCCESS: 'update_account_details_success'
 }
 
 export const mutations = {
@@ -12,6 +13,7 @@ export const mutations = {
     state.prediction = prediction
   },
   [MUTATIONS.UPDATE_ACCOUNT_DETAILS] (state, { field, value }) {
+    state.profileChangeInProgress = true
     if (state.profile[field] !== value) {
       state.profileChanges[field] = value
     } else {
@@ -19,7 +21,11 @@ export const mutations = {
     }
   },
   [MUTATIONS.UPDATE_ACCOUNT_DETAILS_ERROR] (state, { error }) {
-    state.profileChangesError = error
+    state.profileChangeInProgress = false
+    state.profileChangeError = error
+  },
+  [MUTATIONS.UPDATE_ACCOUNT_DETAILS_SUCCESS] (state, { value }) {
+    state.profileChangeSuccess = value
   }
 }
 
@@ -67,24 +73,26 @@ export const state = () => ({
   // contains the proposed changes on frontend
   profileChanges: {
     username: null,
+    countryCode: null, // not yet active
     password: null,
     email: null,
     avatar: null
   },
   // will contain the error user got during the change
-  profileChangesError: null,
-  //
-  changePasswordInProgress: false,
-  changePasswordError: null,
-  //
-  changeEmailInProgress: false,
-  changeEmailError: null,
-  //
-  changeUsernameInProgress: false,
-  changeUsernameError: null
+  profileChangeError: null,
+  // when everything went successful
+  profileChangeSuccess: null,
+  // true when in progress, false if not (done), null if wasn't started
+  profileChangeInProgress: null
 })
 
 export const actions = {
+  toggleSuccess ({ state, commit }, { timeout = 3000 }) {
+    commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_SUCCESS, { value: true })
+    setTimeout(() => {
+      commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_SUCCESS, { value: true })
+    }, timeout)
+  },
   async getProfile (context) {
     try {
       const {
@@ -94,14 +102,11 @@ export const actions = {
 
       context.commit(MUTATIONS.UPDATE_LOGGED_USER_DATA, { profile, predictions })
     } catch (error) {
+      // resetting login
       await context.dispatch('auth/updateToken', {}, {
         root: true
       })
     }
-  },
-  async deleteAvatar ({ dispatch }) {
-    await this.$axios.$delete('v1/users/me/avatar')
-    await dispatch('getProfile')
   },
   async editProfile ({ commit, dispatch, getters }) {
     try {
@@ -155,9 +160,11 @@ export const actions = {
       Object.keys(changedFields).forEach(key => {
         commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS, { field: key, value: null })
       })
+      dispatch('toggleSuccess', {})
     } catch (error) {
-      commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_ERROR, { error })
-      console.log(state.profileChangesError)
+      if (error.response) {
+        commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_ERROR, { error: error.response.status })
+      }
     }
   },
   /*
@@ -172,40 +179,6 @@ export const actions = {
       commit(MUTATIONS.CHANGE_PASSWORD_SUCCESS)
     } catch (error) {
       commit(MUTATIONS.CHANGE_PASSWORD_FAIL, {
-        error
-      })
-    }
-  },
-  /*
-  **  Change Username
-  */
-  async changeUsername ({ commit, dispatch }, payload) {
-    try {
-      console.log(payload)
-      commit(MUTATIONS.CHANGE_USERNAME_IN_PROGRESS)
-
-      await this.$axios.$put('v1/users/me', payload)
-
-      commit(MUTATIONS.CHANGE_USERNAME_SUCCESS)
-    } catch (error) {
-      commit(MUTATIONS.CHANGE_USERNAME_FAIL, {
-        error
-      })
-    }
-  },
-  /*
-  **  Change Email
-  */
-  async changeEmail ({ commit, dispatch }, payload) {
-    try {
-      console.log(payload)
-      commit(MUTATIONS.CHANGE_EMAIL_IN_PROGRESS)
-
-      await this.$axios.$put('v1/users/me', payload)
-
-      commit(MUTATIONS.CHANGE_EMAIL_SUCCESS)
-    } catch (error) {
-      commit(MUTATIONS.CHANGE_EMAIL_FAIL, {
         error
       })
     }
