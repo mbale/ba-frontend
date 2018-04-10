@@ -156,6 +156,7 @@ export default Vue.extend({
       return Math.ceil(this.predictionsLength / this.predictionsPerPage)
     },
     predictionsToShow () {
+      console.log(this.$store.getters['users/predictionsToShow'])
       return this.$store.getters['users/predictionsToShow']
     }
   },

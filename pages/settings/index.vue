@@ -53,7 +53,9 @@
                     placeholder="Choose an image"
                     :placeholder-font-size="14"
                     :disabled="false"
-                    :prevent-white-space="false"
+                    :disable-drag-to-move="false"
+                    :prevent-white-space="true"
+                    :disable-scroll-to-zoom="true"
                     :show-remove-button="false"
                     :file-size-limit="300 * 1024"
                     :remove-button-size="20"
@@ -90,6 +92,19 @@
           <button class="form-btn form-btn--disabled" v-show="isChangeInProgress('usernameEmail')">
             <icon name="spinner" pulse></icon>
           </button>
+        </div>
+
+        <!-- ERRORS -->
+        <div class="form-errors">
+          <span v-if="changeError('username').response || changeError('email').response">
+            Sorry, it was not possible to change your username or email. Try again later.
+          </span>
+          <span v-else-if="changeError('username').request || changeError('email').request">
+            We're experiencing technical difficulties.
+          </span>
+          <span v-else-if="changeError('username').message || changeError('email').message">
+            You're not connected to the network
+          </span>
         </div>
       </div>
 
