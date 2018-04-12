@@ -20,13 +20,21 @@ export const mutations = {
       state.profileChanges[field] = null
     }
   },
-  [MUTATIONS.UPDATE_ACCOUNT_DETAILS_ERROR] (state, { error }) {
+  [MUTATIONS.UPDATE_ACCOUNT_DETAILS_ERROR] (state, { error, timeout = 5000 }) {
     state.profileChangeInProgress = false
     state.profileChangeError = error
+
+    setTimeout(() => {
+      state.profileChangeError = null
+    }, timeout)
   },
-  [MUTATIONS.UPDATE_ACCOUNT_DETAILS_SUCCESS] (state, { value }) {
+  [MUTATIONS.UPDATE_ACCOUNT_DETAILS_SUCCESS] (state, { value, timeout = 3000 }) {
     state.profileChangeInProgress = false
     state.profileChangeSuccess = value
+
+    setTimeout(() => {
+      state.profileChangeSuccess = null
+    }, timeout)
   }
 }
 
@@ -88,12 +96,6 @@ export const state = () => ({
 })
 
 export const actions = {
-  toggleSuccess ({ state, commit }, { timeout = 3000 }) {
-    commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_SUCCESS, { value: true })
-    setTimeout(() => {
-      commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_SUCCESS, { value: null })
-    }, timeout)
-  },
   async getProfile (context) {
     try {
       const {
@@ -158,7 +160,9 @@ export const actions = {
       Object.keys(changedFields).forEach(key => {
         commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS, { field: key, value: null })
       })
-      dispatch('toggleSuccess', {})
+
+      // SUCCESS COMMIT
+      commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_SUCCESS, { value: true })
     } catch (error) {
       if (error.response) {
         commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_ERROR, { error: error.response.status })

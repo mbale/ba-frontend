@@ -14,35 +14,22 @@ export default Vue.extend({
 
 <style lang="stylus">
 
-// .overlay
-//   position fixed
-//   top 0
-//   left 0
-//   right 0
-//   bottom 0
-//   display flex
-//   flex-direction column
-//   justify-content center
-//   align-items center
-//   background-color rgba(27,29,82,.8)
-//   transition opacity .2s
-//   opacity 1
-//
-// .modal-box
-//   display flex
-//   flex-direction column
-//   justify-content space-around
-//   background-color white
-//   padding 10px 25px
-//   width 380px
-//
-//   .modal-box__body
-//     display flex
-//     flex-direction column
-//
-//   .modal-box__footer
-//     display flex
-//     padding 15px 0px
-//     justify-content space-between
+.message-box
+	display flex
+	height 50px
+	align-items center
+	padding 0 15px
+
+	h4
+		color white
+
+	&--success
+		background-color $green
+
+	&--error
+		background-color $red
+
+	&--progress
+		background-color $orange
 
 </style>

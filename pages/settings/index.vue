@@ -14,20 +14,26 @@
     <div v-show="currentTab === 0" class="account content-tab">
       <h2 class="content-title">Account</h2>
 
+      <!-- STATUS -->
+      <message-box v-show="profileChangeError === 409" class="message-box--error">
+        <h4>
+          [ERR CODE: {{ profileChangeError }}] Sorry, your entered data may conflict with others.
+        </h4>
+      </message-box>
       <!-- ERROR -->
-      <message-box v-show="this.profileChangesError">
+      <message-box v-show="this.profileChangesError" class="message-box--error">
         <h4>
           [ERROR CODE: {{ profileChangesError }}] We're sorry, something went wrong. Please try again.
         </h4>
       </message-box>
       <!-- SUCCESS -->
-      <message-box v-show="this.profileChangeSuccess">
+      <message-box v-show="this.profileChangeSuccess" class="message-box--success">
         <h4>
           You've edited your profile
         </h4>
       </message-box>
       <!-- PROGRESS -->
-      <message-box v-show="this.profileChangeInProgress">
+      <message-box v-show="this.profileChangeInProgress" class="message-box--progress">
         <h4>
           We're saving your data
         </h4>
@@ -104,17 +110,14 @@
         <div class="form-field form-field--actions">
           <button class="form-btn button--primary"
           v-bind:class="{'form-btn--disabled': !canUpdateProfile }"
+          v-show="!profileChangeInProgress"
           @click="updateProfile">
             Save Changes
           </button>
+          <button class="form-btn form-btn--disabled" v-show="profileChangeInProgress">
+            <icon name="spinner" pulse></icon>
+          </button>
         </div>
-      </div>
-
-      <!-- STATUS -->
-      <div class="form-errors">
-        <span v-if="profileChangeError === 409">
-          Sorry, your entered data may conflict with others
-        </span>
       </div>
 
       <div class="connections">
@@ -132,6 +135,31 @@
     <!-- SECURITY TAB -->
     <div v-show="currentTab === 1" class="security content-tab">
       <h2 class="content-title">Security</h2>
+
+      <!-- STATUS -->
+      <message-box v-show="profileChangeError === 409" class="message-box--error">
+        <h4>
+          [ERR CODE: {{ profileChangeError }}] Sorry, your entered data may conflict with others.
+        </h4>
+      </message-box>
+      <!-- ERROR -->
+      <message-box v-show="this.profileChangesError" class="message-box--error">
+        <h4>
+          [ERROR CODE: {{ profileChangesError }}] We're sorry, something went wrong. Please try again.
+        </h4>
+      </message-box>
+      <!-- SUCCESS -->
+      <message-box v-show="this.profileChangeSuccess" class="message-box--success">
+        <h4>
+          You've edited your profile
+        </h4>
+      </message-box>
+      <!-- PROGRESS -->
+      <message-box v-show="this.profileChangeInProgress" class="message-box--progress">
+        <h4>
+          We're saving your data
+        </h4>
+      </message-box>
 
       <div class="form--horizontal">
 
@@ -165,6 +193,7 @@
         <div class="form-field form-field--actions">
           <button class="form-btn button--primary"
             v-bind:class="{'form-btn--disabled': !this.password.first || !this.password.second }"
+            v-show="!profileChangeInProgress"
             @click="updatePassword"
           >
             Change Password
@@ -172,13 +201,6 @@
           <button class="form-btn form-btn--disabled" v-show="profileChangeInProgress">
             <icon name="spinner" pulse></icon>
           </button>
-        </div>
-
-        <!-- ERRORS -->
-        <div class="form-errors">
-          <span v-if="profileChangeError === 409">
-            Sorry, your entered data may conflict with others
-          </span>
         </div>
       </div>
     </div>
@@ -344,6 +366,7 @@ export default Vue.extend({
     max-width: 1440px
     width: 100%
     margin-top: 20px
+    margin-bottom: 30px
     display: flex
     flex-direction: row
 
