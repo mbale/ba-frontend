@@ -369,27 +369,48 @@ export default Vue.extend({
     margin-bottom: 30px
     display: flex
     flex-direction: row
+    padding: 0 15px
+    +below(3)
+      flex-direction: column
 
     .tabs
         flex-direction: column
         flex-basis: 15%
         max-width: 200px
+        min-width: 125px
         height: fit-content
         background-color: white
+        +below(3)
+          max-width: none
+          min-width: none
+          flex-direction: row
+          margin-right: 0
+          align-self: center
 
         .tab
             border-left: 3px solid transparent
             padding-left: 25px
+            +below(3)
+              border-left: none
 
             &--active
                 border-bottom: none
                 border-color: $purple
+                +below(3)
+                  border-bottom: 3px solid $purple
 
     .content-tab
         flex-basis: 85%
         background-color: white
         padding: 20px
         height: fit-content
+        +below(3)
+          margin-top: 20px
+
+        &.account
+          margin-left: 20px
+          +below(3)
+            margin-left: 0
 
         .content-title
             border-bottom: 1px solid #efefef
@@ -413,6 +434,8 @@ export default Vue.extend({
             outline: none
             margin-left: 142px
             width: fit-content
+            +below(3)
+              margin-left: 0
 
         .form-field
             display: flex
@@ -426,13 +449,18 @@ export default Vue.extend({
                 font-size: 14px
                 color: $lgray
                 font-weight: normal
+                min-width: 140px
 
             .form-input
                 flex: 7
+                +below(3)
+                  flex: unset
 
                 &--avatar
                     display: flex
                     flex-direction: row
+                    +below(3)
+                      flex-direction: column-reverse
 
                     img
                         width: 64px
@@ -457,6 +485,8 @@ export default Vue.extend({
 
                             &:nth-child(2)
                                 margin-left: 10px
+                                +below(3)
+                                  margin-left: 0
 
                             &.upload-btn
                                 background-color: $purple
@@ -464,10 +494,16 @@ export default Vue.extend({
                             &.delete-btn
                                 background-color: $red
 
-                    .info span
+                    .info
+                      +below(3)
+                        margin: 15px 0
+
+                      span
                         display: block
                         margin: 10px 0 0 15px
                         font-size: 13px
+                        +below(3)
+                          margin-left: 0
 
                 .input-text
                     max-width: 450px

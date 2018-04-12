@@ -104,7 +104,7 @@ export default Vue.extend({
   async asyncData ({ store, params, error }) {
     try {
       // /matches/vici-gaming-vs-jd-gaming/2hbMvsAD
-      console.log(params)
+      // console.log(params)
       const {
         // gameslug,
         // teams,
