@@ -25,6 +25,7 @@ export const mutations = {
     state.profileChangeError = error
   },
   [MUTATIONS.UPDATE_ACCOUNT_DETAILS_SUCCESS] (state, { value }) {
+    state.profileChangeInProgress = false
     state.profileChangeSuccess = value
   }
 }
