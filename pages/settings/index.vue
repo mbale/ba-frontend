@@ -14,20 +14,11 @@
     <div v-show="currentTab === 0" class="account content-tab">
       <h2 class="content-title">Account</h2>
 
-      <MessageBox v-show="this.$store.state.user.profileChangesError !== null">
+      <message-box v-show="this.$store.state.user.profileChangesError !== null">
         <h4>
           [ERROR CODE: {{ profileChangesError }}] We're sorry, something went wrong. Please try again.
         </h4>
-        <!-- <span v-if="changeError('username').response || changeError('email').response">
-          Sorry, it was not possible to change your username or email. Try again later.
-        </span>
-        <span v-else-if="changeError('username').request || changeError('email').request">
-          We're experiencing technical difficulties.
-        </span>
-        <span v-else-if="changeError('username').message || changeError('email').message">
-          You're not connected to the network
-        </span> -->
-      </MessageBox>
+      </message-box>
 
       <div class="form--horizontal">
         <!-- INPUTS -->
@@ -71,7 +62,6 @@
                     :disable-drag-to-move="false"
                     :prevent-white-space="true"
                     :show-remove-button="!isDefaultAvatar"
-                    :show-remove-button="false"
                     :file-size-limit="300 * 1024"
                     :remove-button-size="20"
                     accept=".jpeg,.jpg,.png"
@@ -100,35 +90,19 @@
         <!-- BUTTON SAVE CHANGES -->
         <div class="form-field form-field--actions">
           <button class="form-btn button--primary"
-          v-bind:class="{'form-btn--disabled': isChangeDisabled('usernameEmail') }"
+          v-bind:class="{'form-btn--disabled': !canUpdateProfile }"
           @click="updateProfile">
             Save Changes
           </button>
-          <!-- <button class="form-btn form-btn--disabled" v-show="isChangeInProgress()">
-            <icon name="spinner" pulse></icon>
-          </button> -->
         </div>
       </div>
 
       <!-- STATUS -->
-      <!-- <div class="form-success">
-        <span>Successfully saved</span>
-      </div>
-      <!-- ERRORS -->
       <div class="form-errors">
         <span v-if="profileChangeError === 409">
           Sorry, your entered data may conflict with others
         </span>
-        <!-- <span v-else-if="changeError('password').request">
-          We're experiencing technical difficulties.
-        </span>
-        <span v-else-if="changeError('password').message">
-          You're not connected to the network
-        </span>
-        <span v-else-if="this.passwordsMatch === false">
-          Both passwords should match!
-        </span> -->
-      </div> -->
+      </div>
 
       <div class="connections">
         <h2 class="content-title">Connections</h2>
@@ -177,7 +151,7 @@
         <!-- BUTTON CHANGE PASSWORD -->
         <div class="form-field form-field--actions">
           <button class="form-btn button--primary"
-            v-bind:class="{'form-btn--disabled': isChangeDisabled('password')}"
+            v-bind:class="{'form-btn--disabled': !canUpdateProfile }"
             @click="updateProfile"
           >
             Change Password
@@ -192,15 +166,6 @@
           <span v-if="profileChangeError === 409">
             Sorry, your entered data may conflict with others
           </span>
-          <!-- <span v-else-if="changeError('password').request">
-            We're experiencing technical difficulties.
-          </span>
-          <span v-else-if="changeError('password').message">
-            You're not connected to the network
-          </span>
-          <span v-else-if="this.passwordsMatch === false">
-            Both passwords should match!
-          </span> -->
         </div>
       </div>
     </div>
@@ -251,10 +216,8 @@ export default Vue.extend({
   components: {
     TextInput,
     Tabs,
-    Tab
-    MessageBox,
-    croppa: Croppa.component
-    // AvatarCropper
+    Tab,
+    MessageBox
   },
   computed: {
     ...mapGetters({
@@ -303,10 +266,9 @@ export default Vue.extend({
     }),
     uploadCroppedImage () {
       this.myCroppa.generateBlob((blob) => {
-      return this.myCroppa.chooseFile()
+        return this.myCroppa.chooseFile()
+      })
     },
-    isChangeInProgress (thing) {
-    // toggle file select window
     uploadPhoto () {
       this.myCroppa.chooseFile()
     },
