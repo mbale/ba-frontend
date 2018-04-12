@@ -6,6 +6,7 @@
     <h2 class="header-text header-text--two">
       you may bet on
     </h2>
+
     <div class="odds-list col">
       <div class="odds-row" v-bind:key="o._id" v-for="o of odds">
         <span class="row-item odds-team" v-text="o.home"></span>

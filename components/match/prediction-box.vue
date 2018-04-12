@@ -9,6 +9,26 @@
         <icon @click.native="closeBox" name="times" scale="1.6"></icon>
       </div>
     </div>
+
+    <!-- STATUS -->
+    <message-box v-if="predictionPostError === 400" class="message-box--error">
+      <h4>
+        [ERR CODE: {{ profileChangeError }}] Sorry, you can't bet this much. Make less stake.
+      </h4>
+    </message-box>
+    <!-- ERROR -->
+    <message-box v-else-if="predictionPostError" class="message-box--error">
+      <h4>
+        [ERROR CODE: {{ profileChangesError }}] We're sorry, something went wrong. Please try again.
+      </h4>
+    </message-box>
+    <!-- PROGRESS -->
+    <message-box v-show="predictionPostInProgress" class="message-box--progress">
+      <h4>
+        Ugh.. We're working hard on placing your bet, lord!
+      </h4>
+    </message-box>
+
     <div class="write-prediction col">
       <div class="row">
         <h3 class="header-text header-text--three">Selected team</h3>
@@ -59,8 +79,11 @@
 
 <script>
 import Vue from 'vue'
+import { createNamespacedHelpers } from 'vuex'
 import 'vue-awesome/icons/times'
 import Icon from 'vue-awesome/components/Icon'
+import MessageBox from '~/components/common/message-box'
+const { mapState } = createNamespacedHelpers('predictions')
 
 export default Vue.extend({
   name: 'PredictionBox',
@@ -68,22 +91,26 @@ export default Vue.extend({
     return {
       stake: 0,
       text: null,
-      selectedTeam: null
+      selectedTeam: null,
+      profileChangeError: null,
+      profileChangeInProgress: null,
+      profileChangeSuccess: null
     }
   },
+  components: {
+    MessageBox,
+    Icon
+  },
   computed: {
-    homeOdds () {
-      return this.$store.state.predictions.homeOdds
-    },
-    awayOdds () {
-      return this.$store.state.predictions.awayOdds
-    },
-    homeTeam () {
-      return this.$store.state.predictions.homeTeam
-    },
-    awayTeam () {
-      return this.$store.state.predictions.awayTeam
-    },
+    ...mapState({
+      predictionPostError: 'predictionPostError',
+      predictionPostSuccess: 'predictionPostSuccess',
+      predictionPostInProgress: 'predictionPostInProgress',
+      homeOdds: 'homeOdds',
+      awayOdds: 'awayOdds',
+      homeTeam: 'homeTeam',
+      awayTeam: 'awayTeam'
+    }),
     allowedStakes () {
       const awayOdds = this.awayOdds
       const homeOdds = this.homeOdds
@@ -180,9 +207,6 @@ export default Vue.extend({
         await this.$store.dispatch('match/getByUrlId', { urlId })
       }
     }
-  },
-  components: {
-    Icon
   }
 })
 </script>

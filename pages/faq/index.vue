@@ -22,13 +22,13 @@
 			<p class="question-paragraph">Age restrictions when betting on esports work similarly to betting on any other sport. The best practice when betting on esports is to determine the minimum age required to gamble in the country that you live in, and strictly adhere to that. Some sportsbooks and bookmakers will operate their own age restriction that may be greater than that of the country you live in, and it is important to understand these restrictions, and follow the rules and laws. Most websites operate an identification verification system, to ensure that any users placing bets meet the minimum requirements. </p>
 
 			<h3 class="question-heading">How do esport bonuses work?</h3>
-			<p class="question-paragraph">Esports bonus offers come in a variety of different form factors. Many of these offers can be tough to thoroughly understand. Because of this, we’ve written a <a href="">full guide</a> on <a href="">how esports bonus offers work</a>, offering tips on how to make the most of these offers, and how to avoid getting caught out.</p>
+			<p class="question-paragraph">Esports bonus offers come in a variety of different form factors. Many of these offers can be tough to thoroughly understand. Because of this, we’ve written a <a href="/guides/understanding-bonus-offers">full guide on how esports bonus offers work</a>, offering tips on how to make the most of these offers, and how to avoid getting caught out.</p>
 
 			<h3 class="question-heading">Do I have to pay taxes on winnings from esports bets?</h3>
 			<p class="question-paragraph">Esports betting winnings come under the same bracket as traditional sports betting winnings, and therefore the same rules apply. Some countries are tax exempt when it comes to winnings from betting on esports and sports, whilst others tax bettors on their winnings. Our advice is that users refer to the country they reside ins laws and regulations, and strictly adhere to those.</p>
 
 
-			<h4>Follow us on Twitter and Facebook to stay up to date with the latest esports betting related content.</h4>
+			<h4>Follow us on <a href="https://twitter.com/BetacleEsports">Twitter</a> and <a href="https://www.facebook.com/BetacleEsports">Facebook</a> to stay up to date with the latest esports betting related content.</h4>
 		</div>
 	</div>
 </template>

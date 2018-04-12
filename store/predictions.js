@@ -1,5 +1,6 @@
 const MUTATIONS = {
   SET_PREDICTION: 'set_prediction',
+  PREDICTION_POST_ERROR: 'prediction_post_error',
   SET_BOX_STATE: 'set_box_state',
   SET_TEAMS: 'set_teams',
   SET_ODDS: 'set_odds',
@@ -9,10 +10,20 @@ const MUTATIONS = {
 
 export const mutations = {
   [MUTATIONS.SET_PREDICTION] (state, { prediction }) {
+    state.predictionPostInProgress = true
     state.prediction = prediction
   },
   [MUTATIONS.SET_BOX_STATE] (state, { boxState = true }) {
+    state.predictionPostInProgress = false
     state.boxState = boxState
+  },
+  [MUTATIONS.PREDICTION_POST_ERROR] (state, { error, timeout = 3000 }) {
+    state.predictionPostInProgress = false
+    state.predictionPostError = error
+
+    setTimeout(() => {
+      state.predictionPostError = null
+    }, timeout)
   },
   [MUTATIONS.SET_TEAMS] (state, { homeTeam = null, awayTeam = null }) {
     state.homeTeam = homeTeam
@@ -54,7 +65,13 @@ export const state = () => ({
     selectedTeam: null,
     stake: null,
     text: null
-  }
+  },
+  // will contain the error user got during the change
+  predictionPostError: null,
+  // when everything went successful
+  predictionPostSuccess: null,
+  // true when in progress, false if not (done), null if wasn't started
+  predictionPostInProgress: null
 })
 
 export const actions = {
@@ -95,7 +112,8 @@ export const actions = {
         boxState: false
       })
     } catch (error) {
-      console.log(error)
+      console.log(error.response.status)
+      commit(MUTATIONS.PREDICTION_POST_ERROR, { error: error.response.status })
     }
   }
 }
