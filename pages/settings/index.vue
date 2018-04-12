@@ -143,7 +143,7 @@
               v-model="password.first"
               placeholder="Your new password"
               type="password"
-              :validation="'required|password'" />
+              :validation="{ required: true, min: 6, max: 16 }" />
             <span class="input-desc-text">Just type in your new password.</span>
           </div>
         </div>
@@ -156,7 +156,7 @@
               v-model="password.second"
               placeholder="Confirm new password"
               type="password"
-              :validation="'required|password'" />
+              :validation="{ required: true, min: 6, max: 16 }" />
             <span class="input-desc-text">Write it again to confirm it matches.</span>
           </div>
         </div>
@@ -164,14 +164,14 @@
         <!-- BUTTON CHANGE PASSWORD -->
         <div class="form-field form-field--actions">
           <button class="form-btn button--primary"
-            v-bind:class="{'form-btn--disabled': !canUpdateProfile }"
-            @click="updateProfile"
+            v-bind:class="{'form-btn--disabled': !this.password.first || !this.password.second }"
+            @click="updatePassword"
           >
             Change Password
           </button>
           <button class="form-btn form-btn--disabled" v-show="profileChangeInProgress">
             <icon name="spinner" pulse></icon>
-          </button> -->
+          </button>
         </div>
 
         <!-- ERRORS -->
@@ -314,6 +314,12 @@ export default Vue.extend({
         if (this.userChangedProfile) {
           await this.editProfile()
         }
+      }
+    },
+    async updatePassword () {
+      if (this.password.first && this.password.second) {
+        this.updateAccountDetails({ field: 'password', value: this.password.first })
+        await this.editProfile()
       }
     }
   },
