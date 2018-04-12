@@ -14,6 +14,21 @@
     <div v-show="currentTab === 0" class="account content-tab">
       <h2 class="content-title">Account</h2>
 
+      <MessageBox v-show="this.$store.state.user.profileChangesError !== null">
+        <h4>
+          [ERROR CODE: {{ profileChangesError }}] We're sorry, something went wrong. Please try again.
+        </h4>
+        <!-- <span v-if="changeError('username').response || changeError('email').response">
+          Sorry, it was not possible to change your username or email. Try again later.
+        </span>
+        <span v-else-if="changeError('username').request || changeError('email').request">
+          We're experiencing technical difficulties.
+        </span>
+        <span v-else-if="changeError('username').message || changeError('email').message">
+          You're not connected to the network
+        </span> -->
+      </MessageBox>
+
       <div class="form--horizontal">
         <!-- INPUTS -->
 
@@ -24,7 +39,7 @@
             <text-input
               v-model="account.username"
               placeholder="Your Username"
-              :validation="{ required: true, min: 4, alpha: true }" />
+              :validation="{ required: true, min: 4 }" />
             <span class="input-desc-text">https://betacle.com/users/{{ account.username }}</span>
           </div>
         </div>
@@ -73,9 +88,9 @@
                   class="upload-btn"
                   @click="myCroppa.chooseFile()"
                 >
-                  Upload Photo
+                  Upload Avatar
                 </a>
-                <a class="delete-btn" @click="myCroppa.remove()">Delete Photo</a>
+                <a class="delete-btn" @click="myCroppa.remove()">Delete Avatar</a>
               </div>
               <span>Max 3mb GIF, JPG or PNG.</span>
             </div>
@@ -84,27 +99,14 @@
 
         <!-- BUTTON SAVE CHANGES -->
         <div class="form-field form-field--actions">
-          <button class="form-btn button--primary"  v-show="!isChangeInProgress('usernameEmail')"
-          v-bind:class="{'form-btn--disabled': !canUpdateProfile }"
+          <button class="form-btn button--primary"
+          v-bind:class="{'form-btn--disabled': isChangeDisabled('usernameEmail') }"
           @click="updateProfile">
             Save Changes
           </button>
-          <button class="form-btn form-btn--disabled" v-show="isChangeInProgress('usernameEmail')">
+          <!-- <button class="form-btn form-btn--disabled" v-show="isChangeInProgress()">
             <icon name="spinner" pulse></icon>
-          </button>
-        </div>
-
-        <!-- ERRORS -->
-        <div class="form-errors">
-          <span v-if="changeError('username').response || changeError('email').response">
-            Sorry, it was not possible to change your username or email. Try again later.
-          </span>
-          <span v-else-if="changeError('username').request || changeError('email').request">
-            We're experiencing technical difficulties.
-          </span>
-          <span v-else-if="changeError('username').message || changeError('email').message">
-            You're not connected to the network
-          </span>
+          </button> -->
         </div>
       </div>
 
@@ -154,16 +156,19 @@
 
         <!-- BUTTON CHANGE PASSWORD -->
         <div class="form-field form-field--actions">
-          <button class="form-btn button--primary"  v-show="!isChangeInProgress('password')" v-bind:class="{'form-btn--disabled': isChangeDisabled('password')}" @click="change('password')">
+          <button class="form-btn button--primary"
+            v-bind:class="{'form-btn--disabled': isChangeDisabled('password')}"
+            @click="updateProfile"
+          >
             Change Password
           </button>
-          <button class="form-btn form-btn--disabled" v-show="isChangeInProgress('password')">
+          <!-- <button class="form-btn form-btn--disabled" v-show="isChangeInProgress()">
             <icon name="spinner" pulse></icon>
-          </button>
+          </button> -->
         </div>
 
         <!-- ERRORS -->
-        <div class="form-errors">
+        <!-- <div class="form-errors">
           <span v-if="changeError('password').response">
             Sorry, it was not possible to change your password. Try again later.
           </span>
@@ -176,7 +181,7 @@
           <span v-else-if="this.passwordsMatch === false">
             Both passwords should match!
           </span>
-        </div>
+        </div> -->
 
       </div>
     </div>
@@ -186,6 +191,7 @@
 <script>
 import Vue from 'vue'
 import { createNamespacedHelpers } from 'vuex'
+import MessageBox from '~/components/common/message-box'
 import { Tabs, Tab } from '~/components/common/tabs'
 import TextInput from '~/components/common/form/text'
 import Croppa from 'vue-croppa'
@@ -217,6 +223,7 @@ export default Vue.extend({
       password: '',
       confirmpassword: '',
       passwordsMatch: null,
+      successMessage: '',
       currentTab: 0,
       tabs: {
         first: 'Account',
@@ -229,6 +236,7 @@ export default Vue.extend({
     TextInput,
     Tabs,
     Tab,
+    MessageBox,
     croppa: Croppa.component
     // AvatarCropper
   },
@@ -239,6 +247,7 @@ export default Vue.extend({
     }),
     ...mapState({
       profileChanges: 'profileChanges',
+      profileChangesError: 'profileChangesError',
       userProfile: 'profile'
     }),
     avatarURL () {
@@ -256,6 +265,13 @@ export default Vue.extend({
       return Object.keys(fields)
         .filter(field => fields[field] && this.userProfile[field] !== fields[field])
         .length > 0
+    },
+    showSuccessMessage () {
+      if (this.successMessage !== '') {
+        return true
+      } else {
+        return false
+      }
     }
   },
   methods: {
@@ -275,73 +291,15 @@ export default Vue.extend({
         this.updateAccountDetails({ field, value })
       }, 'image/jpeg', 0.8) // 80% compressed jpeg file
     },
-    isChangeInProgress (thing) {
-      if (thing === 'password') { // PASSWORD
-        return this.$store.state.user.changePasswordInProgress
-      } else if (thing === 'username') { // USERNAME
-        return this.$store.state.user.changeUsernameInProgress
-      } else if (thing === 'email') { // EMAIL
-        return this.$store.state.user.changeEmailInProgress
-      } else if (thing === 'usernameEmail') {
-        return this.$store.state.user.changeUsernameEmailInProgress
-      }
-    },
     isChangeDisabled (thing) {
       if (this.errors.any()) {
         if (thing === 'password' && (this.password === '' || this.confirmpassword === '')) { // PASSWORD
           return true
-        } else if (thing === 'username' && this.username === '') { // USERNAME
-          return true
-        } else if (thing === 'email' && this.email === '') { // EMAIL
+        } else if (thing === 'usernameEmail' && (this.username === '' || this.email === '')) { // USERNAME & EMAIL
           return true
         }
       }
       return false
-    },
-    changeError (thing) {
-      if (thing === 'password') { // PASSWORD
-        return this.$store.state.user.changePasswordError || {}
-      } else if (thing === 'username') { // USERNAME
-        return this.$store.state.user.changeUsernameError || {}
-      } else if (thing === 'email') { // EMAIL
-        return this.$store.state.user.changeEmailError || {}
-      }
-    },
-
-    async change (thing) {
-      // CHANGING PASSWORD
-      if (thing === 'password') {
-        if (this.password !== '' && this.confirmpassword !== '' && this.password === this.confirmpassword) {
-          this.passwordsMatch = true
-
-          // if passwords match, change the password
-          await this.$store.dispatch('user/changePassword', {
-            password: this.password
-          })
-
-          // resetting passwords value
-          this.password = null
-          this.confirmpassword = null
-        } else {
-          this.passwordsMatch = false
-        }
-
-      // CHANGING USERNAME AND EMAIL
-      } else if (thing === 'usernameEmail') {
-        if (this.username !== '' && this.email !== '') {
-          await this.$store.dispatch('user/changeUsername', {
-            username: this.username
-          })
-
-          await this.$store.dispatch('user/changeEmail', {
-            email: this.email
-          })
-
-          // resetting username AND email value
-          this.username = null
-          this.email = null
-        }
-      }
     },
     // when he selected new avatar
     async onAvatarChange (canvas, remove) {
