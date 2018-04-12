@@ -14,9 +14,22 @@
     <div v-show="currentTab === 0" class="account content-tab">
       <h2 class="content-title">Account</h2>
 
-      <message-box v-show="this.$store.state.user.profileChangesError !== null">
+      <!-- ERROR -->
+      <message-box v-show="this.profileChangesError">
         <h4>
           [ERROR CODE: {{ profileChangesError }}] We're sorry, something went wrong. Please try again.
+        </h4>
+      </message-box>
+      <!-- SUCCESS -->
+      <message-box v-show="this.profileChangeSuccess">
+        <h4>
+          You've edited your profile
+        </h4>
+      </message-box>
+      <!-- PROGRESS -->
+      <message-box v-show="this.profileChangeInProgress">
+        <h4>
+          We're saving your data
         </h4>
       </message-box>
 
@@ -226,9 +239,10 @@ export default Vue.extend({
       avatarURLInStore: 'avatarURL'
     }),
     ...mapState({
-      profileChangeError: 'profileChangeError',
-      profileChangeInProgress: 'profileChangeInProgress',
       profileChanges: 'profileChanges',
+      profileChangeError: 'profileChangeError',
+      profileChangeSuccess: 'profileChangeSuccess',
+      profileChangeInProgress: 'profileChangeInProgress',
       profileChangesError: 'profileChangesError',
       userProfile: 'profile'
     }),
@@ -248,13 +262,6 @@ export default Vue.extend({
       return Object.keys(fields)
         .filter(field => fields[field] && this.userProfile[field] !== fields[field])
         .length > 0
-    },
-    showSuccessMessage () {
-      if (this.successMessage !== '') {
-        return true
-      } else {
-        return false
-      }
     }
   },
   methods: {
@@ -262,7 +269,8 @@ export default Vue.extend({
       updateAccountDetails: 'update_account_details'
     }),
     ...mapActions({
-      editProfile: 'editProfile'
+      editProfile: 'editProfile',
+      removeAvatar: 'removeAvatar'
     }),
     uploadCroppedImage () {
       this.myCroppa.generateBlob((blob) => {
@@ -286,8 +294,7 @@ export default Vue.extend({
           this.updateAccountDetails({ field: 'avatar', value: blob })
         }
       } else {
-        this.account.avatar = ''
-        this.updateAccountDetails({ field: 'avatar', value: '' })
+        await this.removeAvatar()
       }
     },
     // send updated fields to store and save it
@@ -299,7 +306,7 @@ export default Vue.extend({
         Object.keys(fields).forEach(field => {
           const value = fields[field]
 
-          if (field !== 'avatar') {
+          if (field !== 'avatar' && field) {
             this.updateAccountDetails({ field, value })
           }
         })

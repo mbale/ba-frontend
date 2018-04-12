@@ -90,7 +90,7 @@ export const actions = {
   toggleSuccess ({ state, commit }, { timeout = 3000 }) {
     commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_SUCCESS, { value: true })
     setTimeout(() => {
-      commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_SUCCESS, { value: true })
+      commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_SUCCESS, { value: null })
     }, timeout)
   },
   async getProfile (context) {
@@ -113,23 +113,20 @@ export const actions = {
       const { changedFields } = getters
 
       const pBuffer = []
+
       // if we need to update avatar too
       // it needs different endpoint
-      if (changedFields.avatar !== null) {
-        const formData = new FormData()
-        formData.append('avatar', changedFields.avatar)
-
+      if (changedFields.avatar) {
         // if it's empty then delete
-        if (changedFields.avatar === '') {
-          pBuffer.push(this.$axios.$delete('v1/users/me/avatar'))
-        } else {
-          // upload new one
-          pBuffer.push(
-            this.$axios.$post('v1/users/me/avatar', formData, {
-              'content-type': 'multipart/form-data'
-            })
-          )
-        }
+        const formData = new FormData()
+
+        formData.append('avatar', changedFields.avatar)
+        // upload new one
+        pBuffer.push(
+          this.$axios.$post('v1/users/me/avatar', formData, {
+            'content-type': 'multipart/form-data'
+          })
+        )
 
         const fieldsToSend = {}
 
@@ -166,6 +163,10 @@ export const actions = {
         commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_ERROR, { error: error.response.status })
       }
     }
+  },
+  async removeAvatar ({ dispatch }) {
+    await this.$axios.$delete('v1/users/me/avatar')
+    await dispatch('getProfile')
   },
   /*
   **  Change Password
