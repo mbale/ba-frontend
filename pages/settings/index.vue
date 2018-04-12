@@ -29,13 +29,13 @@
       <!-- SUCCESS -->
       <message-box v-show="this.profileChangeSuccess" class="message-box--success">
         <h4>
-          You've edited your profile
+          Congratulations! You have succesfully changed your settings.
         </h4>
       </message-box>
       <!-- PROGRESS -->
       <message-box v-show="this.profileChangeInProgress" class="message-box--progress">
         <h4>
-          We're saving your data
+          Changing data is in progress. An Info Box will appear as soon as data is changed.
         </h4>
       </message-box>
 
@@ -49,7 +49,7 @@
             <text-input
               v-model="account.username"
               placeholder="Your Username"
-              :validation="{ required: true, min: 4, alpha: true }" />
+              :validation="{ required: true, min: 4, alpha_num: true }" />
             <span class="input-desc-text">https://betacle.com/users/{{ account.username }}</span>
           </div>
         </div>
