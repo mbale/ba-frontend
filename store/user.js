@@ -3,6 +3,7 @@ import noAvatarImage from '~/assets/images/no_avatar.png'
 const MUTATIONS = {
   UPDATE_LOGGED_USER_DATA: 'update_logged_user_data',
   UPDATE_ACCOUNT_DETAILS: 'update_account_details',
+  UPDATE_ACCOUNT_DETAILS_PROGRESS: 'update_account_details_progress',
   UPDATE_ACCOUNT_DETAILS_ERROR: 'update_account_details_error',
   UPDATE_ACCOUNT_DETAILS_SUCCESS: 'update_account_details_success',
   ATTACH_PROVIDER_ERROR: 'attach_provider_error'
@@ -14,7 +15,6 @@ export const mutations = {
     state.prediction = prediction
   },
   [MUTATIONS.UPDATE_ACCOUNT_DETAILS] (state, { field, value }) {
-    state.profileChangeInProgress = true
     if (state.profile[field] !== value) {
       state.profileChanges[field] = value
     } else {
@@ -22,15 +22,16 @@ export const mutations = {
     }
   },
   [MUTATIONS.UPDATE_ACCOUNT_DETAILS_ERROR] (state, { error, timeout = 5000 }) {
-    state.profileChangeInProgress = false
     state.profileChangeError = error
 
     setTimeout(() => {
       state.profileChangeError = null
     }, timeout)
   },
+  [MUTATIONS.UPDATE_ACCOUNT_DETAILS_PROGRESS] (state, { progress }) {
+    state.profileChangeInProgress = progress
+  },
   [MUTATIONS.UPDATE_ACCOUNT_DETAILS_SUCCESS] (state, { value, timeout = 3000 }) {
-    state.profileChangeInProgress = false
     state.profileChangeSuccess = value
 
     setTimeout(() => {
@@ -127,6 +128,7 @@ export const actions = {
   },
   async editProfile ({ commit, dispatch, getters }) {
     try {
+      commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_PROGRESS, { progress: true })
       const { changedFields } = getters
 
       const pBuffer = []
@@ -181,6 +183,8 @@ export const actions = {
       if (error.response) {
         commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_ERROR, { error: error.response.status })
       }
+    } finally {
+      commit(MUTATIONS.UPDATE_ACCOUNT_DETAILS_PROGRESS, { progress: false })
     }
   },
   async removeAvatar ({ dispatch }) {
