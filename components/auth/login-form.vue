@@ -2,7 +2,7 @@
   <div class="form--horizontal">
     <!-- STEAM -->
     <div class="auth-connect">
-      <nuxt-link class="auth-connect__button auth-connect__button--steam" :to="{ path: 'auth/steam' }">
+      <nuxt-link class="auth-connect__button auth-connect__button--steam" :to="{ path: 'providers/steam/login' }">
         <icon class="auth-connect__button__icon" name="steam-square" scale="1.2" />
         <span>Connect with Steam</span>
       </nuxt-link>

@@ -109,6 +109,27 @@ export const actions = {
     }
   },
   /*
+  ** Login with Steam
+  */
+  async steam ({ commit, dispatch }, { steamId }) {
+    try {
+      const { accessToken } = await this.$axios.$post('v1/auth/steam', { steamId })
+
+      await dispatch('updateToken', {
+        accessToken
+      })
+
+      commit(MUTATIONS.LOGIN_SUCCESS)
+
+      await dispatch('user/getProfile', {}, { root: true })
+    } catch (error) {
+      console.log(error)
+      commit(MUTATIONS.LOGIN_FAIL, {
+        error
+      })
+    }
+  },
+  /*
   ** Tokens
   */
   async getToken (context) {
@@ -180,6 +201,6 @@ export const actions = {
   },
   async logout ({ commit, dispatch }) {
     await dispatch('updateToken', {})
-    commit('user/reset_data', {}, { root: true })
+    commit('user/update_logged_user_data', { profile: null, prediction: null }, { root: true })
   }
 }
