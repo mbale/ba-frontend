@@ -18,14 +18,13 @@
 <script>
 import { createNamespacedHelpers } from 'vuex'
 import { Dropdown, DropdownButton } from '~/components/common/dropdown'
-import noAvatarImage from '~/assets/images/no_avatar.png'
 
 const { mapState, mapGetters } = createNamespacedHelpers('user')
 
 export default {
   name: 'AccountBlock',
   components: {
-    Dropdown, DropdownButton, noAvatarImage
+    Dropdown, DropdownButton
   },
   computed: {
     ...mapState({
