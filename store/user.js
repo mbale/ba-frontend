@@ -77,6 +77,10 @@ export const getters = {
     return Object.keys(profileChanges)
       .filter((key) => profileChanges[key] !== null)
       .length > 0
+  },
+  // shows if user attached steam
+  hasSteamProvider ({ profile }) {
+    return profile.steamProvider !== 'null'
   }
 }
 
