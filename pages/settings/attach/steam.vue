@@ -7,7 +7,7 @@ import * as openid from 'openid'
 
 export default {
   name: 'SteamProviderAttach',
-  async asyncData ({ redirect }) {
+  async fetch ({ redirect }) {
     const authURL = await new Promise((resolve, reject) => {
       const client = new openid.RelyingParty(
         'http://localhost:3010/auth/steam/redirect',
@@ -27,7 +27,11 @@ export default {
       })
     })
 
-    return redirect(authURL)
+    if (process.client) {
+      window.location.replace(authURL)
+    } else {
+      return redirect(authURL)
+    }
   }
 }
 </script>
