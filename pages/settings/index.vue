@@ -329,6 +329,8 @@ export default Vue.extend({
         }
       } else {
         await this.removeAvatar()
+        this.account.avatar = this.avatarURLInStore
+        this.myCroppa.refresh()
       }
     },
     // send updated fields to store and save it
