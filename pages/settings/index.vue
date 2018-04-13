@@ -124,7 +124,7 @@
         <h2 class="content-title">Connections</h2>
         <!-- STEAM -->
         <div class="auth-connect">
-          <nuxt-link class="auth-connect__button auth-connect__button--steam" :to="{ path: '/settings/attach/steam' }" append>
+          <nuxt-link class="auth-connect__button auth-connect__button--steam" :to="{ path: '/providers/steam/auth' }" append>
             <icon class="auth-connect__button__icon" name="steam-square" scale="1.2" />
             <span>Connect with Steam</span>
           </nuxt-link>
