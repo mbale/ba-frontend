@@ -9,11 +9,9 @@ ENV FRONTEND_URL=$FRONTEND_URL:$FRONTEND_PORT
 ENV BACKEND_URL=$BACKEND_URL
 
 # Installing & building
-RUN npm install yarn -g
-RUN yarn cache clean
-RUN yarn install
-RUN yarn build
+RUN npm install
+RUN num run build
 
-CMD yarn start
+CMD npm run start
 
 EXPOSE 5000
