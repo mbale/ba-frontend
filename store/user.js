@@ -184,22 +184,6 @@ export const actions = {
     await dispatch('getProfile')
   },
   /*
-  **  Change Password
-  */
-  async changePassword ({ commit, dispatch }, payload) {
-    try {
-      commit(MUTATIONS.CHANGE_PASSWORD_IN_PROGRESS)
-
-      await this.$axios.$put('v1/users/me', payload)
-
-      commit(MUTATIONS.CHANGE_PASSWORD_SUCCESS)
-    } catch (error) {
-      commit(MUTATIONS.CHANGE_PASSWORD_FAIL, {
-        error
-      })
-    }
-  },
-  /*
   ** Providers
   */
   async attachSteamProvider ({ commit, state }, { steamId }) {
