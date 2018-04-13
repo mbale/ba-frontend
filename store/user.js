@@ -4,7 +4,8 @@ const MUTATIONS = {
   UPDATE_LOGGED_USER_DATA: 'update_logged_user_data',
   UPDATE_ACCOUNT_DETAILS: 'update_account_details',
   UPDATE_ACCOUNT_DETAILS_ERROR: 'update_account_details_error',
-  UPDATE_ACCOUNT_DETAILS_SUCCESS: 'update_account_details_success'
+  UPDATE_ACCOUNT_DETAILS_SUCCESS: 'update_account_details_success',
+  ATTACH_PROVIDER_ERROR: 'attach_provider_error'
 }
 
 export const mutations = {
@@ -35,6 +36,10 @@ export const mutations = {
     setTimeout(() => {
       state.profileChangeSuccess = null
     }, timeout)
+  },
+  [MUTATIONS.ATTACH_PROVIDER_ERROR] (state, { type, error }) {
+    state.providerAttachError.type = type
+    state.providerAttachError.error = error
   }
 }
 
@@ -92,7 +97,12 @@ export const state = () => ({
   // when everything went successful
   profileChangeSuccess: null,
   // true when in progress, false if not (done), null if wasn't started
-  profileChangeInProgress: null
+  profileChangeInProgress: null,
+  // Providers
+  providerAttachError: {
+    type: null,
+    error: null
+  }
 })
 
 export const actions = {
@@ -187,6 +197,16 @@ export const actions = {
       commit(MUTATIONS.CHANGE_PASSWORD_FAIL, {
         error
       })
+    }
+  },
+  /*
+  ** Providers
+  */
+  async attachSteamProvider ({ commit, state }, { steamId }) {
+    try {
+      await this.$axios.$post('v1/users/me/steam', { steamId })
+    } catch (error) {
+      commit(MUTATIONS.ATTACH_PROVIDER_ERROR, { type: 'steam', error })
     }
   }
 }
