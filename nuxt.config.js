@@ -6,11 +6,15 @@ const nodeExternals = require('webpack-node-externals')
 dotenv.config()
 
 const BACKEND_URL = process.env.BACKEND_URL
+const FRONTEND_URL = process.env.FRONTEND_URL
 
 process.env.DEBUG = 'nuxt:*'
 
 module.exports = {
   debug: true,
+  env: {
+    FRONTEND_URL
+  },
   // needs to sync cookie & jwt token on client site
   // runs on all route
   router: {
