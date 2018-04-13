@@ -286,7 +286,15 @@ export default Vue.extend({
       }
 
       return Object.keys(fields)
-        .filter(field => fields[field] && this.userProfile[field] !== fields[field])
+        .filter(field => {
+          // on frontend it's base64 but in profile it's url
+          if (field === 'avatar') {
+            return false
+          }
+          if (fields[field] && this.userProfile[field] !== fields[field]) {
+            return true
+          }
+        })
         .length > 0
     }
   },
