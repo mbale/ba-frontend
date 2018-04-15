@@ -1,5 +1,5 @@
 <template>
-  <article class="prediction" >
+  <article class="prediction" @click="redirectToMatch">
     <header class="prediction-header">
       <div class="prediction-header__info">
         <div class="leftCorner" :class="prediction.gameSlug">
@@ -48,6 +48,21 @@ export default {
     prediction: Object
   },
   methods: {
+    redirectToMatch () {
+      const matchURL = this.getMatchURLPath().path // csgo/godsent-vs-spirit/kHmlnPh
+      this.$router.push('/matches/' + matchURL) // redirecting user to matchURL
+    },
+    getMatchURLPath () {
+      const { gameSlug, match } = this.prediction
+      const { homeTeam, awayTeam, urlId } = match
+
+      return {
+        path: `${gameSlug}/${this.buildMatchURLSegment(homeTeam, awayTeam)}/${urlId}`
+      }
+    },
+    buildMatchURLSegment (homeTeam, awayTeam) {
+      return `${homeTeam.toLowerCase().split(' ').join('_')}-vs-${awayTeam.toLowerCase().split(' ').join('_')}`
+    },
     gameLogo (gameSlug) {
       switch (gameSlug) {
         case 'csgo': return csgoLogo

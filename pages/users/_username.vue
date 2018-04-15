@@ -7,7 +7,7 @@
         </figure>
         <div class="content-header__info">
           <h1 class="profile-name">
-            {{ profile.username }} <img :src="SteamIcon" alt="">
+            {{ profile.username }} <img v-if="hasSteamProvider" :src="SteamIcon" alt="">
           </h1>
           <div class="additional">
             <span class="location">
@@ -134,17 +134,21 @@ export default Vue.extend({
   computed: {
     ...mapState({
       user: 'userToView',
-      profile: state => state.userToView.profile,
+      // profile: state => state.userToView.profile,
       username: state => state.userToView.profile.username,
       email: state => state.userToView.profile.email,
       registeredOn: state => state.userToView.profile.registeredOn,
       countryCode: state => state.userToView.profile.countryCode,
       avatarURL: state => state.userToView.profile.avatarURL || noAvatarImage,
-      predictionsLength: state => state.userToView.predictions.length
-      // predictions (state) { // <- this syntax also works
-      //   return state.userToView.predictions
-      // },
+      predictionsLength: state => state.userToView.predictions.length,
+      profile (state) { // <- this syntax also works (great for debugging!)
+        console.log(state.userToView.profile)
+        return state.userToView.profile
+      }
     }),
+    hasSteamProvider () {
+      return this.$store.getters['user/hasSteamProvider']
+    },
     predictionsPerPage () {
       return this.$store.state.users.predictionsPerPage
     },
