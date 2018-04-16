@@ -21,9 +21,11 @@
         <tbody>
           <tr v-if="rankings.length > 0" v-for="(ranking, position) in rankings" :key="position">
             <td>{{ position + 1 }}</td>
-            <td class="user" @click="redirectToUser(ranking.user.username)">
-              <img class="user-avatar" :src="showUserAvatar(ranking.user.avatar)" alt="">
-              <span class="username">{{ ranking.user.username }}</span>
+            <td class="user">
+              <nuxt-link :to="`/users/${ranking.user.username}`">
+                <img class="user-avatar" :src="showUserAvatar(ranking.user.avatar)" alt="">
+                <span class="username">{{ ranking.user.username }}</span>
+              </nuxt-link>
             </td>
             <td v-if="ranking.stats.betCount !== null">{{ ranking.stats.betCount }}</td>
             <td v-if="ranking.stats.profit !== null">{{ ranking.stats.profit.toFixed(2) }}</td>
@@ -72,9 +74,6 @@ export default {
         return avatar
       }
     },
-    redirectToUser (username) {
-      this.$router.push('/users/' + username)
-    },
     async filterByMonths () {
       this.fetch()
     }
@@ -111,15 +110,19 @@ export default {
         display flex
         flex-direction row
         align-items center
-        cursor pointer
+        padding 8px 5px
 
-        .user-avatar
-          width 25px
+        a
+          display flex
+          align-items center
+          color inherit
 
-        span.username
-          margin-left 10px
-          white-space nowrap
+          &:hover
+            color initial
 
+          .user-avatar
+            width 25px
 
-
+          span.username
+            margin-left 10px
 </style>

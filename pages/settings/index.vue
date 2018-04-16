@@ -418,13 +418,10 @@ export default Vue.extend({
     background-color: white
     padding: 20px
     height: fit-content
+    margin-left: 20px
     +below(3)
       margin-top: 20px
-
-    &.account
-      margin-left: 20px
-      +below(3)
-        margin-left: 0
+      margin-left: 0
 
     .content-title
       border-bottom: 1px solid #efefef
