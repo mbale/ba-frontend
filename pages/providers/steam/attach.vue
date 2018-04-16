@@ -6,26 +6,24 @@
 import * as openid from 'openid'
 
 export default {
-  name: 'SteamProviderLogin',
+  name: 'SteamProviderAttach',
   async fetch ({ redirect, query, store }) {
     const claimedId = query['openid.claimed_id']
     const FRONTEND_URL = process.env.FRONTEND_URL
-
-    console.log('ENMOSTLEFUTOK')
 
     if (claimedId) {
       const steamId = claimedId.substr(claimedId.lastIndexOf('/') + 1)
       await store.dispatch('auth/steam', { steamId })
 
       if (process.client) {
-        window.location.replace(`${FRONTEND_URL}/matches`)
+        window.location.replace(`${FRONTEND_URL}/settings`)
       } else {
-        return redirect(`${FRONTEND_URL}/matches`)
+        return redirect(`${FRONTEND_URL}/settings`)
       }
     } else {
       const authURL = await new Promise((resolve, reject) => {
         const client = new openid.RelyingParty(
-          `${FRONTEND_URL}/providers/steam/login`,
+          `${FRONTEND_URL}/providers/steam/attach`,
           null,
           true, // stateless
           false

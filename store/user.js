@@ -10,9 +10,9 @@ const MUTATIONS = {
 }
 
 export const mutations = {
-  [MUTATIONS.UPDATE_LOGGED_USER_DATA] (state, { profile, prediction }) {
+  [MUTATIONS.UPDATE_LOGGED_USER_DATA] (state, { profile, predictions }) {
     state.profile = profile
-    state.prediction = prediction
+    state.predictions = predictions
   },
   [MUTATIONS.UPDATE_ACCOUNT_DETAILS] (state, { field, value }) {
     if (state.profile[field] !== value) {
