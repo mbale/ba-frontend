@@ -12,8 +12,9 @@ export default {
     const FRONTEND_URL = process.env.FRONTEND_URL
 
     if (claimedId) {
+      console.log('here')
       const steamId = claimedId.substr(claimedId.lastIndexOf('/') + 1)
-      await store.dispatch('auth/steam', { steamId })
+      await store.dispatch('user/attachSteamProvider', { steamId })
 
       if (process.client) {
         window.location.replace(`${FRONTEND_URL}/settings`)
