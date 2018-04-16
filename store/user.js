@@ -81,6 +81,8 @@ export const getters = {
   },
   // shows if user attached steam
   hasSteamProvider ({ profile }) {
+    console.log(profile)
+
     if (profile) {
       return !!profile.steamProvider
     }

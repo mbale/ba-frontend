@@ -5,6 +5,7 @@ const nodeExternals = require('webpack-node-externals')
 
 dotenv.config()
 
+const isProduction = process.env.NODE_ENV === 'production'
 const BACKEND_URL = process.env.BACKEND_URL
 const FRONTEND_URL = process.env.FRONTEND_URL
 const GA_ID = process.env.GA_ID
@@ -82,9 +83,6 @@ module.exports = {
   **  Plugin options for each
   */
   // nuxt ga
-  'google-analytics': {
-    id: GA_ID
-  },
   // nuxtjs-axios
   axios: {
     // needs to be true othwerwise won't get redirected to proxy with correct headers
@@ -194,6 +192,14 @@ module.exports = {
         }
       })
     ]
+  },
+  'google-analytics': {
+    id: GA_ID,
+    debug: {
+      enabled: !isProduction,
+      track: !isProduction,
+      sendHitTask: isProduction
+    }
   },
   /*
   ** Global CSS

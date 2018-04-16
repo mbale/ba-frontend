@@ -142,11 +142,12 @@ export default Vue.extend({
       avatarURL: state => state.userToView.profile.avatarURL || noAvatarImage,
       predictionsLength: state => state.userToView.predictions.length,
       profile (state) { // <- this syntax also works (great for debugging!)
-        console.log(state.userToView.profile)
+        // console.log(state.userToView.profile)
         return state.userToView.profile
       }
     }),
     hasSteamProvider () {
+      console.log(this.$store.getters['user/hasSteamProvider'])
       return this.$store.getters['user/hasSteamProvider']
     },
     predictionsPerPage () {
@@ -160,7 +161,7 @@ export default Vue.extend({
       return Math.ceil(this.predictionsLength / this.predictionsPerPage)
     },
     predictionsToShow () {
-      console.log(this.$store.getters['users/predictionsToShow'])
+      // console.log(this.$store.getters['users/predictionsToShow'])
       return this.$store.getters['users/predictionsToShow']
     }
   },
