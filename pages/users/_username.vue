@@ -186,37 +186,37 @@ export default Vue.extend({
   background-image: linear-gradient(to top, rgba(0, 0, 0, 0) 0%, #000 100%)
 
 .content-header__info
-    display: flex
-    flex-direction: column
-    flex-wrap: wrap
-    margin: 0 0 0 20px
+  display: flex
+  flex-direction: column
+  flex-wrap: wrap
+  margin: 0 0 0 20px
 
-    .additional
-        margin-top: 10px
+  .additional
+    margin-top: 10px
 
-        span
-            color: white
-            font-size: 14px
-            font-weight: 500
+    span
+      color: white
+      font-size: 14px
+      font-weight: 500
 
-            &:nth-child(2)
-                margin-left: 15px
+      &:nth-child(2)
+        margin-left: 15px
 
-    .profile-name
-        font-size: 20px
-        color: white
-        font-weight: bold
+  .profile-name
+    font-size: 20px
+    color: white
+    font-weight: bold
 
-        img
-            margin-left: 5px
+    img
+      margin-left: 5px
 
-    .follow
-        background-color: $blue
-        color: white
-        padding: 10px 50px
-        margin-top: 15px
-        border-radius: 4px
-        width: fit-content
+  .follow
+    background-color: $blue
+    color: white
+    padding: 10px 50px
+    margin-top: 15px
+    border-radius: 4px
+    width: fit-content
 
 .predictions-pagination .paginate .pagination
   width: fit-content

@@ -80,7 +80,7 @@
                     :disabled="false"
                     :disable-drag-to-move="false"
                     :prevent-white-space="true"
-                    :show-remove-button="!isDefaultAvatar"
+                    :show-remove-button="false"
                     :file-size-limit="300 * 1024"
                     :remove-button-size="20"
                     accept=".jpeg,.jpg,.png"
@@ -377,159 +377,163 @@ export default Vue.extend({
 <style lang="stylus" scoped>
 
 .settings-container
-    max-width: 1440px
-    width: 100%
-    margin-top: 20px
-    margin-bottom: 30px
-    display: flex
-    flex-direction: row
-    padding: 0 15px
+  max-width: 1440px
+  width: 100%
+  margin-top: 20px
+  margin-bottom: 30px
+  display: flex
+  flex-direction: row
+  padding: 0 15px
+  +below(3)
+    flex-direction: column
+
+  .tabs
+    flex-direction: column
+    flex-basis: 15%
+    max-width: 200px
+    min-width: 125px
+    height: fit-content
+    background-color: white
     +below(3)
-      flex-direction: column
+      max-width: none
+      min-width: none
+      flex-direction: row
+      margin-right: 0
+      align-self: center
 
-    .tabs
-        flex-direction: column
-        flex-basis: 15%
-        max-width: 200px
-        min-width: 125px
-        height: fit-content
-        background-color: white
+    .tab
+      border-left: 3px solid transparent
+      padding-left: 25px
+      +below(3)
+        border-left: none
+
+      &--active
+        border-bottom: none
+        border-color: $purple
         +below(3)
-          max-width: none
-          min-width: none
+          border-bottom: 3px solid $purple
+
+  .content-tab
+    flex-basis: 85%
+    background-color: white
+    padding: 20px
+    height: fit-content
+    +below(3)
+      margin-top: 20px
+
+    &.account
+      margin-left: 20px
+      +below(3)
+        margin-left: 0
+
+    .content-title
+      border-bottom: 1px solid #efefef
+      font-size: 16px
+      font-weight: 600
+      padding-bottom: 15px
+      margin-bottom: 20px
+
+    .auth-connect__button--steam
+      width: auto
+      text-transform: uppercase
+      font-size: 12px
+      font-weight: 400
+      border-radius: 4px
+      padding: 0 20px
+
+    .form-btn
+      font-weight: 500
+      padding: 13px 35px
+      border-radius: 4px
+      outline: none
+      margin-left: 142px
+      width: fit-content
+      +below(3)
+        margin-left: 0
+
+    .form-field
+      display: flex
+      flex-direction: row
+      flex-wrap: wrap
+      margin-top: 25px
+      margin-bottom: 40px
+
+      .form-label
+        font-family: $font-opensans
+        font-size: 14px
+        color: $lgray
+        font-weight: normal
+        min-width: 140px
+
+      .form-input
+        flex: 7
+        +below(3)
+          flex: unset
+
+        &--avatar
+          display: flex
           flex-direction: row
-          margin-right: 0
-          align-self: center
-
-        .tab
-            border-left: 3px solid transparent
-            padding-left: 25px
-            +below(3)
-              border-left: none
-
-            &--active
-                border-bottom: none
-                border-color: $purple
-                +below(3)
-                  border-bottom: 3px solid $purple
-
-    .content-tab
-        flex-basis: 85%
-        background-color: white
-        padding: 20px
-        height: fit-content
-        +below(3)
-          margin-top: 20px
-
-        &.account
-          margin-left: 20px
           +below(3)
-            margin-left: 0
+            flex-direction: column-reverse
 
-        .content-title
-            border-bottom: 1px solid #efefef
-            font-size: 16px
-            font-weight: 600
-            padding-bottom: 15px
-            margin-bottom: 20px
+          img
+            width: 64px
+            height: 64px
+            border-radius: 1px
 
-        .auth-connect__button--steam
-            width: auto
-            text-transform: uppercase
-            font-size: 12px
-            font-weight: 400
-            border-radius: 4px
-            padding: 0 20px
-
-        .form-btn
-            font-weight: 500
-            padding: 13px 35px
-            border-radius: 4px
-            outline: none
-            margin-left: 142px
-            width: fit-content
-            +below(3)
-              margin-left: 0
-
-        .form-field
+          .buttons
             display: flex
             flex-direction: row
-            flex-wrap: wrap
-            margin-top: 25px
-            margin-bottom: 40px
 
-            .form-label
-                font-family: $font-opensans
-                font-size: 14px
-                color: $lgray
-                font-weight: normal
-                min-width: 140px
+            input#image
+              display: none
 
-            .form-input
-                flex: 7
+            a
+              border-radius: 2px
+              padding: 6px 15px
+              font-size: 14px
+              height: fit-content
+              color: white
+              margin-left: 15px
+              cursor: pointer
+              +below(3)
+                white-space: nowrap
+
+              &:nth-child(2)
+                margin-left: 10px
                 +below(3)
-                  flex: unset
+                  margin-left: 0
 
-                &--avatar
-                    display: flex
-                    flex-direction: row
-                    +below(3)
-                      flex-direction: column-reverse
+              &.upload-btn
+                background-color: $purple
 
-                    img
-                        width: 64px
-                        height: 64px
-                        border-radius: 1px
+              &.delete-btn
+                background-color: $red
 
-                    .buttons
-                        display: flex
-                        flex-direction: row
+          .info
+            +below(3)
+              margin: 15px 0
 
-                        input#image
-                          display: none
+            span
+              display: block
+              margin: 10px 0 0 15px
+              font-size: 13px
+              +below(3)
+                margin-left: 0
 
-                        a
-                            border-radius: 2px
-                            padding: 6px 15px
-                            font-size: 14px
-                            height: fit-content
-                            color: white
-                            margin-left: 15px
-                            cursor: pointer
+        .input-text
+          max-width: 450px
 
-                            &:nth-child(2)
-                                margin-left: 10px
-                                +below(3)
-                                  margin-left: 0
+        span.input-desc-text
+          font-size: 13px
+          color: $lgray
+          display: block
+          margin-top: 5px
 
-                            &.upload-btn
-                                background-color: $purple
-
-                            &.delete-btn
-                                background-color: $red
-
-                    .info
-                      +below(3)
-                        margin: 15px 0
-
-                      span
-                        display: block
-                        margin: 10px 0 0 15px
-                        font-size: 13px
-                        +below(3)
-                          margin-left: 0
-
-                .input-text
-                    max-width: 450px
-
-                span.input-desc-text
-                    font-size: 13px
-                    color: $lgray
-                    display: block
-                    margin-top: 5px
-
-        .connections
-            margin-top: 90px
+    .connections
+      margin-top: 90px
+      +below(3)
+        margin-top: 45px
 
 
 
