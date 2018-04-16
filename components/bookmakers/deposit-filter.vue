@@ -46,6 +46,11 @@ export default {
         filter: depositMethod.type
       })
 
+      // making all methods inactive
+      this.depositMethods.map(function (method, index) {
+        method.isActive = false
+      })
+
       depositMethod.isActive = !depositMethod.isActive
     }
   },
