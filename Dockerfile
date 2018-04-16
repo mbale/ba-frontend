@@ -8,6 +8,7 @@ ENV HOST=$FRONTEND_HOST
 ENV PORT=$FRONTEND_PORT
 ENV FRONTEND_URL=$FRONTEND_URL
 ENV BACKEND_URL=$BACKEND_URL
+ENV GA_ID=$GA_ID
 
 # Installing yarn
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash
