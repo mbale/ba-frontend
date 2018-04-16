@@ -7,6 +7,7 @@ dotenv.config()
 
 const BACKEND_URL = process.env.BACKEND_URL
 const FRONTEND_URL = process.env.FRONTEND_URL
+const GA_ID = process.env.GA_ID
 
 process.env.DEBUG = 'nuxt:*'
 
@@ -32,7 +33,8 @@ module.exports = {
   // nuxtjs related modules
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/proxy'
+    '@nuxtjs/proxy',
+    '@nuxtjs/google-analytics'
   ],
   // Vue Plugins
   // When you add vue related plugin, it should be noted here
@@ -79,6 +81,10 @@ module.exports = {
   /*
   **  Plugin options for each
   */
+  // nuxt ga
+  'google-analytics': {
+    id: GA_ID
+  },
   // nuxtjs-axios
   axios: {
     // needs to be true othwerwise won't get redirected to proxy with correct headers
