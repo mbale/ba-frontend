@@ -28,7 +28,7 @@
 			<p class="question-paragraph">Esports betting winnings come under the same bracket as traditional sports betting winnings, and therefore the same rules apply. Some countries are tax exempt when it comes to winnings from betting on esports and sports, whilst others tax bettors on their winnings. Our advice is that users refer to the country they reside ins laws and regulations, and strictly adhere to those.</p>
 
 
-			<h4>Follow us on <a href="https://twitter.com/BetacleEsports">Twitter</a> and <a href="https://www.facebook.com/BetacleEsports">Facebook</a> to stay up to date with the latest esports betting related content.</h4>
+			<h4>Follow us on <a href="https://twitter.com/BetacleEsports" target="_blank">Twitter</a> and <a href="https://www.facebook.com/BetacleEsports" target="_blank">Facebook</a> to stay up to date with the latest esports betting related content.</h4>
 		</div>
 	</div>
 </template>
@@ -42,7 +42,7 @@ export default Vue.extend({
   },
   head () {
     return {
-      title: 'Betacle - FAQ'
+      title: 'FAQ | Betacle'
     }
   }
 })

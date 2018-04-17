@@ -28,7 +28,7 @@
 export default {
   head () {
     return {
-      title: 'Cookie Policy - Legal',
+      title: 'Cookie Policy - Legal | Betacle',
       meta: [
         { hid: 'description', name: 'description', content: 'Learn about how Betacle uses cookies to distinguish you from other users of our website.' }
       ]

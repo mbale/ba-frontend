@@ -73,7 +73,7 @@
 export default {
   head () {
     return {
-      title: 'Privacy Policy - Legal',
+      title: 'Privacy Policy - Legal | Betacle',
       meta: [
         { hid: 'description', name: 'description', content: 'Learn about our commitment to privacy protection and read about our security practices and technologies.' }
       ]

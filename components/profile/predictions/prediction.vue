@@ -1,5 +1,5 @@
 <template>
-  <article class="prediction" @click="redirectToMatch">
+  <article class="prediction">
     <header class="prediction-header">
       <div class="prediction-header__info">
         <div class="leftCorner" :class="prediction.gameSlug">
@@ -8,13 +8,19 @@
         <div class="content-prediction">
           <div class="teams">
             <h3 class="content-title">{{ gameName(prediction.gameSlug) }}</h3>
-            <span class="away">{{ prediction.match.awayTeam }}</span> - VS - <span class="home">{{ prediction.match.homeTeam }}</span>
+            <nuxt-link :to="getMatchURLPath()">
+              <span class="away">{{ prediction.match.awayTeam }}</span> - VS - <span class="home">{{ prediction.match.homeTeam }}</span>
+            </nuxt-link>
           </div>
           <div class="stake">
-            <span class="stake-span">Stake:</span>
+            <span class="text-span">Stake:</span>
             <span class="odds">
               $<span class="stake-value">{{ prediction.stake }}</span> (odds: {{ prediction.odds }})
             </span>
+          </div>
+          <div class="profit">
+            <span class="text-span">Profit:</span>
+            <span class="user-profit" :class="betStatus()">{{ predictionProfit }}</span>
           </div>
         </div>
       </div>
@@ -47,17 +53,33 @@ export default {
   props: {
     prediction: Object
   },
+  computed: {
+    predictionProfit () {
+      const { status, stake, odds } = this.prediction
+
+      switch (status) {
+        case 'loss': return `-$${stake}`
+        case 'win': return `$${(stake * odds).toFixed(3)}`
+        case 'undecided': return 'unknown'
+      }
+    }
+  },
   methods: {
-    redirectToMatch () {
-      const matchURL = this.getMatchURLPath().path // csgo/godsent-vs-spirit/kHmlnPh
-      this.$router.push('/matches/' + matchURL) // redirecting user to matchURL
+    betStatus () {
+      const { status } = this.prediction
+
+      switch (status) {
+        case 'win': return 'win'
+        case 'loss': return 'loss'
+        case 'undecided': return 'undecided'
+      }
     },
     getMatchURLPath () {
       const { gameSlug, match } = this.prediction
       const { homeTeam, awayTeam, urlId } = match
 
       return {
-        path: `${gameSlug}/${this.buildMatchURLSegment(homeTeam, awayTeam)}/${urlId}`
+        path: `/matches/${gameSlug}/${this.buildMatchURLSegment(homeTeam, awayTeam)}/${urlId}`
       }
     },
     buildMatchURLSegment (homeTeam, awayTeam) {
@@ -124,6 +146,12 @@ export default {
       align-items center
       justify-content center
 
+      &.win
+        background-color: #338830
+
+      &.loss
+        background-color: #c72424
+
       img
         padding: 2px
 
@@ -154,16 +182,21 @@ export default {
       .teams
         font-size: 14px
 
-        span
-          font-size: 18px
+        a
+          color: inherit
+
+          &:hover span
+            color: initial
+
+          span
+            font-size: 18px
+
+      .text-span
+        text-transform: uppercase
+        font-size: 14px
 
       .stake
-        margin-bottom: 20px
-        margin-top: 7px
-
-        .stake-span
-          text-transform: uppercase
-          font-size: 14px
+        margin: 7px 0
 
         .odds
           margin-left: 15px
@@ -171,4 +204,21 @@ export default {
 
         .stake-value
           font-size: 16px
+
+      .profit
+        margin-bottom: 20px
+
+        .user-profit
+
+          &.win
+            margin-left: 13px
+            color: $green
+
+          &.loss
+            margin-left: 8px
+            color: $red
+
+          &.undecided
+            margin-left: 10px
+
 </style>

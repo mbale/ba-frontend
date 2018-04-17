@@ -50,7 +50,7 @@ export default {
   },
   head () {
     return {
-      title: 'Betacle - Matches'
+      title: 'Matches | Betacle'
     }
   },
   computed: {

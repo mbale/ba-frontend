@@ -115,6 +115,8 @@ export default {
   +below(2)
     float left
     margin-right 10px
+  +below(3)
+    display: none
 
 .footer-nav__title
   color $dgray

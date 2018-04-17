@@ -130,7 +130,7 @@
           </nuxt-link>
         </div>
         <div class="auth-connect" v-else>
-          you already attached
+          Your profile is connected with Steam.
         </div>
       </div>
     </div>
@@ -454,6 +454,9 @@ export default Vue.extend({
       flex-wrap: wrap
       margin-top: 25px
       margin-bottom: 40px
+
+      &:last-child
+        margin-bottom: 20px
 
       .form-label
         font-family: $font-opensans

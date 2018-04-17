@@ -21,7 +21,7 @@ export default Vue.extend({
   },
   head () {
     return {
-      title: 'Betacle - Games'
+      title: 'Games | Betacle'
     }
   },
   computed: {

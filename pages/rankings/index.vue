@@ -55,7 +55,7 @@ export default {
   },
   head () {
     return {
-      title: 'Betacle - Rankings'
+      title: 'Rankings | Betacle'
     }
   },
   computed: {

@@ -3,11 +3,15 @@
     <header class="content-header profile-header">
       <div class="content-header__hero">
         <figure class="content-header__image">
-          <img v-bind:src="avatarURL" />
+          <img v-bind:src="profile.avatar || avatarURL" />
         </figure>
         <div class="content-header__info">
           <h1 class="profile-name">
-            {{ profile.username }} <img v-if="hasSteamProvider" :src="SteamIcon" alt="">
+            {{ profile.username }}
+
+            <a :href="`${userSteamProvider.profileURL}`" target="_blank">
+              <img v-if="hasSteamProvider" :src="SteamIcon" alt="">
+            </a>
           </h1>
           <div class="additional">
             <span class="location">
@@ -142,12 +146,15 @@ export default Vue.extend({
       avatarURL: state => state.userToView.profile.avatarURL || noAvatarImage,
       predictionsLength: state => state.userToView.predictions.length,
       profile (state) { // <- this syntax also works (great for debugging!)
-        // console.log(state.userToView.profile)
+        console.log(state.userToView.profile)
         return state.userToView.profile
       }
     }),
+    userSteamProvider () {
+      console.log(this.$store.getters['user/userSteamProvider'])
+      return this.$store.getters['user/userSteamProvider']
+    },
     hasSteamProvider () {
-      console.log(this.$store.getters['user/hasSteamProvider'])
       return this.$store.getters['user/hasSteamProvider']
     },
     predictionsPerPage () {

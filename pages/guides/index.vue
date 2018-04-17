@@ -38,21 +38,21 @@ export default Vue.extend({
     return {
       bettingTools: [
         {
-          title: 'Betting Terms',
+          title: 'Betting Terms - Guides | Betacle',
           imageURL: BettingTermsImageURL,
           class: 'tools-glossary',
           routeTo: 'betting-glossary',
           text: 'A dictionary covering the most important definitions in esports betting.'
         },
         {
-          title: 'Odds Converter',
+          title: 'Odds Converter - Guides | Betacle',
           imageURL: BettingOddsImageURL,
           class: 'tools-converter',
           routeTo: 'odds-converter',
           text: 'Convert different betting odds into the odds format of your choice.'
         },
         {
-          title: 'Margin Calculator',
+          title: 'Margin Calculator - Guides | Betacle',
           imageURL: BettingCalculatorImageURL,
           class: 'tools-calculator',
           routeTo: 'margin-calculator',
@@ -62,7 +62,7 @@ export default Vue.extend({
   },
   head () {
     return {
-      title: 'Betacle - Guides'
+      title: 'Guides | Betacle'
     }
   },
   computed: {

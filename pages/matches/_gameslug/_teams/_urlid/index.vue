@@ -29,7 +29,7 @@ export default Vue.extend({
   },
   head () {
     return {
-      title: `Betacle - ${this.match.homeTeam} vs ${this.match.awayTeam}`
+      title: `${this.match.homeTeam} vs ${this.match.awayTeam} - Matches | Betacle`
     }
   },
   mixins: [matchMixins],

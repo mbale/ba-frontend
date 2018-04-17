@@ -19,7 +19,7 @@ export default Vue.extend({
   name: 'Guide',
   head () {
     return {
-      title: this.guide.title
+      title: `${this.guide.title} - Guides | Betacle`
     }
   },
   computed: {

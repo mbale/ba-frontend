@@ -83,7 +83,7 @@
 export default {
   head () {
     return {
-      title: 'Terms of Use - Legal',
+      title: 'Terms of Use - Legal | Betacle',
       meta: [
         { hid: 'description', name: 'description', content: 'These Terms of Use governs use of the Betacle.com website and any associated services. Please read them carefully before using the website.' }
       ]

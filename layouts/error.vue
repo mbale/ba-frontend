@@ -14,7 +14,7 @@ export default {
   props: ['error'],
   head () {
     return {
-      title: 'Not Found - Betacle'
+      title: 'Not Found | Betacle'
     }
   },
   computed: {

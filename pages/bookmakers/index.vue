@@ -82,7 +82,7 @@ export default Vue.extend({
   },
   head () {
     return {
-      title: 'Betacle - Bookmakers'
+      title: 'Bookmakers | Betacle'
     }
   },
   methods: {

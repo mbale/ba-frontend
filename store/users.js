@@ -17,7 +17,7 @@ export const mutations = {
   },
   [MUTATIONS.UPDATE_USER_INFO] (state, { user }) {
     state.userToView = user
-    state.userPredictions = user.predictions
+    state.userPredictions = user.predictions.reverse()
   }
 }
 

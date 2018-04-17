@@ -116,7 +116,7 @@ export default {
   name: 'Bookmaker',
   head () {
     return {
-      title: `${this.bookmaker.name} Reviews & Bonus Offers - Bookmakers`,
+      title: `${this.bookmaker.name} - Reviews & Bonus Offers - Bookmakers | Betacle`,
       meta: [
         { hid: 'description', name: 'description', content: `Find out everything about ${this.bookmaker.name}, including independent reviews by our community members and exclusive bonuses.` }
       ]
