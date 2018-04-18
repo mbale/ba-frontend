@@ -182,6 +182,8 @@ export default {
         margin-top: 20px
         margin-bottom: 5px
         color: $lgray
+        +below(3)
+          font-size: 14px
 
       .teams
         font-size: 14px
@@ -210,9 +212,13 @@ export default {
           font-size: 14px
           width: 60px
           display: inline-block
+          +below(3)
+            font-size: 12px
 
         .user-thing
           font-size: 16px
+          +below(3)
+            font-size: 14px
 
           &.win
             color: $green
