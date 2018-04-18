@@ -20,3 +20,5 @@ $ npm run generate
 ```
 
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
+
+Please don't cache images cloud77 so aggressively
