@@ -12,15 +12,17 @@
               <span class="away">{{ prediction.match.awayTeam }}</span> - VS - <span class="home">{{ prediction.match.homeTeam }}</span>
             </nuxt-link>
           </div>
-          <div class="stake">
+          <div class="stake line">
             <span class="text-span">Stake:</span>
-            <span class="odds">
-              $<span class="stake-value">{{ prediction.stake }}</span> (odds: {{ prediction.odds }})
-            </span>
+            <span class="user-thing">${{ prediction.stake }}</span>
           </div>
-          <div class="profit">
+          <div class="odds line">
+            <span class="text-span">Odds:</span>
+            <span class="user-thing">{{ prediction.odds }}</span>
+          </div>
+          <div class="profit line">
             <span class="text-span">Profit:</span>
-            <span class="user-profit" :class="betStatus()">{{ predictionProfit }}</span>
+            <span class="user-thing" :class="betStatus()">{{ predictionProfit }}</span>
           </div>
         </div>
       </div>
@@ -141,8 +143,8 @@ export default {
 
     .leftCorner
       display flex
-      width 25px
-      height 100%
+      width 30px
+      height calc(100% + 1px)
       align-items center
       justify-content center
 
@@ -153,7 +155,7 @@ export default {
         background-color: #c72424
 
       img
-        padding: 2px
+        padding: 5px
 
       &.csgo
         background-color $color-csgo
@@ -172,6 +174,8 @@ export default {
 
     .content-prediction
       margin-left: 35px
+      +below(3)
+        margin-left: 25px
 
       .content-title
         font-size: 16px
@@ -184,6 +188,10 @@ export default {
 
         a
           color: inherit
+          +below(3)
+            width: 220px
+            display: block
+            word-wrap: break-word
 
           &:hover span
             color: initial
@@ -191,34 +199,54 @@ export default {
           span
             font-size: 18px
 
-      .text-span
-        text-transform: uppercase
-        font-size: 14px
-
-      .stake
+      .line
         margin: 7px 0
 
-        .odds
-          margin-left: 15px
-          font-size: 14px
+        &:last-child
+          margin-bottom: 20px
 
-        .stake-value
+        .text-span
+          text-transform: uppercase
+          font-size: 14px
+          width: 60px
+          display: inline-block
+
+        .user-thing
           font-size: 16px
 
-      .profit
-        margin-bottom: 20px
-
-        .user-profit
-
           &.win
-            margin-left: 13px
             color: $green
 
           &.loss
-            margin-left: 8px
             color: $red
 
-          &.undecided
-            margin-left: 10px
+
+
+
+      // .stake
+      //   margin: 7px 0
+      //
+      //   .user-stake
+      //     margin-left: 15px
+      //     font-size: 14px
+      //
+      //   .stake-value
+      //     font-size: 16px
+      //
+      // .profit
+      //   margin-bottom: 20px
+      //
+      //   .user-profit
+      //
+      //     &.win
+      //       margin-left: 13px
+      //       color: $green
+      //
+      //     &.loss
+      //       margin-left: 8px
+      //       color: $red
+      //
+      //     &.undecided
+      //       margin-left: 10px
 
 </style>

@@ -8,7 +8,6 @@
         <div class="content-header__info">
           <h1 class="profile-name">
             {{ profile.username }}
-
             <a :href="`${userSteamProvider.profileURL}`" target="_blank">
               <img v-if="hasSteamProvider" :src="SteamIcon" alt="">
             </a>
@@ -53,23 +52,23 @@
           <!-- <a href="" class="follow button--primary">Follow</a> -->
         </div>
       </div>
-      <div class="toolbar toolbar--with-avatar">
+      <div class="toolbar toolbar--with-avatar username-tabs">
         <tabs>
           <tab
             v-for="(tab, key, index) in tabs"
             :key="key"
-            :class="{'tab--active': currentTab === index}"
+            :class="[currentTab === index ? 'tab--active' : '', index === 0 ? 'tab--show': '']"
             ref="upcoming"
             @click.native="currentTab = index"
           >
             <!-- PREDICTIONS TAB -->
             <span v-if="index === 0">{{ tab }}</span>
 
-            <!-- FOLLOWERS TAB -->
-            <!-- <span v-if="index === 1">{{ predictionsLength }} {{ tab }}</span> -->
+            <!-- FOLLOWERS TAB DISPLAYING NONE -->
+            <!-- <span v-if="index === 1" :style="{ 'display': 'none' }">{{ predictionsLength }} {{ tab }}</span> -->
 
-            <!-- FOLLOWING TAB -->
-            <!-- <span v-if="index === 2">{{ predictionsLength }} {{ tab }}</span> -->
+            <!-- FOLLOWING TAB DSIPLAYING NONE -->
+            <!-- <span v-if="index === 2" :style="{ 'display': 'none' }">{{ predictionsLength }} {{ tab }}</span> -->
           </tab>
         </tabs>
       </div>
@@ -189,18 +188,34 @@ export default Vue.extend({
 
 <style lang="stylus" scoped>
 
+.username-tabs .tabs
+  margin-left auto
+
+  .tab:not(.tab--show)
+    display none
+
 .content-header__hero
   background-color: #1c1e4e
   background-image: linear-gradient(to top, rgba(0, 0, 0, 0) 0%, #000 100%)
+  +below(3)
+    align-items: center
+    flex-direction: column
+    height: 305px
 
 .content-header__info
   display: flex
   flex-direction: column
   flex-wrap: wrap
   margin: 0 0 0 20px
+  +below(3)
+    margin: 0 0 15px 0
+    justify-content: flex-end
+    text-align: center
 
   .additional
     margin-top: 10px
+    +below(3)
+      margin-top: 15px
 
     span
       color: white
