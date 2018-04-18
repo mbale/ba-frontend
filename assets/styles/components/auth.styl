@@ -1,0 +1,54 @@
+// Auth Container
+.auth-container
+  align-self flex-start
+  max-width 340px
+  width 100%
+  margin 40px auto
+  background-color #fff
+  border-radius 2px
+  padding 20px
+
+// Auth Header
+.auth-header
+  margin-bottom 15px
+  .title
+    font-family $font-dinpro
+    font-size 18px
+    font-weight 500
+    text-transform uppercase
+  .subtitle
+    color $lgray
+
+// Auth Connect
+.auth-connect__button
+  width 100%
+  display inline-block
+  .auth-connect__button__icon
+    height 30px
+    line-height 30px
+    vertical-align middle
+    display inline-block
+    margin-right 10px
+
+.auth-connect__button--steam
+  button(#171a21)
+  padding 3px 20px
+
+.auth-connect__seperator
+  margin 10px 0
+  align-items center
+  display flex
+  &:before, &:after
+    content ""
+    flex 1
+    height 1px
+    background-color #ddd
+  span
+    font-size 11px
+    display block
+    color #aaa
+    letter-spacing .05em
+    text-transform uppercase
+    margin 0 10px
+    font-weight bold
+    user-select none
