@@ -11,7 +11,6 @@ ENV BACKEND_URL=$BACKEND_URL
 ENV GA_ID=$GA_ID
 
 # Installing yarn
-RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 RUN yarn install
 RUN yarn build
 
