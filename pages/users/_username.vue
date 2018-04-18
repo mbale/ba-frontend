@@ -189,7 +189,8 @@ export default Vue.extend({
 <style lang="stylus" scoped>
 
 .username-tabs .tabs
-  margin-left auto
+  +below(3)
+    margin-left auto
 
   .tab:not(.tab--show)
     display none
