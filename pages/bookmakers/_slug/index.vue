@@ -163,10 +163,6 @@ export default {
 .bookmaker-container
   max-width: 1440px
 
-.bookmaker__header
-  flex 0 0 100%
-  background-color #1c1e4e
-
 .bookmaker-header__meta
   margin-top: 4px
   display: inline-flex
