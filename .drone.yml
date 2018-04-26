@@ -8,6 +8,7 @@ pipeline:
     image: plugins/gcr
     repo: betacle-202016/master/frontend
     environment:
-      - FRONTEND_HOST=$FRONTEND_HOST
+      - FRONTEND_HOST=0.0.0.0
+      - ANOTHER=1
     tags: latest
     secrets: [gcr_json_key, frontend_host, frontend_port]
