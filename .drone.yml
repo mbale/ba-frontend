@@ -7,6 +7,9 @@ pipeline:
   gcr:
     image: plugins/gcr
     repo: betacle-202016/master/frontend
+    privileged: true
+    environment:
+      - HI=1
     commands:
       - export FRONTEND_HOST=0.0.0.0
     tags: latest
