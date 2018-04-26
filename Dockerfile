@@ -3,6 +3,8 @@ FROM node:latest
 COPY . /app
 WORKDIR /app
 
+RUN printenv
+
 # Setting up env variables for frontend
 ENV HOST=$FRONTEND_HOST
 ENV PORT=$FRONTEND_PORT
