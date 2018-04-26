@@ -1,4 +1,9 @@
 pipeline:
+  printenv:
+    image: busybox
+    secrets: [gcr_json_key, frontend_host, frontend_port]
+    commands:
+      - echo $FRONTEND_HOST
   gcr:
     image: plugins/gcr
     repo: betacle-202016/master/frontend
