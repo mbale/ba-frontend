@@ -5,6 +5,8 @@ WORKDIR /app
 
 RUN printenv
 
+ARG FRONTEND_HOST
+
 RUN echo $FRONTEND_HOST
 
 # Setting up env variables for frontend
