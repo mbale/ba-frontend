@@ -1,14 +1,8 @@
 pipeline:
-  printenv:
-    image: busybox
-    secrets: [gcr_json_key, frontend_host, frontend_port]
-    environment:
-      - FRONTEND_HOST=$FRONTEND_HOST
   gcr:
     image: plugins/gcr
     repo: betacle-202016/master/frontend
-    privileged: true
     environment:
-      - FRONTEND_HOST=$FRONTEND_HOST
+      - FRONTEND_PORT: ${FRONTEND_PORT}
     tags: latest
     secrets: [gcr_json_key, frontend_host, frontend_port]
