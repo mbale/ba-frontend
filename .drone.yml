@@ -6,4 +6,5 @@ pipeline:
     secrets:
       - gcr_json_key
       - frontend_host
+      - FRONTEND_HOST
       - frontend_port
