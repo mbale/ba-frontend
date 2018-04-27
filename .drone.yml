@@ -6,8 +6,11 @@ pipeline:
     secrets:
       - gcr_json_key
       - frontend_host
-      - FRONTEND_HOST
       - frontend_port
+      - frontend_url
+      - backend_url
     build_args_from_env:
       - frontend_host
-      - FRONTEND_HOST
+      - frontend_port
+      - frontend_url
+      - backend_url
