@@ -16,9 +16,9 @@ export default Vue.extend({
 
 .message-box
 	display flex
-	height 50px
+	height fit-content
 	align-items center
-	padding 0 15px
+	padding 10px 15px
 
 	h4
 		color white
