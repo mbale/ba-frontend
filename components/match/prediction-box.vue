@@ -246,9 +246,13 @@ export default Vue.extend({
     display flex
     justify-content flex-start
     align-items center
+    +below(3)
+      flex-wrap wrap
 
     > *
       margin-right 5px
+      +below(3)
+        margin-bottom 15px
 
 .col-header
   flex-basis 85%

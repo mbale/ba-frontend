@@ -50,15 +50,23 @@ export default Vue.extend({
       flex-direction row
       justify-content flex-start
       margin 0
+      +below(3)
+        flex-wrap wrap
 
       .row-item
         margin-right 50px
         justify-content center
+        +below(3)
+          margin-right auto
+          flex 1 0 25%
 
       .odds-date
         display flex
         align-items center
         min-width 130px
+        +below(3)
+          min-width auto
+          margin-left 10px
 
       .odds-team
         display flex
@@ -74,8 +82,19 @@ export default Vue.extend({
         font-weight 700
         color #62626f
         user-select none
+        +below(3)
+          width auto
+          max-width 65px
+          margin-left 10px
+
+        &:first-child
+          +below(3)
+            margin-left 0
 
       .odds-btn
         margin-right 0px
+        +below(3)
+          flex 1 0 100%
+          margin-top 15px
 
 </style>

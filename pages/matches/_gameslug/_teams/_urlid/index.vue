@@ -177,13 +177,17 @@ export default Vue.extend({
   width 100%
 
   .tab
-    padding: 15px 25px
+    padding 15px 25px
 
   .panel
-    margin: 35px 0
+    margin 35px 0
+    +below(3)
+      margin 25px 0
 
   .match
-    padding: 0 25px
+    padding 0 25px
+    +below(3)
+      padding 0 15px
 
   .content-header__hero
     background-color: #1c1e4e
@@ -193,7 +197,7 @@ export default Vue.extend({
     +below(3)
       align-items: center
       flex-direction: column
-      height: 305px
+      height: 260px
 
     .match-info-container
       display: flex
@@ -201,6 +205,10 @@ export default Vue.extend({
       height: 100%
       align-items: center
       margin-top: -10px
+      +below(3)
+        flex-direction: column
+        margin-top: 0
+        justify-content: space-evenly
 
       .team
         font-size: 22px
@@ -209,14 +217,22 @@ export default Vue.extend({
         text-shadow: 0 0 3px rgba(0, 0, 0, .5)
         margin-bottom: 12px
         align-self: flex-end
+        +below(3)
+          align-self: unset
 
         &:first-child
           margin-right: 50px
+          +below(3)
+            margin-right: 0
 
         &:last-child
           margin-left: 50px
+          +below(3)
+            margin-left: 0
 
       .match-info
+        +below(3)
+          order: 1
 
         p
           font-size: 14px
