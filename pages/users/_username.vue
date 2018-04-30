@@ -6,50 +6,44 @@
           <img v-bind:src="profile.avatar || avatarURL" />
         </figure>
         <div class="content-header__info">
-          <h1 class="profile-name">
-            {{ profile.username }}
-            <a :href="`${userSteamProvider.profileURL}`" target="_blank">
-              <img v-if="hasSteamProvider" :src="SteamIcon" alt="">
-            </a>
-          </h1>
-          <div class="additional">
-            <span class="location">
-              <img :src="LocationIcon" alt=""> {{ convertCountryCode(profile.countryCode) }}
-            </span>
-            <span class="registered-on">
-              <img :src="CalendarIcon" alt=""> Joined {{ formatDate(profile.registeredOn, 'DD MMMM YYYY') }}
-            </span>
+          <div class="account-info">
+            <h1 class="profile-name">
+              {{ profile.username }}
+              <a :href="`${userSteamProvider.profileURL}`" target="_blank">
+                <img v-if="hasSteamProvider" :src="SteamIcon" alt="">
+              </a>
+            </h1>
+            <div class="additional">
+              <span class="location">
+                <img :src="LocationIcon" alt=""> {{ convertCountryCode(profile.countryCode) }}
+              </span>
+              <span class="registered-on">
+                <img :src="CalendarIcon" alt=""> Joined {{ formatDate(profile.registeredOn, 'DD MMMM YYYY') }}
+              </span>
+            </div>
           </div>
           <div class="stats">
-            <!-- <table class="content__table">
+            <table class="content__table">
               <thead>
                 <tr>
                   <th>Position</th>
-                  <th>User</th>
                   <th>Tips</th>
+                  <th>Hit Rate</th>
                   <th>Profit</th>
                   <th>Yield</th>
-                  <th>In</th>
-                  <th>Out</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-if="rankings.length > 0" v-for="(ranking, position) in rankings" :key="position">
-                  <td>{{ position + 1 }}</td>
-                  <td class="user" @click="redirectToUser(ranking.user.username)">
-                    <img class="user-avatar" :src="showUserAvatar(ranking.user.avatar)" alt="">
-                    <span class="username">{{ ranking.user.username }}</span>
-                  </td>
-                  <td v-if="ranking.stats.betCount !== null">{{ ranking.stats.betCount }}</td>
-                  <td v-if="ranking.stats.profit !== null">{{ ranking.stats.profit.toFixed(2) }}</td>
-                  <td v-if="ranking.stats.yield !== null">{{ ranking.stats.yield }}%</td>
-                  <td v-if="ranking.stats.in !== null">{{ ranking.stats.in }}</td>
-                  <td v-if="ranking.stats.overall !== null">{{ ranking.stats.overall.toFixed(2) }}</td>
+                <tr>
+                  <td>1</td>
+                  <td>4</td>
+                  <td>50%</td>
+                  <td>+115.5</td>
+                  <td>33%</td>
                 </tr>
               </tbody>
-            </table> -->
+            </table>
           </div>
-          <!-- <a href="" class="follow button--primary">Follow</a> -->
         </div>
       </div>
       <div class="toolbar toolbar--with-avatar username-tabs">
@@ -198,20 +192,71 @@ export default Vue.extend({
 .content-header__hero
   background-color: #1c1e4e
   background-image: linear-gradient(to top, rgba(0, 0, 0, 0) 0%, #000 100%)
+  +below(970px)
+    height: 170px
   +below(3)
     align-items: center
     flex-direction: column
-    height: 305px
+    height: 355px
 
 .content-header__info
   display: flex
-  flex-direction: column
+  flex-direction: row
   flex-wrap: wrap
   margin: 0 0 0 20px
+  +below(970px)
+    flex-direction: column-reverse
   +below(3)
     margin: 0 0 15px 0
     justify-content: flex-end
     text-align: center
+    flex-direction: row
+    margin-top: 45px
+
+  .account-info
+    margin-top: 10px
+    +below(3)
+      margin: 10px auto 0 auto
+
+  .stats
+    margin-bottom: -10px
+    margin-left: 35px
+    margin-top: 1px
+    color: white
+    +below(970px)
+      margin-left: 0
+      margin-bottom: -5px
+    +below(3)
+      margin: 10px auto -5px auto
+
+    table
+      width auto
+
+      tr
+        background transparent
+
+      th, td
+        text-align center
+        padding 8px 20px
+        +below(3)
+          padding 8px 15px
+        +below(385px)
+          padding 8px 10px
+        +below(330px)
+          padding 8px
+
+        &:first-child
+          +below(970px)
+            padding-left 0
+          +below(3)
+            padding-left 15px
+          +below(385px)
+            padding-left 10px
+          +below(330px)
+            padding-left 10px
+
+      td
+        font-size 16px
 
   .additional
     margin-top: 10px
