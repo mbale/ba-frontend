@@ -82,10 +82,16 @@ export default Vue.extend({
         margin 5px
 
     .prediction
+      .row
+        +below(420px)
+          flex-direction column
+
       .odds
         text-transform uppercase
         margin-right 10px
         margin-left 0px
+        +below(420px)
+          margin-left 0 !important
 
       .odds-stake
         margin-right 0px
