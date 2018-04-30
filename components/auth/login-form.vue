@@ -17,7 +17,7 @@
         <text-input
           v-model="username"
           placeholder="Your username"
-          :validation="{ required: true, min: 4, alpha: true }" />
+          :validation="{ required: true, min: 4, alpha_num: true }" />
       </div>
     </div>
     <div class="form-field">
