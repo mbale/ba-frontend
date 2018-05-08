@@ -19,9 +19,9 @@ ENV GA_ID=$GA_ID
 ENV NODE_ENV=$NODE_ENV
 
 # Installing yarn
-RUN npm install
-RUN npm run build
+RUN yarn install --production=false
+RUN yarn run build
 
-CMD npm run start
+CMD yarn run start
 
 EXPOSE 5000
