@@ -20,7 +20,7 @@ pipeline:
     kubernetes_token: ${KUBERNETES_TOKEN}
     kubernetes_cert: ${KUBERNETES_CERT}
     deployment: frontend-deployment
-    repo: betacle-202016/master/frontend
+    repo: https://gcr.io/betacle-202016/master/frontend
     container: frontend-container
     namespace: default
     tag: latest
