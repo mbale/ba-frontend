@@ -23,5 +23,6 @@ pipeline:
     container: frontend-container
     namespace: default
     tag: latest
+    secrets: [kubernetes_server, kubernetes_token]
     when:
       branch: [master]
