@@ -9,13 +9,13 @@
           <div class="account-info">
             <h1 class="profile-name">
               {{ profile.username }}
-              <a :href="`${userSteamProvider.profileURL}`" target="_blank">
+              <a v-if="hasSteamProvider" href="`${userSteamProvider.profileURL}`" target="_blank">
                 <img v-if="hasSteamProvider" :src="SteamIcon" alt="">
               </a>
             </h1>
             <div class="additional">
               <span class="location">
-                <img :src="LocationIcon" alt=""> {{ convertCountryCode(profile.countryCode) }}
+                <img :src="LocationIcon" alt=""> {{ convertCountryCode(countryCode) }}
               </span>
               <span class="registered-on">
                 <img :src="CalendarIcon" alt=""> Joined {{ formatDate(profile.registeredOn, 'DD MMMM YYYY') }}
@@ -139,12 +139,10 @@ export default Vue.extend({
       avatarURL: state => state.userToView.profile.avatarURL || noAvatarImage,
       predictionsLength: state => state.userToView.predictions.length,
       profile (state) { // <- this syntax also works (great for debugging!)
-        console.log(state.userToView.profile)
         return state.userToView.profile
       }
     }),
     userSteamProvider () {
-      console.log(this.$store.getters['user/userSteamProvider'])
       return this.$store.getters['user/userSteamProvider']
     },
     hasSteamProvider () {
@@ -161,7 +159,6 @@ export default Vue.extend({
       return Math.ceil(this.predictionsLength / this.predictionsPerPage)
     },
     predictionsToShow () {
-      console.log(this.$store.getters['users/predictionsToShow'])
       return this.$store.getters['users/predictionsToShow']
     }
   },
