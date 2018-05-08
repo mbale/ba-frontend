@@ -10,13 +10,12 @@ const BACKEND_URL = process.env.BACKEND_URL
 const FRONTEND_URL = process.env.FRONTEND_URL
 const GA_ID = process.env.GA_ID
 
-console.log(GA_ID)
-console.log(process.env.NODE_ENV)
-
-process.env.DEBUG = 'nuxt:*'
+if (!isProduction) {
+  process.env.DEBUG = 'nuxt:*'
+}
 
 module.exports = {
-  debug: true,
+  debug: !isProduction,
   env: {
     FRONTEND_URL
   },
