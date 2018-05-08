@@ -10,12 +10,14 @@ pipeline:
       - frontend_url
       - backend_url
       - ga_id
+      - node_env
     build_args_from_env:
       - frontend_host
       - frontend_port
       - frontend_url
       - backend_url
       - ga_id
+      - node_env
   deploy:
     image: quay.io/honestbee/drone-kubernetes
     kubernetes_server: ${KUBERNETES_SERVER}
