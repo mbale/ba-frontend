@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:9-alpine
 
 COPY . /app
 WORKDIR /app
@@ -15,12 +15,10 @@ ENV FRONTEND_URL=$FRONTEND_URL
 ENV BACKEND_URL=$BACKEND_URL
 ENV GA_ID=$GA_ID
 
-RUN printenv
-
 # Installing yarn
-RUN yarn install
-RUN yarn build
+RUN npm install
+RUN npm run build
 
-CMD yarn start
+CMD npm run start
 
 EXPOSE 5000
