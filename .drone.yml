@@ -2,7 +2,7 @@ pipeline:
   gcr:
     image: plugins/gcr
     repo: betacle-202016/master/frontend
-    tags: latest
+    tags: ${DRONE_COMMIT}
     secrets:
       - gcr_json_key
       - frontend_host
@@ -25,7 +25,7 @@ pipeline:
     repo: gcr.io/betacle-202016/master/frontend
     container: frontend-container
     namespace: default
-    tag: latest
+    tag: ${DRONE_COMMIT}
     secrets: [kubernetes_server, kubernetes_token, kubernetes_cert]
     when:
       branch: [master]
