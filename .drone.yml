@@ -14,3 +14,14 @@ pipeline:
       - frontend_port
       - frontend_url
       - backend_url
+  deploy:
+    image: quay.io/honestbee/drone-kubernetes
+    kubernetes_server: ${KUBERNETES_SERVER}
+    kubernetes_token: ${KUBERNETES_TOKEN}
+    deployment: frontend-deployment
+    repo: betacle-202016/master/frontend
+    container: frontend-container
+    namespace: default
+    tag: latest
+    when:
+      branch: [master]
