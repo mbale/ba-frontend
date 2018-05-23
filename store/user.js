@@ -88,11 +88,10 @@ export const getters = {
   },
   // steam info on user
   userSteamProvider ({ profile }) {
-    return profile.steamProvider
-    // if (profile) {
-    //   return !!profile.steamProvider
-    // }
-    // return false
+    if (profile) {
+      return !!profile.steamProvider
+    }
+    return false
   }
 }
 
