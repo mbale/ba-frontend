@@ -2,16 +2,16 @@
   <div class="input-container" v-bind:class="{'input-container--has-errors': errors.has('text')}">
     <input
       class="input-text"
-      name="text"
+      :name="name"
       :type="type"
       :placeholder="placeholder"
       :value='value'
       :readonly='readOnly'
       v-validate="validation"
       @input='onInput'
-      >
-    <span class="input-container__errors" v-show="errors.has('text')">
-      {{ errors.first('text') }}
+      :data-vv-as="nameAs">
+    <span class="input-container__errors" v-show="errors.has(name)">
+      {{ errors.first(name) }}
     </span>
   </div>
 </template>
@@ -25,6 +25,16 @@ const TYPES = ['password', 'text', 'email', 'number', 'url']
 export default {
   name: 'TextInput',
   props: {
+    name: {
+      type: String,
+      required: false,
+      default: 'text'
+    },
+    nameAs: {
+      type: String,
+      required: false,
+      default: 'Input'
+    },
     value: {
       default: null
     },

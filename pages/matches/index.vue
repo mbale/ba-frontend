@@ -111,6 +111,7 @@ export default {
           store.commit('matches/update_state_filter', { filter: 'completed' })
           break
         default:
+          console.log('hi')
           redirect('/matches')
           break
       }
