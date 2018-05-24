@@ -11,9 +11,10 @@ export default async ({ $axios, error, store }) => {
       let errorObject = null
 
       switch (status) {
-        case 404:
-          errorObject = { statusCode: 404, message: `The page you're looking for has moved or doesn't exist.` }
-          break
+        // api sends back 404 on various endpoints if resource is absent
+        // case 404:
+        //   errorObject = { statusCode: 404, message: `The page you're looking for has moved or doesn't exist.` }
+        //   break
         case 500:
           errorObject = { statusCode: 500, message: `Something terrible happened` }
           break

@@ -29,6 +29,9 @@
           :validation="{ required: true, min: 6, alpha_num: true }" />
       </div>
     </div>
+    <div class="form-field form-field__recover-account">
+      <nuxt-link class="text" :to="{ path: 'recover-account' }">Do you need help to recover your account?</nuxt-link>
+    </div>
     <!-- LOGIN -->
     <div class="form-field form-field--actions">
       <button class="form-btn" v-show="!isLoginInProgress" v-bind:class="{'form-btn--disabled': isLoginDisabled}" @click="submitLogin">
@@ -95,7 +98,7 @@ export default {
         })
 
         if (this.isLoggedIn) {
-          this.$router.push('/matches')
+          this.$router.push({ path: 'matches' })
         }
       }
     }

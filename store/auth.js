@@ -64,7 +64,6 @@ export const actions = {
   */
   async signup ({ commit, dispatch }, payload) {
     try {
-      console.log(payload)
       commit(MUTATIONS.SIGNUP_IN_PROGRESS)
 
       const {
@@ -123,7 +122,6 @@ export const actions = {
 
       await dispatch('user/getProfile', {}, { root: true })
     } catch (error) {
-      console.log(error)
       commit(MUTATIONS.LOGIN_FAIL, {
         error
       })
